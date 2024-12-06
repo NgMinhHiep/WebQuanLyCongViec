@@ -54,11 +54,8 @@ namespace WebNC_BTL_QLCV.Models
         public ICollection<GroupMember> GroupMembers { get; set; } = new List<GroupMember>();
 
         // Nhập lại mật khẩu
-        /*
-        [Required(ErrorMessage = "Vui lòng xác nhận mật khẩu.")]
-        [Compare("PassWord", ErrorMessage = "Mật khẩu và xác nhận mật khẩu không khớp.")]
-        public string ConfirmPassword { get; set; }
-        */
+        [Column("iRoleID")]
+        public int RoleID {  get; set; }
         /*
          [Required(ErrorMessage = "Mật khẩu là bắt buộc.")]
     [StringLength(10, MinimumLength = 10, ErrorMessage = "Mật khẩu phải có đúng 10 ký tự.")]

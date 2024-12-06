@@ -67,6 +67,7 @@ namespace WebNC_BTL_QLCV.Controllers
 
             // Nếu không có lỗi, thêm người dùng vào cơ sở dữ liệu
             user.User_CreationDate = DateTime.Now;
+            user.RoleID = 2;
             _userRepository.Add(user);
 
             // Trả về phản hồi thành công
@@ -88,14 +89,10 @@ namespace WebNC_BTL_QLCV.Controllers
             string safePassword = WebUtility.HtmlEncode(password);
 
             var user = _userRepository.GetUserByName(safeUsername);
+            /*
             // Tài khoản admin cố định
             string adminUsername = "admin";
             string adminPassword = "1";
-
-            /*
-            var passwordHasher = new PasswordHasher<User>();
-            var result = passwordHasher.VerifyHashedPassword(user, user.PassWord, password);  // So sánh mật khẩu đã băm với mật khẩu người dùng nhập
-            */
 
             // Kiểm tra nếu tài khoản là admin và mật khẩu đúng
             if (safeUsername.ToLower() == adminUsername && safePassword == adminPassword)
@@ -104,7 +101,7 @@ namespace WebNC_BTL_QLCV.Controllers
                 HttpContext.Session.SetInt32("UserId", 0);
                 return Json(new { success = true, redirectUrl = Url.Action("AdminDashboard", "Account") });
             }
-
+            */
             // Kiểm tra tài khoản người dùng thông thường
             if (!_userRepository.IsUserNameExist(safeUsername))
             {
@@ -120,7 +117,12 @@ namespace WebNC_BTL_QLCV.Controllers
             // Nếu đăng nhập thành công
             HttpContext.Session.SetInt32("UserId", user.UserID);
             HttpContext.Session.SetString("username", safeUsername);
+            HttpContext.Session.SetInt32("userRole",user.RoleID);
 
+            if(user.RoleID == 1)
+            {
+                return Json(new { success = true, redirectUrl = Url.Action("AdminDashboard", "Account") });
+            }
             return Json(new { success = true, redirectUrl = Url.Action("Index", "Home") });
         }
 

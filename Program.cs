@@ -1,5 +1,6 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebNC_BTL_QLCV.Data;
+using WebNC_BTL_QLCV.MiddleWare;
 using WebNC_BTL_QLCV.Repositories;
 
 
@@ -34,6 +35,9 @@ if (!app.Environment.IsDevelopment())
 
 // Su dung Session
 app.UseSession();
+
+//thêm middleware để kiểm tra quyền
+app.UseMiddleware<RoleMiddleWare>();
 
 app.UseStaticFiles();
 
