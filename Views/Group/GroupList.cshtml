@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Danh sách nhóm";
+    ViewData["Description"] = "Danh sách các nhóm mà bạn tham gia hoặc tạo ra trong hệ thống quản lý công việc. Quản lý nhóm và công việc một cách hiệu quả.";
+    ViewData["Keywords"] = "Danh sách nhóm, Quản lý nhóm, Tạo nhóm, Tham gia nhóm, Hệ thống công việc";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+
+
+    var groupCreatedByUser = ViewBag.GroupsCreatedByUser as IEnumerable<WebNC_BTL_QLCV.Models.Group>;
+    var groupUserisMember = ViewBag.GroupsUserIsMember as IEnumerable<WebNC_BTL_QLCV.Models.Group>;
+}
+
+@model IEnumerable<WebNC_BTL_QLCV.Models.Group>
+
+<link rel="stylesheet" href="~/css/Group_List.css" />
+<div class="grouplist">
+    
+    <h2>Danh sách nhóm của bạn</h2>
+    <a class="btn-a" asp-action="Create">Tạo nhóm mới</a>
+
+    <div class="group-container">
+        @if (groupCreatedByUser != null && groupCreatedByUser.Any())
+        {
+            @foreach (var group in groupCreatedByUser)
+            {
+                <div class="group-card" id="group-row-@group.GroupID">
+                    <h3 class="group-name">@group.GroupName</h3>
+                    <p class="group-key">@group.VerifyKey</p>
+                    <p class="group-date"><strong>Ngày tạo:</strong> @group.GroupFormationDate</p>
+                    <div class="group-actions">
+                        <form asp-action="TaskList" method="get" asp-route-id="@group.GroupID">
+                            <button type="submit">Truy cập nhóm</button>
+                        </form>
+                        <form asp-action="Update" method="get" asp-route-id="@group.GroupID">
+                            <button type="submit">Sửa</button>
+                        </form>
+                        <button class="btn-delete" data-group-id="@group.GroupID">Xóa</button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <h2>Nhóm bạn đã tham gia</h2>
+    <div class="group-container">
+        @if (groupUserisMember != null && groupUserisMember.Any())
+        {
+            @foreach (var group in groupUserisMember)
+            {
+                <div class="group-card" id="member-group-row-@group.GroupID">
+                    <h3 class="group-name">@group.GroupName</h3>
+                    <p class="group-key">@group.VerifyKey</p>
+                    <p class="group-date"><strong>Ngày tạo:</strong> @group.GroupFormationDate</p>
+                    <div class="group-actions">
+                        <form asp-action="TaskList" method="get" asp-route-id="@group.GroupID">
+                            <button type="submit">Truy cập nhóm</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <a class="btn-back" asp-controller="Home" asp-action="Index">Quay lại trang chủ</a>
+</div>
+
+
+<!-- Thêm jQuery và script AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".btn-delete").click(function () {
+            var groupId = $(this).data("group-id");
+
+            if (confirm("Bạn có chắc chắn muốn xóa nhóm này?")) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Group")',
+                    type: 'POST',
+                    data: { id: groupId },
+                    success: function (response) {
+                        if (response.success) {
+                            // Xóa nhóm khỏi bảng "Nhóm bạn đã tạo"
+                            $("#group-row-" + groupId).remove();
+
+                            // Nếu nhóm này cũng có trong bảng "Nhóm bạn đã tham gia", xóa khỏi bảng đó
+                            $("#member-group-row-" + groupId).remove();
+
+                            alert("Xóa nhóm thành công!");
+                        } else {
+                            alert(response.message || "Xóa nhóm thất bại!");
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi trong quá trình xóa.");
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,95 @@
+﻿@{
+    ViewData["Title"] = "Công việc cá nhân";
+    ViewData["Description"] = "Danh sách công việc cá nhân, bao gồm tên công việc, mô tả, trạng thái và các chức năng thêm, sửa, xóa công việc.";
+    ViewData["Keywords"] = "Công việc cá nhân, Quản lý công việc, Danh sách công việc, Quản lý nhiệm vụ, Công việc đang thực hiện, Công việc đã hoàn thành";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<WebNC_BTL_QLCV.Models.PersonalTask>
+<link rel="stylesheet" href="~/css/PersonalTask_List.css" />
+
+<div class="personaltask">
+    <h2>Danh sách công việc cá nhân</h2>
+    <br />
+
+    <a class="btn-a" asp-action="Create">Thêm Công Việc Mới</a>
+    <br />
+
+    <div class="task-container">
+        @foreach (var personalTask in Model)
+        {
+            <div class="task-card" id="task-card-@personalTask.PersonalTaskID">
+                <h3 class="task-name">@personalTask.PersonalTaskName</h3>
+                <p class="task-description">@personalTask.PersonalTaskDescription</p>
+                <p class="task-status">
+                    @{
+                        string statusClass;
+                        switch (personalTask.PersonalTaskStatus)
+                        {
+                            case "Đã hoàn thành":
+                                statusClass = "text-success"; // Màu xanh
+                                break;
+                            case "Chưa hoàn thành":
+                                statusClass = "text-danger"; // Màu đỏ
+                                break;
+                            case "Đang thực hiện":
+                                statusClass = "text-warning"; // Màu cam
+                                break;
+                            default:
+                                statusClass = "text-secondary"; // Màu mặc định
+                                break;
+                        }
+                    }
+                    <span class="@statusClass">@personalTask.PersonalTaskStatus</span>
+                </p>
+                <p class="task-dates">Bắt đầu: @personalTask.StartDate</p>
+                <p class="task-dates">Kết thúc: @personalTask.EndDate</p>
+                <div class="task-actions">
+                    <form asp-action="NoteList" method="get" asp-route-id="@personalTask.PersonalTaskID">
+                        <button type="submit">Xem Ghi Chú</button>
+                    </form>
+                    <form asp-action="Update" method="get" asp-route-id="@personalTask.PersonalTaskID">
+                        <button type="submit">Sửa</button>
+                    </form>
+                    <button type="button" class="btn-delete" data-task-id="@personalTask.PersonalTaskID">Xóa</button>
+                    
+                </div>
+            </div>
+        }
+    </div>
+
+    <a class="btn-a" asp-action="Home">Quay lại trang chủ</a>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".btn-delete").click(function () {
+                var taskId = $(this).data("task-id");
+
+                if (confirm("Bạn có chắc chắn muốn xóa công việc này?")) {
+                    $.ajax({
+                        url: '@Url.Action("Delete", "PersonalTask")', // Đảm bảo đúng action/controller
+                        type: 'POST',
+                        data: { id: taskId },
+                        success: function (response) {
+                            if (response.success) {
+                                $("#task-card-" + taskId).remove(); // Xóa hàng khỏi bảng
+                                alert("Xóa công việc thành công!");
+                            } else {
+                                alert(response.message || "Xóa công việc thất bại!");
+                            }
+                        },
+                        error: function () {
+                            alert("Đã xảy ra lỗi trong quá trình xóa.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

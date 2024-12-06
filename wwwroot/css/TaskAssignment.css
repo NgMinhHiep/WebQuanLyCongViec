@@ -1,0 +1,34 @@
+﻿/* Nút "Chọn" */
+.choose-member .btn-add {
+    padding: 5px 10px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff; /* Màu xanh dương */
+    border: none;
+    border-radius: 5px; /* Bo góc nút */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .choose-member .btn-add:hover {
+        background-color: #0056b3; /* Màu xanh dương đậm hơn khi hover */
+        transform: scale(1.05); /* Hiệu ứng phóng to nhẹ */
+    }
+
+/* Liên kết quay lại */
+.choose-member .btn-back {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #6c757d; /* Màu xám */
+    text-decoration: none;
+    border-radius: 5px; /* Bo góc liên kết */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .choose-member .btn-back:hover {
+        background-color: #5a6268; /* Màu xám đậm hơn */
+        transform: scale(1.05); /* Hiệu ứng phóng to nhẹ */
+    }

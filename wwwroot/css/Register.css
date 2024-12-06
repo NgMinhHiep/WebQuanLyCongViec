@@ -1,0 +1,94 @@
+﻿
+/* Căn giữa form trên trang */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Bao bọc toàn bộ form */
+
+form {
+    width: 450px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* Tiêu đề form */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 20px; /* Tăng khoảng cách từ trên xuống */
+    margin-bottom: 20px; /* Khoảng cách giữa tiêu đề và form */
+    font-size: 24px; /* Đảm bảo chữ đủ lớn */
+}
+
+/* Căn chỉnh nhãn và trường input */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* Input và ô nhập liệu */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="date"] {
+    width: 400px;
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Lỗi xác thực */
+.text-danger {
+    color: red;
+    font-size: 16px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Nút bấm */
+
+button {
+    width: 100%; /* Nút sẽ vừa khít với form */
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+/* Liên kết chuyển đổi giữa đăng nhập và đăng ký */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }

@@ -1,0 +1,166 @@
+﻿.grouplist {
+    padding: 20px;
+}
+
+.group-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Khoảng cách giữa các ô */
+    justify-content: center; /* Căn giữa các ô */
+}
+
+.grouplist h2 {
+    font-size: 1.8rem; /* Kích thước chữ */
+    color: #34495e;
+    margin: 20px 10px;
+    text-align: center;
+}
+
+.group-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .group-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .group-card h3 {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .group-card p {
+        margin: 5px 0;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+.group-actions {
+    margin-top: 10px;
+}
+
+    .group-actions form {
+        display: inline-block;
+        margin: 5px 0;
+    }
+
+    .group-actions button {
+        padding: 8px 12px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+        .group-actions button:hover {
+            background-color: #0056b3;
+        }
+
+    .group-actions form[action*="Update"] button {
+        background-color: #ffc107; /* Màu vàng */
+    }
+
+        .group-actions form[action*="Update"] button:hover {
+            background-color: #e0a800; /* Màu vàng đậm hơn khi hover */
+        }
+
+    .group-actions .btn-delete {
+        padding: 8px 12px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .group-actions .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+.grouplist .btn-a {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 10px 0;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+
+    /* Nút "Thêm Công Việc Mới" */
+    .grouplist .btn-a[href*="Create"] {
+        background-color: #28a745;
+    }
+
+        .grouplist .btn-a[href*="Create"]:hover {
+            background-color: #218838;
+            text-decoration: none;
+            color: white;
+        }
+
+.grouplist .btn-back {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 10px 0;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    background-color: #6c757d;
+}
+
+    .grouplist .btn-back:hover {
+        background-color: #5a6268;
+        text-decoration: none;
+        color: white;
+    }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .group-card {
+        width: 45%; /* 2 cột trên tablet */
+    }
+
+    .grouplist h2 {
+        font-size: 1.5rem; /* Giảm kích thước chữ trên tablet */
+    }
+}
+
+@media (max-width: 768px) {
+    .group-card {
+        width: 100%; /* 1 cột trên mobile */
+    }
+
+    .grouplist h2 {
+        font-size: 1.2rem; /* Giảm kích thước chữ hơn nữa trên mobile */
+    }
+
+    .group-actions button,
+    .group-actions .btn-delete {
+        font-size: 0.8rem; /* Thu nhỏ nút trên mobile */
+        padding: 6px 10px;
+    }
+
+    .grouplist .btn-a,
+    .grouplist .btn-back {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+}

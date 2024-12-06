@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Sửa ghi chú";
+    ViewData["Description"] = "Chỉnh sửa thông tin ghi chú cho công việc cá nhân. Cập nhật các ghi chú cho công việc một cách dễ dàng.";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+@model PersonalNote
+<link rel="stylesheet" href="~/css/PersonalNote_Create.css" />
+
+<div class="create-note">
+<h2>Sửa Ghi Chú</h2>
+<form asp-action="Update" method="post">
+
+    <label for="PersonalNoteDetails">Nội Dung Ghi Chú</label>
+    <textarea asp-for="PersonalNoteDetails" placeholder="Nhập ghi chú mới" required></textarea>
+
+        <button class="btn-create" type="submit">Lưu thay đổi</button>
+</form>
+<br />
+    <a class="btn-back" asp-action="PersonalNoteList">Quay lại</a>
+</div>

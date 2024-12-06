@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+    ViewData["Description"] = "Trang chủ của hệ thống quản lý công việc. Truy cập công việc cá nhân hoặc danh sách nhóm để theo dõi và quản lý công việc hiệu quả.";
+    ViewData["Keywords"] = "Trang chủ, Quản lý công việc, Công việc cá nhân, Danh sách nhóm, Quản lý nhóm";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Trang chủ - Hệ thống Quản lý Công việc</title>
+    <link rel="stylesheet" href="~/css/Home.css" />
+</head>
+<body>
+    <div class="home">
+        <h1>@Model</h1>
+        <a class="btn-a" asp-action="PersonalTask">Công việc cá nhân</a>
+        <a class="btn-a" asp-controller="Group" asp-action="GroupList">Danh sách nhóm</a>
+
+        
+    </div>
+</body>
+</html>

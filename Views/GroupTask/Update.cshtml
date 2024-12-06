@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Sửa công việc nhóm";
+    ViewData["Description"] = "Chỉnh sửa công việc trong nhóm để cập nhật tên, mô tả, trạng thái và thời gian hoàn thành công việc một cách chính xác.";
+    ViewData["Keywords"] = "Sửa công việc, Công việc nhóm, Quản lý công việc nhóm, Cập nhật công việc, Group tasks, Team management";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model GroupTask
+<link rel="stylesheet" href="~/css/PersonalTask_Create.css" />
+
+<div class="newtasks">
+    <h2>Sửa Công Việc</h2>
+
+    <form id="updateGroupTaskForm">
+        <input asp-for="GroupTaskID" type="hidden" />
+        <label>Tên Công Việc</label>
+        <input asp-for="GroupTaskName" />
+        <br />
+        <label>Mô Tả</label>
+        <textarea asp-for="GroupTaskDescription"></textarea>
+        <br />
+        <label>Trạng Thái</label>
+        <select asp-for="GroupTaskStatus">
+            <option value="Chưa hoàn thành">Chưa hoàn thành</option>
+            <option value="Đang thực hiện">Đang thực hiện</option>
+            <option value="Đã hoàn thành">Đã hoàn thành</option>
+        </select>
+        <br />
+        <label>Ngày Bắt Đầu</label>
+        <input asp-for="StartDate" type="date" />
+        <br />
+        <label>Ngày Kết Thúc</label>
+        <input asp-for="EndDate" type="date" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+        <br />
+
+        <span id="errorMessage" style="color: red; font-size: 16px; display: block; margin-top: 10px; text-align:center"></span>
+
+        <button class="btn-create" type="submit">Lưu Thay Đổi</button>
+    </form>
+    <a class="btn-back" asp-action="GroupTaskList">Quay lại</a>
+</div>
+
+<!-- Thêm jQuery và script AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#updateGroupTaskForm").submit(function(event) {
+            event.preventDefault();  // Ngăn chặn gửi form truyền thống
+
+            $("#errorMessage").hide().html("");  // Reset thông báo lỗi
+
+            var formData = $(this).serialize();  // Lấy dữ liệu từ form
+
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                url: '@Url.Action("Update", "GroupTask")',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        // Chuyển hướng khi cập nhật thành công
+                        window.location.href = '@Url.Action("GroupTaskList")';
+                    } else {
+                        // Hiển thị thông báo lỗi từ server
+                        $("#errorMessage").show().html(response.errorMessage);
+                    }
+                },
+                error: function() {
+                    // Hiển thị lỗi khi xảy ra sự cố
+                    $("#errorMessage").show().html("Đã xảy ra lỗi. Vui lòng thử lại.");
+                }
+            });
+        });
+    });
+</script>

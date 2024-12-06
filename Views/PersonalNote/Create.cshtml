@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Tạo mới ghi chú";
+    ViewData["Description"] = "Tạo mới ghi chú cho công việc cá nhân. Thêm các ghi chú chi tiết để theo dõi tiến độ công việc.";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model PersonalNote
+<link rel="stylesheet" href="~/css/PersonalNote_Create.css" />
+<div class="create-note">
+    <h2>Thêm Ghi Chú Mới cho Công Việc</h2>
+
+    <form id="createNoteForm">
+        <label for="PersonalNoteDetails">Nội Dung Ghi Chú</label>
+        <textarea asp-for="PersonalNoteDetails" placeholder="Nhập ghi chú mới" required></textarea>
+        <span id="error-message" class="text-danger"></span> <!-- Chỗ hiển thị lỗi -->
+
+        <button class="btn-create" type="submit">Thêm Ghi Chú</button>
+    </form>
+
+    <a class="btn-back" asp-action="PersonalNoteList">Quay lại Danh Sách Ghi Chú</a>
+</div>
+
+<!-- Thêm jQuery và AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#createNoteForm").submit(function (event) {
+            event.preventDefault(); // Ngăn form submit thông thường
+
+            var noteDetails = $("#PersonalNoteDetails").val(); // Lấy dữ liệu từ form
+
+            $.ajax({
+                url: '@Url.Action("Create", "PersonalNote")',
+                type: 'POST',
+                data: {
+                    PersonalNoteDetails: noteDetails
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert("Thêm ghi chú thành công!");
+                        window.location.href = '@Url.Action("PersonalNoteList", "PersonalNote")';
+                    } else {
+                        $("#error-message").text(response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#error-message").text("Đã xảy ra lỗi khi thêm ghi chú.");
+                }
+            });
+        });
+    });
+</script>

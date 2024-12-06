@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Tạo nhóm mới";
+    ViewData["Description"] = "Tạo nhóm mới trong hệ thống quản lý công việc, giúp bạn quản lý nhóm và phân công công việc một cách hiệu quả.";
+    ViewData["Keywords"] = "Tạo nhóm, Quản lý nhóm, Nhóm công việc, Quản lý công việc, Create group";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model Group;
+<link rel="stylesheet" href="~/css/Group_Create.css" />
+<div class="grouplist">
+    <h2>Tạo nhóm mới</h2>
+
+    <form id="create-group-form">
+        <label for="GroupName">Tên nhóm</label>
+        <input id="GroupName" name="GroupName" class="GroupName" required />
+        <br />
+        <label for="VerifyKey">Key nhóm</label>
+        <input id="VerifyKey" name="VerifyKey" class="VerifyKey" required />
+        <br />
+        <span asp-validation-for="VerifyKey" class="text-danger"></span> <!-- Hiển thị lỗi -->
+        <button type="button" id="create-button">Tạo</button> <!-- Nút dùng AJAX -->
+    </form>
+
+    <a class="btn-back" asp-controller="Group" asp-action="GroupList">Quay lại</a>
+</div>
+
+<!-- Thêm jQuery và script AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#create-button").click(function () {
+            var groupName = $("#GroupName").val();
+            var verifyKey = $("#VerifyKey").val();
+
+            if (groupName.trim() === "") {
+                alert("Tên nhóm không được để trống.");
+                return;
+            }
+
+            if (verifyKey.trim() === "") {
+                alert("Key không được để trống.");
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("Create", "Group")',
+                type: 'POST',
+                data: { 
+                    GroupName: groupName,
+                    VerifyKey : verifyKey
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert("Tạo nhóm thành công!");
+                        window.location.href = '@Url.Action("GroupList", "Group")'; // Chuyển về danh sách nhóm
+                    } else {
+                        alert(response.message || "Tạo nhóm thất bại.");
+                    }
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi khi tạo nhóm.");
+                }
+            });
+        });
+    });
+</script>

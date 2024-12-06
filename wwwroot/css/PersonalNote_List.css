@@ -1,0 +1,116 @@
+﻿/* Định dạng chung cho container */
+.notelist {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9; /* Nền xám nhạt */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+}
+
+    /* Tiêu đề */
+    .notelist h2 {
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    /* Nút "Thêm Ghi Chú Mới" */
+    .notelist .btn-create {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 5px 10px;
+        font-size: 1rem;
+        color: #fff;
+        background-color: #4CAF50; /* Màu xanh lá */
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .notelist .btn-create:hover {
+            background-color: #45a049; /* Màu xanh lá đậm hơn khi hover */
+            transform: scale(1.05); /* Phóng to nhẹ khi hover */
+        }
+
+    /* Bảng */
+    .notelist table {
+        width: 100%; /* Chiếm toàn bộ chiều ngang */
+        border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
+        margin-bottom: 20px;
+        font-size: 1rem;
+    }
+
+        /* Đầu bảng */
+        .notelist table th {
+            background-color: #4CAF50; /* Màu nền xanh lá */
+            color: #fff; /* Chữ màu trắng */
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd; /* Viền nhạt */
+        }
+
+        /* Nội dung bảng */
+        .notelist table td {
+            padding: 10px;
+            border: 1px solid #ddd; /* Viền nhạt */
+            text-align: left;
+        }
+
+        /* Hàng chẵn màu khác để dễ nhìn */
+        .notelist table tr:nth-child(even) {
+            background-color: #f2f2f2; /* Màu xám nhạt */
+        }
+
+    /* Màu của button xóa */
+.delete-note {
+    padding: 6px 12px;
+    margin-bottom: 3px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    background-color: #dc3545;
+}
+
+        .delete-note:hover {
+            background-color: #b02a37;
+            transform: scale(1.05);
+        }
+
+    /* Hành động */
+    .notelist form button {
+        background-color: #dc3545; /* Màu đỏ */
+        color: #fff;
+        padding: 5px 15px;
+        font-size: 0.9rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .notelist form button:hover {
+            background-color: #c82333; /* Màu đỏ đậm hơn khi hover */
+            transform: scale(1.05); /* Phóng to nhẹ khi hover */
+        }
+       
+
+    /* Nút "Quay lại" */
+    .notelist .btn-back {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 1rem;
+        color: #fff;
+        background-color: #6c757d; /* Màu xám */
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .notelist .btn-back:hover {
+            background-color: #5a6268; /* Màu xám đậm hơn khi hover */
+            transform: scale(1.05); /* Phóng to nhẹ khi hover */
+        }

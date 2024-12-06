@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Phân công công việc cho thành viên";
+    ViewData["Description"] = "Phân công công việc cho các thành viên trong nhóm, giúp bạn quản lý và phân công công việc nhóm một cách hiệu quả.";
+    ViewData["Keywords"] = "Phân công công việc, Thành viên nhóm, Quản lý nhóm, Thêm thành viên, Group members, Team management, Task Assignment";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<MemberViewModel>
+<link rel="stylesheet" href="~/css/TaskAssignment.css" />
+<div class="choose-member">
+
+<h2>Chọn thành viên phụ trách cho công việc: </h2>
+
+    <table class="table">
+        <tr>
+            <th>ID thành viên</th>
+            <th>Tên thành viên</th>
+            <th>Vai trò</th>
+            <th>Hành động</th>
+        </tr>
+
+        @foreach (var member in Model)
+        {
+            <tr>
+                <td>@member.UserID</td>
+                <td>@member.UserName</td>
+                <td>
+                    @if (member.UserID == ViewBag.LeaderId)
+                    {
+                        <span style="color:red"> Trưởng nhóm </span>
+                    }
+                    else
+                    {
+                        <span>Thành viên</span>
+                    }
+                </td>
+                <td>
+                    @if (!member.IsAssigned)
+                    {
+                        <form asp-controller="TaskAssignment" asp-action="Add" method="post">
+                            <input type="hidden" name="userId" value="@member.UserID" />
+                            <button class="btn-add" type="submit">Chọn</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span>Đã được phân công</span>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+<a class="btn-back" asp-action="GroupTaskList" asp-controller="GroupTask">Quay lại Danh Sách công việc</a>
+</div>

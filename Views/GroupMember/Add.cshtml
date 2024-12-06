@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Thêm thành viên";
+    ViewData["Description"] = "Thêm thành viên vào nhóm giúp bạn quản lý và phân công công việc nhóm một cách hiệu quả.";
+    ViewData["Keywords"] = "Thêm thành viên, Thành viên nhóm, Quản lý nhóm, Group members, Team management";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@model GroupMember
+<link rel="stylesheet" href="~/css/GroupMember_Add.css" />
+<div class="add-member">
+    <h2>Thêm thành viên mới</h2>
+
+    <form id="addMemberForm" method="post">
+        <input type="hidden" name="groupId" value="@ViewData["GroupId"]" />
+        <label for="username">Tên Người Dùng:</label>
+        <input type="text" name="username" id="username" required />
+        <button class="btn-add" type="submit">Thêm vào Nhóm</button>
+    </form>
+
+    <a class="btn-back" asp-action="GroupMemberList">Quay lại Danh Sách thành viên</a>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Xử lý khi nhấn nút thêm thành viên
+        $("#addMemberForm").submit(function(e) {
+            e.preventDefault(); // Ngừng gửi form truyền thống
+
+            var username = $("#username").val();
+            var groupId = $("input[name='groupId']").val();
+
+            // Gửi yêu cầu AJAX để thêm thành viên
+            $.ajax({
+                url: '@Url.Action("Add", "GroupMember")', // URL action add
+                type: 'POST',
+                data: { username: username, groupId: groupId },
+                success: function(response) {
+                    if (response.success) {
+                        alert("Thành viên đã được thêm thành công!");
+                        window.location.href = '@Url.Action("GroupMemberList", "GroupMember")'; // Điều hướng đến danh sách thành viên
+                    } else {
+                        alert(response.errorMessage); // Hiển thị thông báo lỗi
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("Đã xảy ra lỗi khi thêm thành viên.");
+                }
+            });
+        });
+    });
+</script>

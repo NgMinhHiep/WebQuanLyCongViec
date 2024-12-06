@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="@ViewData["Description"]" />
+    <meta name="keywords" content="@ViewData["Keywords"]" />
+    <meta name="author" content="@ViewData["Author"]" />
+    <meta name="robots" content="@ViewData["Robots"]">
+    <title>@ViewData["Title"] - WebNC_BTL_QLCV</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/_SimpleLayout.cshtml.css" />
+    <link rel="stylesheet" href="~/WebNC_BTL_QLCV.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-...==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div class="wrapper">
+        @if (ViewData["HideHeaderFooter"] == null || (bool)ViewData["HideHeaderFooter"] == false)
+        {
+            <header>
+                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebNC_BTL_QLCV</a>
+
+                        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                            <ul class="navbar-nav flex-grow-1">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-link">Đăng xuất</button>
+                                    </form>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Group" asp-action="Test">Trang test</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="">
+                            <!--
+                            <p>Nguyễn Minh Hiệp</p>
+                            <p>Phan Ngọc Hân</p>
+                            <p>Đỗ Ngọc Giao</p>
+                            -->
+                        </div>
+                    </div>
+                </nav>
+            </header>
+        }
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        @if (ViewData["HideHeaderFooter"] == null || (bool)ViewData["HideHeaderFooter"] == false)
+        {
+            <footer class="footer">
+                <div class="footer_container">
+                    <div class="footer-section">
+                        <h4>Thông tin cơ bản</h4>
+                        <p>&copy; 2024 WebNC_BTL_QLCV . All Rights Reserved.</p>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Liên kết nhanh</h4>
+                        <ul class="footer-links">
+                            <li><a href="/about">Về chúng tôi</a></li>
+                            <li><a href="/contact">Liên hệ</a></li>
+                            <li><a href="/privacy-policy">Chính sách bảo mật</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Thông tin liên hệ</h4>
+                        <p>Email: info@example.com</p>
+                        <p>Điện thoại: +84 123 456 789</p>
+
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Theo dõi chúng tôi</h4>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <!--
+                    <div class="footer-section">
+                        <h4>Thành viên nhóm</h4>
+                        <p>Nguyễn Minh Hiệp</p>
+                        <p>Phan Ngọc Hân</p>
+                        <p>Đỗ Ngọc Giao</p>
+                        
+                    </div>
+                    -->
+                </div>
+            </footer>
+        }
+    </div>
+    
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Thêm Công Việc Mới";
+    ViewData["Description"] = "Thêm công việc mới vào nhóm, giúp bạn phân công công việc và quản lý tiến độ công việc nhóm hiệu quả trong hệ thống quản lý công việc của chúng tôi.";
+    ViewData["Keywords"] = "Thêm công việc, Công việc nhóm, Quản lý công việc nhóm, Phân công công việc, Quản lý nhóm, Group tasks, Team management";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model GroupTask
+<link rel="stylesheet" href="~/css/PersonalTask_Create.css" />
+
+<div class="newtasks">
+    <h2>Thêm công việc mới</h2>
+
+    <form id="createTaskForm">
+        <label>Tên Công Việc</label>
+        <input asp-for="GroupTaskName" id="GroupTaskName" />
+        <br />
+        <label>Mô Tả</label>
+        <textarea asp-for="GroupTaskDescription" id="GroupTaskDescription"></textarea>
+        <br />
+        <label>Trạng Thái</label>
+        <select asp-for="GroupTaskStatus" id="GroupTaskStatus">
+            <option value="Chưa hoàn thành">Chưa hoàn thành</option>
+            <option value="Đang thực hiện">Đang thực hiện</option>
+            <option value="Đã hoàn thành">Đã hoàn thành</option>
+        </select>
+        <br />
+        <label>Ngày Bắt Đầu</label>
+        <input asp-for="StartDate" type="date" id="StartDate" />
+        <br />
+        <label>Ngày Kết Thúc</label>
+        <input asp-for="EndDate" type="date" id="EndDate" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+        <br />
+        <span id="errorMessage" style="color: red; font-size: 16px; display: block; margin-top: 10px; text-align:center"></span>
+        <button class="btn-create" type="submit">Thêm</button>
+    </form>
+    <a class="btn-back" asp-action="GroupTaskList">Quay lại</a>
+</div>
+
+<!-- Thêm jQuery và script AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#createTaskForm").submit(function (event) {
+            event.preventDefault(); // Ngăn form gửi thông thường
+
+            var formData = {
+                GroupTaskName: $("#GroupTaskName").val(),
+                GroupTaskDescription: $("#GroupTaskDescription").val(),
+                GroupTaskStatus: $("#GroupTaskStatus").val(),
+                StartDate: $("#StartDate").val(),
+                EndDate: $("#EndDate").val()
+            };
+
+            $.ajax({
+                url: '@Url.Action("Create", "GroupTask")',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        alert("Thêm công việc thành công!");
+                        window.location.href = '@Url.Action("GroupTaskList", "GroupTask")'; // Chuyển hướng khi thành công
+                    } else {
+                        if (response.errors) {
+                            $("#errorMessage").html(response.errors.join("<br>")); // Hiển thị tất cả lỗi
+                        } else {
+                            $("#errorMessage").html(response.message);
+                        }
+                    }
+                },
+                error: function (response) {
+                    alert("Đã xảy ra lỗi trong quá trình thêm công việc.");
+                }
+            });
+        });
+    });
+</script>

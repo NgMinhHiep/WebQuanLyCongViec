@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Sửa ghi chú";
+    ViewData["Description"] = "Chỉnh sửa ghi chú cho công việc nhóm, giúp bạn cập nhật thông tin và theo dõi tiến độ công việc nhóm hiệu quả.";
+    ViewData["Keywords"] = "Ghi chú công việc nhóm, Sửa ghi chú, Quản lý ghi chú, Công việc nhóm, Team notes, Group tasks";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model GroupNote
+<link rel="stylesheet" href="~/css/PersonalNote_Create.css" />
+
+<div class="create-note">
+<h2>Sửa Ghi Chú</h2>
+
+<form asp-action="Update" method="post">
+
+    <label for="GroupNoteDetails">Nội Dung Ghi Chú</label>
+    <textarea asp-for="GroupNoteDetails" placeholder="Nhập ghi chú mới" required></textarea>
+
+        <button class="btn-create" type="submit">Lưu thay đổi</button>
+</form>
+<br />
+    <a class="btn-back" asp-action="GroupNoteList">Quay lại</a>
+</div>

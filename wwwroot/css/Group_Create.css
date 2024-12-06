@@ -1,0 +1,97 @@
+﻿/* CSS tổng thể cho form tạo nhóm */
+.grouplist {
+    max-width: 400px; /* Giới hạn chiều rộng */
+    margin: 50px auto; /* Căn giữa màn hình */
+    padding: 20px;
+    background-color: #f9f9f9; /* Nền màu nhạt */
+    border: 1px solid #ddd; /* Viền nhẹ */
+    border-radius: 8px; /* Bo góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+    /* Tiêu đề của form */
+    .grouplist h2 {
+        text-align: center; /* Căn giữa */
+        font-size: 1.8rem; /* Kích thước chữ */
+        color: #34495e; /* Màu chữ tối */
+        margin-bottom: 20px;
+    }
+
+    /* Kiểu dáng cho nhãn (label) */
+    .grouplist label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #333; /* Màu chữ tối */
+    }
+
+    /* Kiểu dáng cho input */
+    .grouplist input {
+        width: 100%; /* Chiếm toàn bộ chiều rộng */
+        padding: 10px;
+        margin-bottom: 15px; /* Khoảng cách giữa các phần tử */
+        font-size: 1rem; /* Cỡ chữ */
+        border: 1px solid #ccc; /* Viền */
+        border-radius: 5px; /* Bo góc */
+        background-color: #fff; /* Nền trắng */
+        transition: border-color 0.3s ease;
+    }
+
+        .grouplist input:focus {
+            border-color: #007bff; /* Viền khi focus */
+            outline: none;
+        }
+
+    /* Nút tạo */
+    .grouplist button[type="button"] {
+        width: 100%; /* Nút rộng bằng form */
+        padding: 10px;
+        font-size: 1rem; /* Kích thước chữ */
+        color: #fff; /* Màu chữ trắng */
+        background-color: #28a745; /* Màu nền xanh */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .grouplist button[type="button"]:hover {
+            background-color: #218838; /* Màu xanh đậm hơn khi hover */
+            transform: scale(1.05); /* Phóng to nhẹ */
+        }
+
+    /* Nút sửa */
+    .grouplist button[type="submit"] {
+        width: 100%; /* Nút rộng bằng form */
+        padding: 10px;
+        font-size: 1rem; /* Kích thước chữ */
+        color: #fff; /* Màu chữ trắng */
+        background-color: #28a745; /* Màu nền xanh */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .grouplist button[type="submit"]:hover {
+            background-color: #218838; /* Màu xanh đậm hơn khi hover */
+            transform: scale(1.05); /* Phóng to nhẹ */
+        }
+
+    /* Nút quay lại */
+    .grouplist .btn-back {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        text-decoration: none;
+        color: #fff; /* Chữ trắng */
+        background-color: #6c757d; /* Màu nền xám */
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;        
+    }
+
+        .grouplist .btn-back:hover {
+            background-color: #5a6268; /* Màu xám đậm hơn khi hover */
+            transform: scale(1.05); /* Phóng to nhẹ */
+        }

@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Ghi chú";
+    ViewData["Description"] = "Danh sách ghi chú cho công việc cá nhân. Quản lý ghi chú với chức năng thêm, xóa và xem chi tiết.";
+    ViewData["Keywords"] = "Ghi chú cá nhân, Quản lý ghi chú, Công việc cá nhân, Ghi chú công việc, Danh sách ghi chú";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<PersonalNote>
+
+<link rel="stylesheet" href="~/css/PersonalNote_List.css" />
+<div class="notelist">
+
+    <h2>Danh sách ghi chú cho công việc: @Context.Session.GetString("PersonalTaskName")</h2>
+
+    <a class="btn-create" asp-action="Create">Thêm Ghi Chú Mới</a>
+    <table>
+        <tr>
+            <th>Nội Dung Ghi Chú</th>
+            <th>Ngày Tạo</th>
+            <th>Hành động</th>
+        </tr>
+        @foreach (var note in Model)
+        {
+            <tr id="note-@note.PersonalNoteID">
+                <td>@note.PersonalNoteDetails</td>
+                <td>@note.PersonalNote_CreationDate.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    <!-- Thêm AJAX cho nút xóa -->
+                    <button class="delete-note" data-id="@note.PersonalNoteID">Xóa</button>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <br />
+    <a class="btn-back" asp-action="TaskList">Quay lại</a>
+</div>
+
+<!-- Thêm jQuery và AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Xử lý khi nhấn nút xóa
+        $(".delete-note").click(function() {
+            var noteId = $(this).data("id");
+
+            // Xác nhận hành động xóa
+            if (confirm("Bạn có chắc chắn muốn xóa ghi chú này?")) {
+                // Gửi yêu cầu AJAX để xóa ghi chú
+                $.ajax({
+                    url: '@Url.Action("Delete", "PersonalNote")', // URL action delete
+                    type: 'POST',
+                    data: { id: noteId },
+                    success: function(response) {
+                        if (response.success) {
+                            // Xóa dòng ghi chú khỏi bảng
+                            $("#note-" + noteId).remove();
+                        } else {
+                            alert("Không thể xóa ghi chú này.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Đã xảy ra lỗi khi xóa ghi chú.");
+                    }
+                });
+            }
+        });
+    });
+</script>

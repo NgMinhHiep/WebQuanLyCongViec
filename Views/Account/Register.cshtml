@@ -1,0 +1,170 @@
+﻿@{
+    ViewData["Title"] = "Đăng ký";
+    ViewData["Description"] = "Đăng ký tài khoản để tham gia hệ thống quản lý công việc, giúp bạn theo dõi và quản lý công việc cá nhân và nhóm.";
+    ViewData["Keywords"] = "Đăng ký, Tạo tài khoản, Quản lý công việc, Register, Hệ thống công việc";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow"; // Không index trang đăng ký
+
+    Layout = "_SimpleLayout";
+}
+
+@model WebNC_BTL_QLCV.Models.User
+
+
+<link rel="stylesheet" href="~/css/Register.css" />
+<style>
+    /* CSS cho thông báo lỗi */
+    .text-danger {
+        color: red;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    /* Thêm margin-top nếu cần cho lỗi chung */
+    #message {
+        color: red;
+        font-size: 16px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    /* Đảm bảo các lỗi dưới các input cũng có kiểu đẹp */
+    span.text-danger {
+        display: block;
+        color: red;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 5px;
+    }
+</style>
+<h2>Đăng Ký</h2>
+
+<!-- Thêm một phần tử thông báo lỗi chung ở trên -->
+<div id="message" class="text-danger" style="display: none;"></div>
+
+<form id="registerForm">
+    <div>
+        <label>Họ và Tên:</label>
+        <input asp-for="FullName" required /><br />
+        <span id="FullName-error" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <div>
+        <label>Ngày sinh:</label>
+        <input type="date" asp-for="DateOfBirth" required /><br />
+        <span id="DateOfBirth-error" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <div>
+        <label>Số điện thoại:</label>
+        <input asp-for="PhoneNumber" required /><br />
+        <span id="PhoneNumber-error" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <div>
+        <label>Email:</label>
+        <input type="email" asp-for="Email" required /><br />
+        <span id="Email-error" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <div>
+        <label>Tên Đăng Nhập:</label>
+        <input asp-for="UserName" required /><br />
+        <span id="UserName-error" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <div>
+        <label>Mật Khẩu:</label>
+        <input type="password" asp-for="PassWord" name="password" id="password" required /><br />
+        <span id="PassWord-error" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <div>
+        <label>Xác Nhận Mật Khẩu:</label>
+        <input type="password" id="ConfirmPassword" required />
+        <span id="confirmPasswordError" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <button type="submit">Đăng Ký</button>
+</form>
+
+<a asp-action="Login">Đăng nhập</a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#registerForm").submit(function (event) {
+            event.preventDefault(); // Ngừng hành động mặc định của form
+
+            // Xóa các thông báo lỗi cũ
+            $("span.text-danger").html("");
+            $("#message").html("").hide();  // Xóa thông báo lỗi chung (nếu có)
+
+            // Kiểm tra xác nhận mật khẩu
+            var password = $("#password").val();
+            var confirmPassword = $("#ConfirmPassword").val();
+            if (password !== confirmPassword) {
+                $("#confirmPasswordError").html("Mật khẩu và xác nhận mật khẩu không khớp!");
+                return; // Ngừng submit nếu mật khẩu không khớp
+            }
+
+            if (password.length < 8) {
+                $("#PassWord-error").html("Mật khẩu phải có ít nhất 8 ký tự!");
+                return;
+            }
+
+            if(!/^[0-9]/.test(password)){
+                $("#PassWord-error").html("Ký tự đầu tiên phải là số!");
+                return;
+            }
+
+            if(!/[A-Z]/.test(password)){
+                $("#PassWord-error").html("Phải có chữ hoa ở trong mật khẩu!");
+                return;
+            }
+
+            // Thu thập dữ liệu form
+            var formData = {
+                FullName: $("input[name='FullName']").val(),
+                DateOfBirth: $("input[name='DateOfBirth']").val(),
+                PhoneNumber: $("input[name='PhoneNumber']").val(),
+                Email: $("input[name='Email']").val(),
+                UserName: $("input[name='UserName']").val(),
+                PassWord: password,
+            };
+
+            // Gửi AJAX
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Register", "Account")', // URL đến phương thức Register trong Controller
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = response.redirectUrl; // Điều hướng đến trang sau khi đăng ký thành công
+                    } else {
+                        // Hiển thị các lỗi dưới từng trường input
+                        if (response.errors.FullName) {
+                            $("#FullName-error").html(response.errors.FullName);
+                        }
+                        if (response.errors.DateOfBirth) {
+                            $("#DateOfBirth-error").html(response.errors.DateOfBirth);
+                        }
+                        if (response.errors.PhoneNumber) {
+                            $("#PhoneNumber-error").html(response.errors.PhoneNumber);
+                        }
+                        if (response.errors.Email) {
+                            $("#Email-error").html(response.errors.Email);
+                        }
+                        if (response.errors.UserName) {
+                            $("#UserName-error").html(response.errors.UserName);
+                        }
+                    }
+                },
+                error: function () {
+                    $("#message").html("Đã xảy ra lỗi. Vui lòng thử lại.");
+                    $("#message").show();
+                }
+            });
+        });
+    });
+</script>

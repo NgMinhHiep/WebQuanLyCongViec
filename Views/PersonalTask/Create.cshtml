@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Thêm công việc cá nhân";
+    ViewData["Description"] = "Tạo công việc cá nhân mới. Quản lý công việc hiệu quả và dễ dàng theo dõi tiến độ.";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow"; 
+
+    Layout = "_SimpleLayout";
+}
+
+@model PersonalTask
+<link rel="stylesheet" href="~/css/PersonalTask_Create.css" />
+
+<div class="newtasks">
+    <h2>Thêm Công Việc Mới</h2>
+
+    <form id="createTaskForm">
+        <label>Tên Công Việc</label>
+        <input id="PersonalTaskName" asp-for="PersonalTaskName" />
+        <br />
+        <label>Mô Tả</label>
+        <textarea id="PersonalTaskDescription" asp-for="PersonalTaskDescription"></textarea>
+        <br />
+        <label>Trạng Thái</label>
+        <select id="PersonalTaskStatus" asp-for="PersonalTaskStatus">
+            <option value="Chưa hoàn thành">Chưa hoàn thành</option>
+            <option value="Đang thực hiện">Đang thực hiện</option>
+            <option value="Đã hoàn thành">Đã hoàn thành</option>
+        </select>
+        <br />
+        <label>Ngày Bắt Đầu</label>
+        <input id="StartDate" asp-for="StartDate" type="date" />
+        <br />
+        <label>Ngày Kết Thúc</label>
+        <input id="EndDate" asp-for="EndDate" type="date" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+        <br />
+        <span id="errorMessage" style="color: red; font-size: 16px; display: block; margin-top: 10px; text-align:center"></span>
+        <button class="btn-create" type="submit">Thêm</button>
+    </form>
+    <a class="btn-back" asp-action="PersonalTaskList">Quay lại</a>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                var formData = {
+                    PersonalTaskName: $("#PersonalTaskName").val(),
+                    PersonalTaskDescription: $("#PersonalTaskDescription").val(),
+                    PersonalTaskStatus: $("#PersonalTaskStatus").val(),
+                    StartDate: $("#StartDate").val(),
+                    EndDate: $("#EndDate").val()
+                };
+
+                $.ajax({
+                    url: '@Url.Action("Create", "PersonalTask")',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            window.location.href = '@Url.Action("PersonalTaskList", "PersonalTask")';
+                        } else {
+                            if (response.errors) {
+                                $("#errorMessage").html(response.errors.join("<br>")); // Hiển thị tất cả lỗi
+                            } else {
+                                $("#errorMessage").html(response.message);
+                            }
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi. Vui lòng thử lại.");
+                    }
+                });
+            });
+        });
+    </script>
+}

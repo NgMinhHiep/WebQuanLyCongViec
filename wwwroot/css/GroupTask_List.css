@@ -1,0 +1,322 @@
+﻿/* Nút bên ngoài bảng */
+/*.grouptask .btn-create,
+.grouptask .btn-member,
+.grouptask .btn-back {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.grouptask .btn-create {
+    background-color: #4CAF50;*/ /* Màu xanh lá */
+/*}
+
+    .grouptask .btn-create:hover {
+        background-color: #45a049;
+        transform: scale(1.05);
+    }
+
+.grouptask .btn-member {
+    background-color: #007bff;*/ /* Màu xanh dương */
+/*}
+
+    .grouptask .btn-member:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+.grouptask .btn-back {
+    background-color: #6c757d;*/ /* Màu xám */
+/*}
+
+    .grouptask .btn-back:hover {
+        background-color: #5a6268;
+        transform: scale(1.05);
+    }*/
+
+/* Nút trong bảng */
+/*.grouptask form button {
+    margin: 5px 0;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-delete-assignment, .btn-delete {
+    margin: 5px 0;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    background-color: #dc3545;
+}
+
+    .btn-delete-assignment:hover {
+        background-color: #c82333;
+        transform: scale(1.05);
+    }
+
+    .btn-delete:hover {
+        background-color: #c82333;
+        transform: scale(1.05);
+    }
+
+.grouptask form[action*="Update"] button {
+    background-color: #ffc107;*/ /* Màu vàng */
+/*}
+
+    .grouptask form[action*="Update"] button:hover {
+        background-color: #e0a800;
+        transform: scale(1.05);
+    }
+
+.grouptask form[action*="Delete"] button {
+    background-color: #dc3545;*/ /* Màu đỏ */
+/*}
+
+    .grouptask form[action*="Delete"] button:hover {
+        background-color: #c82333;
+        transform: scale(1.05);
+    }
+
+.grouptask form[action*="TaskAssignment"] button,
+.grouptask form[action*="GroupNote"] button {
+    background-color: #007bff;*/ /* Màu xanh dương */
+/*}
+
+    .grouptask form[action*="TaskAssignment"] button:hover,
+    .grouptask form[action*="GroupNote"] button:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }*/
+
+
+.grouptask {
+    padding: 20px;
+}
+
+    .grouptask h2 {
+        font-size: 1.8rem;
+        color: #34495e;
+        margin: 20px 10px;
+        text-align: center;
+    }
+
+/* Container cho các task */
+.task-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Card từng task */
+.task-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .task-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .task-card h3 {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .task-card p {
+        margin: 5px 0;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .task-card .task-status span.text-success {
+        color: #28a745; /* Màu xanh lá cho trạng thái "Đã hoàn thành" */
+    }
+
+    .task-card .task-status span.text-danger {
+        color: #dc3545; /* Màu đỏ cho trạng thái "Chưa hoàn thành" */
+    }
+
+    .task-card .task-status span.text-warning {
+        color: #ffc107; /* Màu vàng cho trạng thái "Đang thực hiện" */
+    }
+
+    .task-card .task-status span.text-secondary {
+        color: #6c757d; /* Màu xám cho trạng thái mặc định */
+    }
+
+.task-members {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.assignment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+    .assignment-row .btn-delete-assignment {
+        padding: 4px 8px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        cursor: pointer;
+    }
+
+        .assignment-row .btn-delete-assignment:hover {
+            background-color: #c82333;
+        }
+
+/* Nút hành động trong task */
+.task-actions {
+    margin-top: 10px;
+}
+
+    .task-actions form {
+        display: inline-block;
+        margin: 5px 0;
+    }
+
+    .task-actions button {
+        padding: 6px 12px;
+        margin-bottom: 3px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: bold;
+        color: white;
+    }
+
+    /* Nút "Sửa" */
+    .task-actions form[action*="Update"] button {
+        background-color: #ffc107;
+    }
+
+        .task-actions form[action*="Update"] button:hover {
+            background-color: #e0a800;
+        }
+
+    /* Nút "Xóa" */
+    .task-actions .btn-delete {
+        background-color: #dc3545;
+        padding: 6px 12px;
+    }
+
+        .task-actions .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+    /* Nút "Thêm thành viên" */
+    .task-actions form[action*="TaskAssignment"] button {
+        background-color: #28a745;
+    }
+
+        .task-actions form[action*="TaskAssignment"] button:hover {
+            background-color: #218838;
+        }
+
+    /* Nút "Xem ghi chú" */
+    .task-actions form[action*="GroupNote"] button {
+        background-color: #007bff;
+    }
+
+        .task-actions form[action*="GroupNote"] button:hover {
+            background-color: #0056b3;
+        }
+
+/* Nút Thành viên nhóm, Thêm công việc mới */
+.grouptask .btn-member, .grouptask .btn-create {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 10px 0;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+
+/* Nút "Thành viên nhóm" */
+.grouptask .btn-member {
+    background-color: #007bff;
+}
+
+    .grouptask .btn-member:hover {
+        background-color: #0056b3;
+    }
+
+/* Nút "Thêm công việc mới" */
+.grouptask .btn-create {
+    background-color: #28a745;
+}
+
+    .grouptask .btn-create:hover {
+        background-color: #218838;
+    }
+
+/* Nút Quay lại */
+.grouptask .btn-back {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 10px 0;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    background-color: #6c757d;
+}
+
+    .grouptask .btn-back:hover {
+        background-color: #5a6268;
+    }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .task-card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .task-actions button {
+        width: 100%;
+        font-size: 0.85rem;
+    }
+
+    .grouptask .btn-member, .grouptask .btn-create, .grouptask .btn-back {
+        width: 100%;
+    }
+}
+

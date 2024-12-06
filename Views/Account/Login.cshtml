@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Đăng nhập";
+    ViewData["Description"] = "Đăng nhập vào hệ thống quản lý công việc để truy cập các tính năng quản lý và theo dõi công việc cá nhân và nhóm.";
+    ViewData["Keywords"] = "Đăng nhập, Quản lý công việc, Hệ thống công việc, Login";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow"; // Không index trang đăng ký
+
+    Layout = "_SimpleLayout";
+}
+
+@model WebNC_BTL_QLCV.Models.User
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/Login.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Thêm jQuery --> 
+</head>
+<body>    
+    <h2>Đăng Nhập</h2>
+    <form id="loginForm">
+        
+        <label>Tên Đăng Nhập:</label>
+        <input type="text" name="username" id="username" required />
+        <br />
+
+        <label>Mật Khẩu:</label>
+        <input type="password" name="password" id="password" required />
+        <div id="message" class="text-danger" style="color:red; font-size:16px; text-align:center"></div> <!-- Hiển thị thông báo lỗi nếu có -->
+        <br />
+
+        <button type="submit">Đăng Nhập</button>
+    </form>
+
+    <a asp-action="Register">Đăng ký</a>
+
+    <script>
+        function sanitizeInput(input) {
+            // Loại bỏ tất cả các thẻ HTML
+            return input.replace(/<\/?[^>]+(>|$)/g, "");
+        }
+
+        $(document).ready(function () {
+            $("#loginForm").submit(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                // Làm sạch dữ liệu đầu vào
+                var username = sanitizeInput($("#username").val());
+                var password = sanitizeInput($("#password").val());
+
+                var formData = {
+                    username: $("#username").val(),
+                    password: $("#password").val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Login", "Account")', // Đổi URL theo Controller của bạn
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.href = response.redirectUrl; // Chuyển hướng khi đăng nhập thành công
+                        } else {
+                            $("#message").html(response.message); // Hiển thị thông báo lỗi
+                        }
+                    },
+                    error: function () {
+                        $("#message").html("Đã xảy ra lỗi. Vui lòng thử lại.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

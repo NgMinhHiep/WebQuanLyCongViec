@@ -1,0 +1,132 @@
+@model IEnumerable<WebNC_BTL_QLCV.Models.User>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    ViewData["Description"] = "Quản lý người dùng, quản lý lượng người dùng tạo mới trong tháng, ngày.";
+    ViewData["Keywords"] = "Quản lý người dùng, admin, Admin, Management";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+<div class="dashboard-container">
+    <h2 class="title">@ViewData["Title"]</h2>
+
+    <!-- Thống kê tài khoản tạo trong tháng và tuần -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <h4 class="stat-title">Tài khoản trong tháng</h4>
+            <p class="stat-number">@ViewData["UserCountMonth"]</p>
+        </div>
+        <div class="stat-card">
+            <h4 class="stat-title">Tài khoản trong tuần</h4>
+            <p class="stat-number">@ViewData["UserCountWeek"]</p>
+        </div>
+    </div>
+
+    <!-- Bảng danh sách người dùng -->
+    <div class="table-container">
+        <h4 class="table-title">Danh sách người dùng</h4>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Tên tài khoản</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Ngày tạo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.UserID</td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>@user.User_CreationDate.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Thêm CSS tùy chỉnh -->
+<style>
+    .dashboard-container {
+        width: 90%;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    .stats-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        background-color: #f0f0f0;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 48%;
+        text-align: center;
+    }
+
+    .stat-title {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        color: #007BFF;
+        font-weight: bold;
+    }
+
+    .table-container {
+        margin-top: 40px;
+    }
+
+    .table-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .user-table {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-table th, .user-table td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    .user-table th {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    .user-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .user-table tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>

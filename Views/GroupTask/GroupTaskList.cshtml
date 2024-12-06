@@ -1,0 +1,212 @@
+﻿@{
+    ViewData["Title"] = "Công việc nhóm";
+    ViewData["Description"] = "Danh sách công việc nhóm giúp bạn quản lý, phân công và theo dõi tiến độ công việc nhóm hiệu quả trong hệ thống quản lý công việc của chúng tôi.";
+    ViewData["Keywords"] = "Công việc nhóm, Quản lý công việc nhóm, Phân công công việc, Quản lý nhóm, Group tasks, Team management";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<GroupTask>
+<link rel="stylesheet" href="~/css/GroupTask_List.css " />
+
+@* <div class="grouptask">
+    <a class="btn-member" asp-action="GroupMemberList" asp-controller="GroupMember">Thành viên nhóm </a>
+    <h2>Danh sách công việc của nhóm: @Context.Session.GetString("GroupName")</h2>
+    <br />
+
+    @if (ViewBag.IsLeader)
+    {
+        <a class="btn-create" asp-action="Create">Thêm công việc mới</a>
+    }
+
+    <br />
+
+    <table class="table">
+        <tr>
+            <th>Tên công việc</th>
+            <th>Mô tả</th>
+            <th>Trạng thái</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>Thành viên phụ trách</th>
+            <th>Hành động</th>
+        </tr>
+        @foreach (var task in Model)
+        {
+            <tr id="task-row-@task.GroupTaskID">
+                <td>@task.GroupTaskName</td>
+                <td>@task.GroupTaskDescription</td>
+                <td>
+                    @{
+                        string statusClass;
+                        switch (task.GroupTaskStatus)
+                        {
+                            case "Đã hoàn thành": statusClass = "text-success"; break;
+                            case "Chưa hoàn thành": statusClass = "text-danger"; break;
+                            case "Đang thực hiện": statusClass = "text-warning"; break;
+                            default: statusClass = "text-secondary"; break;
+                        }
+                    }
+                    <span class="@statusClass">@task.GroupTaskStatus</span>
+                </td>
+                <td>@task.StartDate</td>
+                <td>@task.EndDate</td>
+                <td>
+                    @foreach (var assignment in task.TaskAssignments)
+                    {
+                        <span class="assignment-row" data-task-id="@task.GroupTaskID" data-user-id="@assignment.UserID">
+                            @assignment.GroupMember.User.UserName
+                            @if (ViewBag.IsLeader)
+                            {
+                                <button class="btn-delete-assignment" data-task-id="@task.GroupTaskID" data-user-id="@assignment.UserID">Xóa</button>
+                            }
+                        </span>
+                        <br />
+                    }
+                </td>
+                <td>
+                    @if (ViewBag.IsLeader)
+                    {
+                        <form asp-action="Update" method="get" asp-route-id="@task.GroupTaskID">
+                            <button type="submit">Sửa</button>
+                        </form>
+                        <button class="btn-delete" data-task-id="@task.GroupTaskID">Xóa</button> <!-- Sử dụng AJAX -->
+                        <form asp-action="TaskAssignment" method="get" asp-route-id="@task.GroupTaskID">
+                            <button> Thêm thành viên phụ trách </button>
+                        </form>
+                    }
+                    <form asp-action="GroupNote" method="get" asp-route-id="@task.GroupTaskID">
+                        <button> Xem danh sách ghi chú </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <br />
+    <a class="btn-back" asp-action="GroupList">Quay lại</a>
+</div> *@
+
+<div class="grouptask">
+    <a class="btn-member" asp-action="GroupMemberList" asp-controller="GroupMember">Thành viên nhóm</a>
+    <h2>Danh sách công việc của nhóm: @Context.Session.GetString("GroupName")</h2>
+
+    @if (ViewBag.IsLeader)
+    {
+        <a class="btn-create" asp-action="Create">Thêm công việc mới</a>
+    }
+
+    <div class="task-container">
+        @foreach (var task in Model)
+        {
+            <div class="task-card" id="task-card-@task.GroupTaskID">
+                <h3 class="task-name">@task.GroupTaskName</h3>
+                <p class="task-description">@task.GroupTaskDescription</p>
+                <p class="task-status">
+                    @{
+                        string statusClass;
+                        switch (task.GroupTaskStatus)
+                        {
+                            case "Đã hoàn thành": statusClass = "text-success"; break;
+                            case "Chưa hoàn thành": statusClass = "text-danger"; break;
+                            case "Đang thực hiện": statusClass = "text-warning"; break;
+                            default: statusClass = "text-secondary"; break;
+                        }
+                    }
+                    <span class="@statusClass">@task.GroupTaskStatus</span>
+                </p>
+                <p class="task-dates">
+                    <strong>Bắt đầu:</strong> @task.StartDate <br>
+                    <strong>Kết thúc:</strong> @task.EndDate
+                </p>
+                <div class="task-members">
+                    <strong>Thành viên phụ trách:</strong>
+                    @foreach (var assignment in task.TaskAssignments)
+                    {
+                        <div class="assignment-row" data-task-id="@task.GroupTaskID" data-user-id="@assignment.UserID">
+                            @assignment.GroupMember.User.UserName
+                            @if (ViewBag.IsLeader)
+                            {
+                                <button class="btn-delete-assignment" data-task-id="@task.GroupTaskID" data-user-id="@assignment.UserID">Xóa</button>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="task-actions">
+                    @if (ViewBag.IsLeader)
+                    {
+                        <form asp-action="Update" method="get" asp-route-id="@task.GroupTaskID">
+                            <button type="submit">Sửa</button>
+                        </form>
+                        <button class="btn-delete" data-task-id="@task.GroupTaskID">Xóa</button>
+                        <form asp-action="TaskAssignment" method="get" asp-route-id="@task.GroupTaskID">
+                            <button>Thêm thành viên</button>
+                        </form>
+                    }
+                    <form asp-action="GroupNote" method="get" asp-route-id="@task.GroupTaskID">
+                        <button>Xem ghi chú</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+
+    <a class="btn-back" asp-action="GroupList">Quay lại</a>
+</div>
+
+
+<!-- Thêm jQuery và script AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".btn-delete").click(function () {
+            var taskId = $(this).data("task-id");
+
+            if (confirm("Bạn có chắc chắn muốn xóa công việc này?")) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "GroupTask")', // Đảm bảo đúng action/controller
+                    type: 'POST',
+                    data: { id: taskId },
+                    success: function (response) {
+                        if (response.success) {
+                            $("#task-card-" + taskId).remove(); // Xóa hàng khỏi bảng
+                            alert("Xóa công việc thành công!");
+                        } else {
+                            alert(response.message || "Xóa công việc thất bại!");
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi trong quá trình xóa.");
+                    }
+                });
+            }
+        });
+
+        $(".btn-delete-assignment").click(function () {
+            var taskId = $(this).data("task-id");
+            var userId = $(this).data("user-id");
+
+            if (confirm("Bạn có chắc chắn muốn xóa thành viên này khỏi công việc?")) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "TaskAssignment")',
+                    type: 'POST',
+                    data: { taskId: taskId, userId: userId },
+                    success: function (response) {
+                        if (response.success) {
+                            // Tìm và xóa phần tử có taskId và userId tương ứng
+                            $(`.assignment-row[data-task-id='${taskId}'][data-user-id='${userId}']`).remove();
+                            alert("Xóa thành viên thành công!");                          
+                        } else {
+                            alert(response.message || "Xóa thành viên thất bại!");
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi trong quá trình xóa thành viên.");
+                    }
+                });
+            }
+        });
+    });
+</script>

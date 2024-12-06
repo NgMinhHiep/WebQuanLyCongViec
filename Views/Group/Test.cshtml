@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Danh sách nhóm";
+    ViewData["Description"] = "Danh sách các nhóm mà bạn tham gia hoặc tạo ra trong hệ thống quản lý công việc. Quản lý nhóm và công việc một cách hiệu quả.";
+    ViewData["Keywords"] = "Danh sách nhóm, Quản lý nhóm, Tạo nhóm, Tham gia nhóm, Hệ thống công việc";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+
+
+    var groupCreatedByUser = ViewBag.GroupsCreatedByUser as IEnumerable<WebNC_BTL_QLCV.Models.Group>;
+    var groupUserisMember = ViewBag.GroupsUserIsMember as IEnumerable<WebNC_BTL_QLCV.Models.Group>;
+}
+
+@model IEnumerable<WebNC_BTL_QLCV.Models.Group>
+
+<link rel="stylesheet" href="~/css/Group_List.css" />
+<div class="grouplist">
+
+    <h2>Danh sách nhóm của bạn</h2>
+    <nav>
+        <a href="#" class="load-page" data-url="@Url.Action("CreateTest", "Group")">Thêm</a>
+        <a href="#" class="load-page" data-url="@Url.Action("UpdateTest", "Group")">Sửa</a>
+        <a href="#" class="load-page" data-url="@Url.Action("DeleteTest", "Group")">Xóa</a>
+        <a href="#" class="load-page" data-url="@Url.Action("ReadTest", "Group")">Xem</a>
+    </nav>
+    <div id="content">
+        
+    </div>
+   
+    <a class="btn-back" asp-controller="Home" asp-action="Index">Quay lại trang chủ</a>
+</div>
+
+
+<!-- Thêm jQuery và script AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    // JavaScript để tải nội dung mới vào #content
+    $(document).on('click', '.load-page', function (e) {
+        e.preventDefault(); // Ngăn tải lại trang
+        const url = $(this).data('url'); // Lấy URL từ data-url
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (data) {
+                // Thay đổi nội dung trong phần #content
+                $('#content').html(data);
+            },
+            error: function () {
+                alert("Đã xảy ra lỗi khi tải nội dung.");
+            }
+        });
+    });
+</script>

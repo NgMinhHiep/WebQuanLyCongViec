@@ -1,0 +1,156 @@
+﻿.personaltask {
+    padding: 20px;
+}
+
+.task-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Khoảng cách giữa các ô */
+    justify-content: center; /* Căn giữa các ô */
+}
+
+.task-card {
+    background-color: #f9f9f9; /* Màu nền ô */
+    border: 1px solid #ddd; /* Viền ô */
+    border-radius: 8px; /* Bo góc ô */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    width: 250px; /* Chiều rộng mỗi ô */
+    padding: 15px; /* Khoảng cách bên trong ô */
+    text-align: center; /* Căn giữa nội dung */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .task-card:hover {
+        transform: scale(1.05); /* Phóng to nhẹ khi hover */
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .task-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .task-card p {
+        margin: 5px 0;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .task-card .task-status .text-success {
+        color: green;
+    }
+
+    .task-card .task-status .text-danger {
+        color: red;
+    }
+
+    .task-card .task-status .text-warning {
+        color: orange;
+    }
+
+    .task-card .task-status .text-secondary {
+        color: gray;
+    }
+
+.task-actions {
+    margin-top: 15px;
+}
+
+    .task-actions form {
+        display: inline-block; /* Hiển thị nút liên tiếp */
+        margin: 5px 0;
+    }
+
+    .task-actions button {
+        padding: 8px 12px;
+        border: none;
+        background-color: #007bff; /* Màu xanh */
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+        .task-actions button:hover {
+            background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+        }
+
+    .task-actions form[action*="Update"] button {
+        background-color: #ffc107; /* Màu vàng */
+    }
+
+        .task-actions form[action*="Update"] button:hover {
+            background-color: #e0a800; /* Màu vàng đậm hơn khi hover */
+        }
+
+    .task-actions .delete-task {
+        padding: 8px 12px;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        background-color: #dc3545;
+    }
+
+        .task-actions .delete-task:hover {
+            background-color: #b02a37;
+        }
+
+.btn-a {
+    display: inline-block; /* Hiển thị như một nút */
+    padding: 6px 12px;
+    margin: 5px 0;
+    text-decoration: none; /* Xóa gạch chân */
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+
+    .btn-a[href*="Create"] {
+        background-color: #28a745; /* Màu xanh lá */
+    }
+
+        .btn-a[href*="Create"]:hover {
+            background-color: #218838; /* Màu xanh lá đậm hơn khi hover */
+            text-decoration: none;
+            color: white;
+        }
+    /* Nút "Quay lại trang chủ" */
+    .btn-a[href*="Home"] {
+        background-color: #6c757d; /* Màu xám */
+    }
+
+        .btn-a[href*="Home"]:hover {
+            background-color: #5a6268; /* Màu xám đậm hơn khi hover */
+            text-decoration: none;
+            color: white;
+        }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .task-card {
+        width: 100%; /* Chiều rộng đầy đủ trên thiết bị nhỏ */
+        margin: 0 auto; /* Căn giữa */
+    }
+
+    .task-container {
+        gap: 15px; /* Giảm khoảng cách trên thiết bị nhỏ */
+    }
+}
+
+@media (max-width: 576px) {
+    .personaltask h2 {
+        font-size: 1.5rem; /* Giảm kích thước tiêu đề */
+        text-align: center;
+    }
+
+    .task-actions button {
+        width: 100%; /* Nút chiếm đầy chiều rộng */
+        font-size: 0.85rem; /* Giảm kích thước font */
+    }
+}

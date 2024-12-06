@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewData["Title"] = "Sửa tên nhóm";
+    ViewData["Description"] = "Cập nhật tên nhóm trong hệ thống quản lý công việc, giúp bạn thay đổi thông tin nhóm và quản lý công việc nhóm hiệu quả hơn.";
+    ViewData["Keywords"] = "Sửa nhóm, Quản lý nhóm, Nhóm công việc, Quản lý công việc, Update group";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model Group
+<link rel="stylesheet" href="~/css/Group_Create.css" />
+<div class="grouplist">
+    <h2>Sửa Nhóm</h2>
+
+    <form id="updateGroupForm" method="post">
+        <input asp-for="GroupID" type="hidden" />
+        <label>Tên nhóm</label>
+        <input asp-for="GroupName" id="GroupName" />
+        <br />
+        <button type="submit">Lưu Thay Đổi</button>
+    </form>
+
+    <a class="btn-back" asp-action="GroupList">Quay lại</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#updateGroupForm").submit(function (event) {
+            event.preventDefault();  // Ngừng hành động submit mặc định của form
+
+            var groupData = {
+                GroupID: $('#GroupID').val(),
+                GroupName: $('#GroupName').val(),
+            };
+
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                url: '@Url.Action("Update", "Group")',  // Đảm bảo đường dẫn tới action Update đúng
+                type: 'POST',
+                data: groupData,
+                success: function (response) {
+                    // Nếu thành công, chuyển hướng đến GroupList
+                    window.location.href = '@Url.Action("GroupList", "Group")';
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra. Không thể cập nhật nhóm.");
+                }
+            });
+        });
+    });
+</script>

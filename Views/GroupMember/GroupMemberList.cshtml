@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Thành viên nhóm";
+    ViewData["Description"] = "Danh sách thành viên trong nhóm, giúp bạn quản lý và phân công công việc nhóm một cách hiệu quả.";
+    ViewData["Keywords"] = "Thành viên nhóm, Quản lý nhóm, Thêm thành viên, Group members, Team management";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<GroupMember>
+<link rel="stylesheet" href="~/css/GroupMember_List.css" />
+<div class="groupmember">
+    <h2>Danh sách thành viên của nhóm: @Context.Session.GetString("GroupName")</h2>
+    <br />
+
+    @if (ViewBag.IsLeader)
+    {
+        <a class="btn-create" asp-action="Add">Thêm thành viên mới</a>
+    }
+
+    <br />
+
+    <table class="table">
+        <tr>
+            <th>Tên thành viên</th>
+            <th>Vai trò</th>
+            <th>Ngày vào nhóm</th>
+            @if (ViewBag.IsLeader)
+            {
+                <th>Hành động</th>
+            }
+        </tr>
+
+        @foreach (var member in Model)
+        {
+            <tr id="member-@member.UserID">
+                <td>@member.User.UserName</td>
+                <td>
+                    @if (member.UserID == ViewBag.LeaderId)
+                    {
+                        <span style="color:red"> Trưởng nhóm </span>
+                    }
+                    else
+                    {
+                        <span>Thành viên</span>
+                    }
+                </td>
+                <td>@member.GroupEntryDate</td>
+                @if (ViewBag.IsLeader)
+                {
+                    @if (member.UserID == ViewBag.LeaderId)
+                    {
+                        <td></td>
+                    }
+                    else
+                    {
+                        <td>
+                            <button class="delete-member" data-userid="@member.UserID" data-groupid="@member.GroupID">Xóa</button>
+                        </td>
+                    }                   
+                }
+            </tr>
+        }
+    </table>
+
+    <br />
+    <a class="btn-back" asp-action="GroupTaskList" asp-controller="GroupTask">Quay lại</a>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Xử lý khi nhấn nút xóa
+        $(".delete-member").click(function () {
+            var userId = $(this).data("userid");
+            var groupId = $(this).data("groupid");
+
+            // Xác nhận hành động xóa
+            if (confirm("Bạn có chắc chắn muốn xóa thành viên này?")) {
+                // Gửi yêu cầu AJAX để xóa thành viên
+                $.ajax({
+                    url: '@Url.Action("Delete", "GroupMember")', // URL action delete
+                    type: 'POST',
+                    data: { userid: userId, groupid: groupId },
+                    success: function (response) {
+                        if (response.success) {
+                            // Xóa dòng thành viên khỏi bảng
+                            $("#member-" + userId).remove();
+                        } else {
+                            alert("Không thể xóa thành viên này.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Đã xảy ra lỗi khi xóa thành viên.");
+                    }
+                });
+            }
+        });
+    });
+</script>

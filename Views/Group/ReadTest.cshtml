@@ -1,0 +1,17 @@
+﻿@model IEnumerable<WebNC_BTL_QLCV.Models.Group>
+
+<div class="group-container">
+        @foreach (var group in Model)
+        {
+            <div class="group-card" id="group-row-@group.GroupID">
+                <h3 class="group-name">@group.GroupName</h3>
+                <p class="group-date"><strong>Ngày tạo:</strong> @group.GroupFormationDate</p>
+                <div class="group-actions">
+                    <form asp-action="TaskList" method="get" asp-route-id="@group.GroupID">
+                        <button type="submit">Truy cập nhóm</button>
+                    </form>
+
+                </div>
+            </div>
+        }
+</div>

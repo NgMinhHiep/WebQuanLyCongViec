@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewData["Title"] = "Sửa công việc cá nhân";
+    ViewData["Description"] = "Chỉnh sửa thông tin công việc cá nhân. Cập nhật trạng thái, mô tả và thời gian công việc một cách dễ dàng.";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model PersonalTask
+<link rel="stylesheet" href="~/css/PersonalTask_Create.css" />
+<div class="newtasks">
+
+<h2>Sửa Công Việc</h2>
+
+<!-- Thêm ID cho form để dễ dàng target với AJAX -->
+<form id="updateTaskForm">
+    <input asp-for="PersonalTaskID" type="hidden" />
+    <label>Tên Công Việc</label>
+    <input asp-for="PersonalTaskName" />
+    <br />
+    <label>Mô Tả</label>
+    <textarea asp-for="PersonalTaskDescription"></textarea>
+    <br />
+    <label>Trạng Thái</label>
+    <select asp-for="PersonalTaskStatus">
+        <option value="Chưa hoàn thành">Chưa hoàn thành</option>
+        <option value="Đang thực hiện">Đang thực hiện</option>
+        <option value="Đã hoàn thành">Đã hoàn thành</option>
+    </select>
+    <br />
+    <label>Ngày Bắt Đầu</label>
+    <input asp-for="StartDate" type="date" />
+    <br />
+    <label>Ngày Kết Thúc</label>
+    <input asp-for="EndDate" type="date" />
+    <span asp-validation-for="EndDate" class="text-danger"></span>
+    <br />
+    
+    <!-- Thêm thông báo lỗi -->
+    <span id="errorMessage" style="color: red; font-size: 16px; display: block; margin-top: 10px; text-align:center"></span>
+
+    <button class="btn-create" type="submit">Lưu Thay Đổi</button>
+</form>
+
+<a class="btn-back" asp-action="PersonalTaskList">Quay lại</a>
+</div>
+
+<!-- Thêm jQuery và Ajax -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Đảm bảo không gửi form theo cách thông thường
+        $("#updateTaskForm").submit(function(event) {
+            event.preventDefault(); // Ngừng hành động gửi form truyền thống
+
+            // Reset thông báo lỗi
+            $("#errorMessage").hide().html("");
+
+            // Lấy dữ liệu từ form
+            var formData = $(this).serialize();
+
+            // Gửi yêu cầu Ajax
+            $.ajax({
+                url: '@Url.Action("Update", "PersonalTask")', // URL action update
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        // Nếu thành công, chuyển hướng về trang danh sách
+                        window.location.href = '@Url.Action("PersonalTaskList")';
+                    } else {
+                        // Hiển thị lỗi nếu có
+                        $("#errorMessage").show().html(response.errorMessage);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Hiển thị lỗi khi có sự cố
+                    $("#errorMessage").show().html("Đã xảy ra lỗi. Vui lòng thử lại.");
+                }
+            });
+        });
+    });
+</script>

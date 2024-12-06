@@ -1,0 +1,94 @@
+﻿/* CSS tổng thể cho form tạo công việc mới */
+.newtasks {
+    max-width: 600px; /* Giới hạn chiều rộng form */
+    margin: 50px auto; /* Căn giữa form */
+    padding: 20px;
+    background-color: #f9f9f9; /* Màu nền nhạt */
+    border: 1px solid #ddd; /* Đường viền nhẹ */
+    border-radius: 10px; /* Góc bo tròn */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+    /* Tiêu đề của trang */
+    .newtasks h2 {
+        text-align: center; /* Căn giữa */
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    /* Kiểu dáng cho các nhãn (label) */
+    .newtasks label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    /* Kiểu dáng cho các input và textarea */
+    .newtasks input[type="text"],
+    .newtasks input[type="date"],
+    .newtasks select,
+    .newtasks textarea {
+        width: 100%; /* Chiếm toàn bộ chiều ngang */
+        padding: 10px;
+        margin-bottom: 15px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px; /* Bo tròn góc */
+        box-sizing: border-box; /* Đảm bảo padding không làm vượt quá chiều rộng */
+    }
+
+        /* Kiểu dáng khi input được focus */
+        .newtasks input:focus,
+        .newtasks select:focus,
+        .newtasks textarea:focus {
+            border-color: #4CAF50; /* Đổi màu viền khi focus */
+            outline: none;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+    /* Kiểu dáng cho nút submit */
+    .newtasks .btn-create {
+        display: inline-block;
+        width: 100%;
+        padding: 10px 15px;
+        font-size: 1rem;
+        color: #fff;
+        background-color: #4CAF50; /* Màu xanh */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+
+        .newtasks .btn-create:hover {
+            background-color: #45a049; /* Màu xanh đậm hơn khi hover */
+        }
+
+    /* Kiểu dáng cho nút quay lại */
+    .newtasks .btn-back {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 15px;
+        font-size: 1rem;
+        color: #fff;
+        background-color: #6c757d; /* Màu xám */
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+
+        .newtasks .btn-back:hover {
+            background-color: #5a6268; /* Màu xám đậm hơn khi hover */
+        }
+
+    /* Định dạng cho thông báo lỗi */
+    .newtasks .text-danger {
+        color: red;
+        font-size: 0.9rem;
+        margin-top: -10px;
+        margin-bottom: 10px;
+    }
