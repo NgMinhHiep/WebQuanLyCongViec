@@ -28,6 +28,9 @@
                 <td>@note.PersonalNoteDetails</td>
                 <td>@note.PersonalNote_CreationDate.ToString("dd/MM/yyyy HH:mm")</td>
                 <td>
+                    <form asp-action="Update" method="get" asp-route-id="@note.PersonalNoteID">
+                        <button class="update-note" type="submit">Sửa</button>
+                    </form>
                     <!-- Thêm AJAX cho nút xóa -->
                     <button class="delete-note" data-id="@note.PersonalNoteID">Xóa</button>
                 </td>

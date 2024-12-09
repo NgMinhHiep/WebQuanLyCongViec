@@ -31,7 +31,11 @@
             <td>@note.GroupNoteDetails</td>
             <td>@note.GroupNote_CreationDate.ToString("dd/MM/yyyy HH:mm")</td>
             <td>
+                        <form asp-action="Update" method="get" asp-route-id="@note.GroupNoteID">
+                            <button type="submit">Sửa</button>
+                        </form>
                 <button type="button" class="delete-note" data-id="@note.GroupNoteID">Xóa</button> <!-- Nút xóa sử dụng AJAX -->
+                
             </td>
         </tr>
         }

@@ -81,22 +81,28 @@
         }
 
     /* Hành động */
-    .notelist form button {
-        background-color: #dc3545; /* Màu đỏ */
-        color: #fff;
-        padding: 5px 15px;
-        font-size: 0.9rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+.notelist form button {
+    background-color: #ffc107; /* Màu vàng */
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 3px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
         .notelist form button:hover {
-            background-color: #c82333; /* Màu đỏ đậm hơn khi hover */
+            background-color: #e0a800; /* Màu vàng đậm hơn khi hover */
             transform: scale(1.05); /* Phóng to nhẹ khi hover */
         }
-       
+
+    /* Căn chỉnh nút trong cột "Hành động" */
+    .notelist form, .delete-note {
+        display: inline-block; /* Hiển thị các nút theo hàng ngang */
+    }
 
     /* Nút "Quay lại" */
     .notelist .btn-back {

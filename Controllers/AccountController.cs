@@ -4,6 +4,7 @@ using WebNC_BTL_QLCV.Models;
 using System.Net;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Cryptography;
 
 namespace WebNC_BTL_QLCV.Controllers
 {
@@ -59,13 +60,13 @@ namespace WebNC_BTL_QLCV.Controllers
                 return Json(new { success = false, errors = errors });
             }
 
+            // Nếu không có lỗi, thêm người dùng vào cơ sở dữ liệu
+
             // Mã hóa mật khẩu người dùng trước khi lưu vào cơ sở dữ liệu
-            /*
             var passwordHasher = new PasswordHasher<User>();
             user.PassWord = passwordHasher.HashPassword(user, user.PassWord);
-            */
-
-            // Nếu không có lỗi, thêm người dùng vào cơ sở dữ liệu
+            
+          
             user.User_CreationDate = DateTime.Now;
             user.RoleID = 2;
             _userRepository.Add(user);
@@ -89,19 +90,12 @@ namespace WebNC_BTL_QLCV.Controllers
             string safePassword = WebUtility.HtmlEncode(password);
 
             var user = _userRepository.GetUserByName(safeUsername);
-            /*
-            // Tài khoản admin cố định
-            string adminUsername = "admin";
-            string adminPassword = "1";
 
-            // Kiểm tra nếu tài khoản là admin và mật khẩu đúng
-            if (safeUsername.ToLower() == adminUsername && safePassword == adminPassword)
-            {
-                HttpContext.Session.SetString("username", safeUsername);
-                HttpContext.Session.SetInt32("UserId", 0);
-                return Json(new { success = true, redirectUrl = Url.Action("AdminDashboard", "Account") });
-            }
+            /*
+            var passwordHasher = new PasswordHasher<User>();
+            var result = passwordHasher.VerifyHashedPassword(user, user.PassWord, safePassword);
             */
+
             // Kiểm tra tài khoản người dùng thông thường
             if (!_userRepository.IsUserNameExist(safeUsername))
             {

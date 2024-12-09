@@ -40,7 +40,19 @@ namespace WebNC_BTL_QLCV.Repositories
         // sửa 1 ghi chú
         public void UpdatePersonalNote(PersonalNote personalNote)
         {
-            _context.PersonalNote.Update(personalNote);
+            // lấy ra note
+            var existingNote = _context.PersonalNote.Find(personalNote.PersonalNoteID);
+
+            // cập nhật các trường cần thiết
+            existingNote.PersonalNoteDetails = personalNote.PersonalNoteDetails;
+            //_context.PersonalNote.Update(personalNote);
+
+            // đánh dấu trường cập nhật
+            _context.Entry(existingNote).Property(x => x.PersonalNoteDetails).IsModified = true;
+
+            // các trường không cập nhật
+            _context.Entry(existingNote).Property(x => x.PersonalNote_CreationDate).IsModified = false;
+
             _context.SaveChanges();
         }
 

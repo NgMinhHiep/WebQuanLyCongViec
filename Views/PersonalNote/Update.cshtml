@@ -12,7 +12,7 @@
 <div class="create-note">
 <h2>Sửa Ghi Chú</h2>
 <form asp-action="Update" method="post">
-
+    <input type="hidden" asp-for="PersonalNoteID" />
     <label for="PersonalNoteDetails">Nội Dung Ghi Chú</label>
     <textarea asp-for="PersonalNoteDetails" placeholder="Nhập ghi chú mới" required></textarea>
 

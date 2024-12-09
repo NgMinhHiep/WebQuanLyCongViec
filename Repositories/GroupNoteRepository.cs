@@ -38,9 +38,20 @@ namespace WebNC_BTL_QLCV.Repositories
         }
 
         // sửa 1 ghi chú
-        public void UpdateGroupNote(GroupNote GroupNote)
+        public void UpdateGroupNote(GroupNote groupNote)
         {
-            _context.GroupNotes.Update(GroupNote);
+            var existingNote = _context.GroupNotes.Find(groupNote.GroupNoteID);
+
+            // cập nhật các trường cần thiết
+            existingNote.GroupNoteDetails = groupNote.GroupNoteDetails;
+            //_context.GroupNote.Update(GroupNote);
+
+            // đánh dấu trường cập nhật
+            _context.Entry(existingNote).Property(x => x.GroupNoteDetails).IsModified = true;
+
+            // các trường không cập nhật
+            _context.Entry(existingNote).Property(x => x.GroupNote_CreationDate).IsModified = false;
+
             _context.SaveChanges();
         }
 

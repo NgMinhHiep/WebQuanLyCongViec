@@ -1,4 +1,5 @@
-﻿using WebNC_BTL_QLCV.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using WebNC_BTL_QLCV.Data;
 using WebNC_BTL_QLCV.Models;
 
 namespace WebNC_BTL_QLCV.Repositories
@@ -30,7 +31,12 @@ namespace WebNC_BTL_QLCV.Repositories
         public bool IsPasswordCorrect(string username, string password)
         {
             var user = _context.Users.SingleOrDefault(u => u.UserName == username);
-            return user != null && user.PassWord == password;
+
+            var passwordHasher = new PasswordHasher<User>();
+            // Xác minh mật khẩu
+            var result = passwordHasher.VerifyHashedPassword(user, user.PassWord, password);
+
+            return result == PasswordVerificationResult.Success;
         }
 
         public IEnumerable<User> GetAllUsers()
