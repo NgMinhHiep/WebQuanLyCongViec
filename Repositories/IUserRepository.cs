@@ -19,6 +19,8 @@ namespace WebNC_BTL_QLCV.Repositories
         // Them user
         void Add(User user);
 
+        void Update(User user);
+
         //Thống kê số lượng người dùng đã đăng kí
         int GetUserCountInCurrentMonth();
         int GetUserCountInCurrentWeek();

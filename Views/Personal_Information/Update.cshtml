@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Sửa thông tin cá nhân";
+    ViewData["Description"] = "Chỉnh sửa thông tin cá nhân.";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model WebNC_BTL_QLCV.Models.User
+
+<link rel="stylesheet" href="~/css/PersonalTask_Create.css" />
+
+<h2>Sửa thông tin cá nhân</h2>
+
+<!-- Thêm một phần tử thông báo lỗi chung ở trên -->
+<div id="message" class="text-danger" style="display: none;"></div>
+
+<form id="Update">
+    <input type="hidden" asp-for="UserID" />
+    <div>
+        <label>Họ và Tên:</label>
+        <input asp-for="FullName" required /><br />
+        <span id="FullName-error" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <div>
+        <label>Ngày sinh:</label>
+        <input type="date" asp-for="DateOfBirth" required /><br />
+        <span id="DateOfBirth-error" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <div>
+        <label>Số điện thoại:</label>
+        <input asp-for="PhoneNumber" required /><br />
+        <span id="PhoneNumber-error" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <div>
+        <label>Email:</label>
+        <input type="email" asp-for="Email" required /><br />
+        <span id="Email-error" class="text-danger"></span> <!-- Hiển thị lỗi dưới trường này -->
+    </div>
+
+    <button type="submit">Sửa</button>
+</form>
+
+<a asp-action="Personal_Infor_List" asp-controller="Personal_Information">Quay lại</a>
+
+<!-- Thêm jQuery và Ajax -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Đảm bảo không gửi form theo cách thông thường
+        $("#Update").submit(function (event) {
+            event.preventDefault(); // Ngừng hành động gửi form truyền thống
+
+            // Reset thông báo lỗi
+            $("#message").hide().html("");
+
+            // Lấy dữ liệu từ form
+            var formData = $(this).serialize();
+
+            // Gửi yêu cầu Ajax
+            $.ajax({
+                url: '@Url.Action("Update", "Personal_Information")', // URL action update
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        // Nếu thành công, chuyển hướng về trang danh sách
+                        window.location.href = '@Url.Action("Personal_Infor_List", "Personal_Information")';
+                    } else {
+                        // Hiển thị lỗi nếu có
+                        $("#message").show().html(response.errorMessage);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Hiển thị lỗi khi có sự cố
+                    $("#errorMessage").show().html("Đã xảy ra lỗi. Vui lòng thử lại.");
+                }
+            });
+        });
+    });
+</script>

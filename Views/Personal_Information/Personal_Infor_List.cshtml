@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Trang thông tin cá nhân";
+    ViewData["Description"] = "Trang thông tin cá nhân của người dùng. Giúp người dùng theo dõi và chỉnh sửa thông tin cá nhân một cách dễ dàng.";
+    ViewData["Keywords"] = "Trang thông tin cá nhân, Quản lý thông tin cá nhân, Thông tin cá nhân, theo dõi, chỉnh sửa";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model WebNC_BTL_QLCV.Models.User
+
+<div class="table">
+    <h4 class="table-title">Thông tin cá nhân của tài khoản: @Context.Session.GetString("username")</h4>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>Họ và tên người dùng</th>
+                <th>Ngày sinh</th>
+                <th>Email</th>
+                <th>Số điện thoại</th>
+                <th>Ngày tạo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.FullName</td>
+                <td>@Model.DateOfBirth</td>
+                <td>@Model.Email</td>
+                <td>@Model.PhoneNumber</td>
+                <td>@Model.User_CreationDate</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<form asp-action="Update" method="get" asp-route-id="@Model.UserID">
+    <button type="submit">Sửa</button>
+</form>
+
+<a class="btn-a" asp-action="Index" asp-controller="Home">Quay lại trang chủ</a>

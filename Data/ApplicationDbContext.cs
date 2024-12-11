@@ -19,6 +19,7 @@ namespace WebNC_BTL_QLCV.Data
         public DbSet<GroupNote> GroupNotes { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<GroupMember>().HasKey(gm => new { gm.UserID, gm.GroupID });

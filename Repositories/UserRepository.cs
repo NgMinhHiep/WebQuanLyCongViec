@@ -60,6 +60,31 @@ namespace WebNC_BTL_QLCV.Repositories
             _context.SaveChanges(); // luu vao csdl
         }
 
+        public void Update(User user)
+        {
+            var existingUser = GetUserById(user.UserID);
+
+            // cập nhật các trường cần thiết
+            existingUser.FullName = user.FullName;
+            existingUser.PhoneNumber = user.PhoneNumber;
+            existingUser.DateOfBirth = user.DateOfBirth;
+            existingUser.Email = user.Email;
+
+            // đánh dấu trường cập nhật
+            _context.Entry(existingUser).Property(x => x.FullName).IsModified = true;
+            _context.Entry(existingUser).Property(x => x.PhoneNumber).IsModified = true;
+            _context.Entry(existingUser).Property(x => x.Email).IsModified = true;
+            _context.Entry(existingUser).Property(x => x.DateOfBirth).IsModified = true;
+
+            // các trường không cập nhật
+            _context.Entry(existingUser).Property(x => x.UserID).IsModified = false;
+            _context.Entry(existingUser).Property(x => x.UserName).IsModified = false;
+            _context.Entry(existingUser).Property(x => x.PassWord).IsModified = false;
+            _context.Entry(existingUser).Property(x => x.RoleID).IsModified = false;
+
+            _context.SaveChanges();
+        }
+
         public int GetUserCountInCurrentMonth()
         {
             var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);

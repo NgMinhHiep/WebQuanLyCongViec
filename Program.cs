@@ -2,6 +2,8 @@
 using WebNC_BTL_QLCV.Data;
 using WebNC_BTL_QLCV.MiddleWare;
 using WebNC_BTL_QLCV.Repositories;
+using WebNC_BTL_QLCV.Repositories.IRepository;
+using WebNC_BTL_QLCV.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,8 @@ builder.Services.AddScoped<IGroupTaskRepository, GroupTaskRepository>();
 builder.Services.AddScoped<IGroupNoteRepository, GroupNoteRepository>();
 builder.Services.AddScoped<IGroupMemberRepository, GroupMemberRepository>();
 builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 
 var app = builder.Build();

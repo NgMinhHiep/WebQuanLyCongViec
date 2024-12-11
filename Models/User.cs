@@ -53,7 +53,7 @@ namespace WebNC_BTL_QLCV.Models
 
         public ICollection<GroupMember> GroupMembers { get; set; } = new List<GroupMember>();
 
-        // Nhập lại mật khẩu
+        // Vai trò
         [Column("iRoleID")]
         public int RoleID {  get; set; }
         /*

@@ -4,15 +4,18 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Primitives;
 using WebNC_BTL_QLCV.Models;
 using WebNC_BTL_QLCV.Repositories;
+using WebNC_BTL_QLCV.Services;
 
 namespace WebNC_BTL_QLCV.Controllers
 {
     public class PersonalTaskController : Controller
     {
         private readonly IPersonalTaskRepository _personalTaskRepository;
+        private readonly INotificationService _notificationService;
 
-        public PersonalTaskController(IPersonalTaskRepository personalTaskRepository)
+        public PersonalTaskController(IPersonalTaskRepository personalTaskRepository, INotificationService notificationService)
         {
+            _notificationService = notificationService;
             _personalTaskRepository = personalTaskRepository;
         }
         public IActionResult Index()
@@ -79,6 +82,7 @@ namespace WebNC_BTL_QLCV.Controllers
                     return Json(new { success = false, message = "Ngày bắt đầu không được lớn hơn ngày kết thúc." });
                 }
                 _personalTaskRepository.AddPersonalTask(personalTask);
+                _notificationService.CreateNotification(userId.Value, "Thêm công việc mới", "Bạn đã thêm công việc mới.","Thêm công việc");
                 return Json(new { success = true, message = "Thêm công việc thành công." });
             }
 
