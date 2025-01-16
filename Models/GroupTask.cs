@@ -43,7 +43,7 @@ namespace WebNC_BTL_QLCV.Models
         [Required(ErrorMessage = "Ngày kết thúc công việc không được bỏ trống.")]
         public DateOnly EndDate { get; set; }
 
-        //public Group Group { get; set; }
+        public Group Group { get; set; }
         public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
     }
 }

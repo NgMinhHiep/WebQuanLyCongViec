@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 using WebNC_BTL_QLCV.Models;
 using WebNC_BTL_QLCV.Repositories;
+using WebNC_BTL_QLCV.Services;
 
 namespace WebNC_BTL_QLCV.Controllers
 {
@@ -9,12 +11,14 @@ namespace WebNC_BTL_QLCV.Controllers
         private readonly IGroupMemberRepository _groupMemberRepository;
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
+        private readonly INotificationService _notificationService;
      
-        public GroupMemberController(IGroupMemberRepository groupMemberRepositor, IUserRepository userRepository, IGroupRepository groupRepository)
+        public GroupMemberController(IGroupMemberRepository groupMemberRepositor, IUserRepository userRepository, IGroupRepository groupRepository, INotificationService notificationService)
         {
             _groupMemberRepository = groupMemberRepositor;
             _userRepository = userRepository;
             _groupRepository = groupRepository;
+            _notificationService = notificationService;
         }
 
         public IActionResult GroupMemberList(int groupId)
@@ -79,6 +83,9 @@ namespace WebNC_BTL_QLCV.Controllers
             DateTime groupEntryDate = DateTime.Now;
             _groupMemberRepository.Add(user.UserID, grId.Value, groupEntryDate);
 
+            var group = _groupRepository.GetGroupById(grId.Value);
+            _notificationService.CreateNotification(user.UserID, "Thêm vào nhóm mới", $"Bạn đã được thêm vào nhóm: '{group.GroupName}'", "Thêm vào nhóm");
+
             return Json(new { success = true });
         }
 
@@ -95,6 +102,30 @@ namespace WebNC_BTL_QLCV.Controllers
                 return Json(new { success = true });
             }
             return Json(new { success = false, errorMessage = "Không thể xóa thành viên này." });
+        }
+
+        // thành viên chủ động rời khỏi nhóm
+        [HttpPost]
+        public IActionResult LeaveGroup(int groupId, int userId)
+        {
+            try
+            {
+                // Kiểm tra nếu người dùng là trưởng nhóm
+                var group = _groupRepository.GetGroupById(groupId);
+                if (group.LeaderID == userId)
+                {
+                    return Json(new { success = false, errorMessage = "Bạn không thể rời nhóm khi đang là trưởng nhóm. Vui lòng chuyển quyền trước." });
+                }
+
+                // Xóa thành viên khỏi nhóm
+                _groupMemberRepository.Delete(userId, groupId);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, errorMessage = "Gặp lỗi khi rời khỏi nhóm: " + ex.Message });
+            }
         }
     }
 }

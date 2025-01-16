@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Đổi trưởng nhóm";
+    ViewData["Description"] = "Cập nhật trưởng nhóm trong hệ thống quản lý công việc, giúp bạn thay đổi trưởng nhóm.";
+    ViewData["Keywords"] = "Sửa nhóm, Quản lý nhóm, Nhóm công việc, Quản lý công việc, Update group";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<WebNC_BTL_QLCV.Models.GroupMember>
+
+<h2>Chọn thành viên mới làm trưởng nhóm</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên thành viên</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model)
+        {
+            <tr id="row-@member.UserID">
+                <td>@member.User.UserName</td>
+                <td>
+                    <button class="btn btn-primary btn-select-leader"
+                            data-group-id="@ViewBag.GroupId"
+                            data-user-id="@member.UserID">
+                        Chọn làm trưởng nhóm
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-secondary" asp-action="GroupTaskList">Quay lại</a>
+
+@section Scripts {
+    <script>
+        $(document).on("click", ".btn-select-leader", function () {
+            var groupId = $(this).data("group-id");
+            var newLeaderId = $(this).data("user-id");
+
+            if (confirm("Bạn có chắc chắn muốn chọn thành viên này làm trưởng nhóm?")) {
+                $.ajax({
+                    url: '@Url.Action("UpdateLeader", "Group")',
+                    type: 'POST',
+                    data: { groupId: groupId, newLeaderId: newLeaderId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            window.location.href = '@Url.Action("GroupTaskList", "Group")';
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi trong quá trình xử lý.");
+                    }
+                });
+            }
+        });
+    </script>
+}

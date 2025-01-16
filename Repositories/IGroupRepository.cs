@@ -22,5 +22,7 @@ namespace WebNC_BTL_QLCV.Repositories
 
         // xóa nhóm
         void DeleteGroup(int id);
+
+        void UpdateLeader(int groupId, int newLeaderId);
     }
 }

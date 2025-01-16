@@ -20,5 +20,7 @@ namespace WebNC_BTL_QLCV.Repositories
 
         // xóa công việc cá nhân
         void DeletePersonalTask(int id);
+
+        IEnumerable<PersonalTask> GetTasksEndingSoon(int days);
     }
 }

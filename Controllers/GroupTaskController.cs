@@ -10,6 +10,7 @@ namespace WebNC_BTL_QLCV.Controllers
         private readonly ITaskAssignmentRepository _taskAssignmentRepository;
         private readonly IGroupRepository _groupRepository;
 
+
         public GroupTaskController(IGroupTaskRepository GroupTaskRepository, ITaskAssignmentRepository taskAssignmentRepository, IGroupRepository groupRepository)
         {
             _GroupTaskRepository = GroupTaskRepository;

@@ -68,5 +68,15 @@ namespace WebNC_BTL_QLCV.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public void UpdateLeader(int groupId, int newLeaderId)
+        {
+            var group = _context.Group.FirstOrDefault(g => g.GroupID == groupId);
+            if (group != null)
+            {
+                group.LeaderID = newLeaderId;
+                _context.SaveChanges();
+            }
+        }
     }
 }

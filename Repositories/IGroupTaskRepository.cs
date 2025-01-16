@@ -22,6 +22,8 @@ namespace WebNC_BTL_QLCV.Repositories
 
         // xóa công việc nhóm
         void DeleteGroupTask(int id);
+
+        IEnumerable<GroupTask> GetTasksEndingSoon(int days);
     }
 }
 

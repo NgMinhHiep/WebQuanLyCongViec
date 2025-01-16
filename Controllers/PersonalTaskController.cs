@@ -82,7 +82,6 @@ namespace WebNC_BTL_QLCV.Controllers
                     return Json(new { success = false, message = "Ngày bắt đầu không được lớn hơn ngày kết thúc." });
                 }
                 _personalTaskRepository.AddPersonalTask(personalTask);
-                _notificationService.CreateNotification(userId.Value, "Thêm công việc mới", "Bạn đã thêm công việc mới.","Thêm công việc");
                 return Json(new { success = true, message = "Thêm công việc thành công." });
             }
 

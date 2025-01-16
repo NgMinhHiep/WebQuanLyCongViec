@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using WebNC_BTL_QLCV.Models;
 using WebNC_BTL_QLCV.Repositories;
+using WebNC_BTL_QLCV.Services;
 
 namespace WebNC_BTL_QLCV.Controllers
 {
@@ -9,11 +10,13 @@ namespace WebNC_BTL_QLCV.Controllers
     {
         private readonly IGroupRepository _GroupRepository;
         private readonly IGroupMemberRepository _GroupMemberRepository;
+        private readonly IGroupService _GroupService;
 
-        public GroupController(IGroupRepository GroupRepository, IGroupMemberRepository groupMemberRepository)
+        public GroupController(IGroupRepository GroupRepository, IGroupMemberRepository groupMemberRepository, IGroupService groupService)
         {
             _GroupRepository = GroupRepository;
             _GroupMemberRepository = groupMemberRepository;
+            _GroupService = groupService;
         }
         public IActionResult Index()
         {
@@ -158,6 +161,45 @@ namespace WebNC_BTL_QLCV.Controllers
                 }
             }
             return Json(new { success = false, message = "Bạn không có quyền xóa nhóm này." });
+        }
+
+        public IActionResult ChangeLeader(int groupId)
+        {
+            var group = _GroupRepository.GetGroupById(groupId);
+            var currentLeaderId = HttpContext.Session.GetInt32("UserId");
+            if (currentLeaderId == null || group.LeaderID != currentLeaderId)
+            {
+                return Unauthorized(); // Chỉ trưởng nhóm mới được phép thực hiện
+            }
+
+            var members = _GroupMemberRepository.GetGroupMemberByGroupId(groupId)
+                .Where(m => m.UserID != currentLeaderId) // Loại bỏ nhóm trưởng hiện tại
+                .ToList();
+
+            ViewBag.GroupId = groupId;
+            return View(members);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateLeader(int groupId, int newLeaderId)
+        {
+            var group = _GroupRepository.GetGroupById(groupId);
+            var currentLeaderId = HttpContext.Session.GetInt32("UserId");
+            if (currentLeaderId == null || group.LeaderID != currentLeaderId)
+            {
+                return Json(new { success = false, message = "Bạn không có quyền thực hiện thao tác này." });
+            }
+
+            /*
+            if (!_groupMemberRepository.IsMemberInGroup(newLeaderId, groupId))
+            {
+                return Json(new { success = false, message = "Thành viên không thuộc nhóm." });
+            }
+            */
+            // Cập nhật nhóm trưởng
+            _GroupService.UpdateLeader(groupId, newLeaderId);
+
+            return Json(new { success = true, message = "Thay đổi nhóm trưởng thành công!" });
         }
 
 

@@ -54,5 +54,13 @@ namespace WebNC_BTL_QLCV.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public IEnumerable<PersonalTask> GetTasksEndingSoon(int days)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            return _context.PersonalTasks
+                .Where(t => t.EndDate > today && t.EndDate <= today.AddDays(days))
+                .ToList();
+        }
     }
 }

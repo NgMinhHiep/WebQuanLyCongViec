@@ -27,7 +27,11 @@ builder.Services.AddScoped<IGroupMemberRepository, GroupMemberRepository>();
 builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<PersonalTaskService>();
+builder.Services.AddScoped<GroupTaskService>();
+builder.Services.AddScoped<IGroupService, GroupService>();
 
+builder.Services.AddHostedService<NotificationBackgroundService>();
 
 var app = builder.Build();
 

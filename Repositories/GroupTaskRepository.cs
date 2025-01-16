@@ -72,5 +72,16 @@ namespace WebNC_BTL_QLCV.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public IEnumerable<GroupTask> GetTasksEndingSoon(int days)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Now); // Lấy ngày hôm nay
+            var endDateThreshold = today.AddDays(days); // Ngày kết thúc sau X ngày
+
+            return _context.GroupTasks
+                .Include(gt => gt.Group) // Lấy thông tin nhóm liên quan
+                .Where(t => t.EndDate > today && t.EndDate <= endDateThreshold)
+                .ToList();
+        }
     }
 }

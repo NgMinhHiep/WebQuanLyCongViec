@@ -91,6 +91,15 @@
 
 <div class="grouptask">
     <a class="btn-member" asp-action="GroupMemberList" asp-controller="GroupMember">Thành viên nhóm</a>
+    @if (ViewBag.IsLeader)
+    {
+        <a class="btn btn-warning" asp-controller="Group" asp-action="ChangeLeader" asp-route-groupId="@Context.Session.GetInt32("GroupId")">Thay đổi nhóm trưởng</a>
+    }
+    <button class="btn-leave"
+            data-group-id="@Context.Session.GetInt32("GroupId")"
+            data-user-id="@Context.Session.GetInt32("UserId")">
+        Rời nhóm
+    </button>
     <h2>Danh sách công việc của nhóm: @Context.Session.GetString("GroupName")</h2>
 
     @if (ViewBag.IsLeader)
@@ -208,5 +217,36 @@
                 });
             }
         });
+
+        $(".btn-leave").click(function () {
+            if (confirm("Bạn có chắc chắn muốn rời khỏi nhóm?")) {
+
+                var groupId = $(this).data("group-id");
+                var userId = $(this).data("user-id");
+
+                $.ajax({
+                    url: '@Url.Action("LeaveGroup", "GroupMember")',
+                    type: 'POST',
+                    data: {
+                        groupId:groupId,
+                        userId: userId
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Tìm và xóa phần tử có taskId và userId tương ứng
+                            
+                            alert("Rời nhóm thành công!");
+                            window.location.href = '@Url.Action("GroupList", "Group")';
+                        } else {
+                            alert(response.errorMessage || "Rời nhóm thất bại!");
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi trong quá trình rời khỏi nhóm.");
+                    }
+                });
+            }
+        });
+
     });
 </script>
