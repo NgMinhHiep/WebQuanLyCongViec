@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "File công việc nhóm";
+    ViewData["Description"] = "Danh sách file công việc nhóm giúp bạn quản lý, phân công và theo dõi các file công việc nhóm hiệu quả trong hệ thống quản lý công việc của chúng tôi.";
+    ViewData["Keywords"] = "File công việc nhóm, Quản lý file công việc nhóm";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<WebNC_BTL_QLCV.Models.GroupTaskFile>
+
+@{
+    ViewBag.Title = "Danh sách file của công việc nhóm";
+    int taskId = ViewBag.TaskId;
+}
+
+<h2>Danh sách file cho công việc nhóm (TaskID: @taskId)</h2>
+
+<!-- Form tải file lên cho công việc nhóm -->
+<form asp-action="UploadFile" asp-route-taskid="@taskId" method="post" enctype="multipart/form-data">
+    <div>
+        <label for="file">Chọn file để tải lên:</label>
+        <input type="file" name="file" id="file" required />
+    </div>
+    <button type="submit">Tải lên file mới</button>
+</form>
+
+<!-- Danh sách file -->
+<table>
+    <thead>
+        <tr>
+            <th>Tên file</th>
+            <th>Kích thước</th>
+            <th>Loại file</th>
+            <th>Người gửi</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var file in Model)
+        {
+            <tr>
+                <td>@file.FileName</td>
+                <td>@file.FileSize MB</td>
+                <td>@file.FileType</td>
+                <td>@file.SenderName</td>
+                <td>
+                    <a asp-action="DownloadFile" asp-route-fileId="@file.GroupTaskFileID">Tải xuống</a>
+                    <form asp-action="DeleteFile" method="post">
+                        <input type="hidden" name="fileId" value="@file.GroupTaskFileID" />
+                        <input type="hidden" name="taskId" value="@ViewBag.TaskId" />
+                        <button type="submit" onclick="return confirm('Bạn có chắc muốn xóa file này?');">
+                            Xóa
+                        </button>
+                    </form>
+                </td>               
+            </tr>
+        }
+    </tbody>
+</table>

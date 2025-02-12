@@ -30,6 +30,8 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<PersonalTaskService>();
 builder.Services.AddScoped<GroupTaskService>();
 builder.Services.AddScoped<IGroupService, GroupService>();
+builder.Services.AddScoped<GoogleDriveService>();
+builder.Services.AddScoped<IGroupTaskFileRepository, GroupTaskFileRepository>();
 
 builder.Services.AddHostedService<NotificationBackgroundService>();
 

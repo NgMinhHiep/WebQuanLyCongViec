@@ -251,8 +251,8 @@
             background-color: #0056b3;
         }
 
-/* Nút Thành viên nhóm, Thêm công việc mới */
-.grouptask .btn-member, .grouptask .btn-create {
+/* Nút Thành viên nhóm, Thêm công việc mới, Thay đổi trưởng nhóm, rời nhóm*/
+.grouptask .btn-member, .grouptask .btn-create, .grouptask .btn-changeLeader, .grouptask .btn-leave {
     display: inline-block;
     padding: 8px 16px;
     margin: 10px 0;
@@ -264,6 +264,7 @@
     color: white;
     cursor: pointer;
 }
+
 
 /* Nút "Thành viên nhóm" */
 .grouptask .btn-member {
@@ -281,6 +282,24 @@
 
     .grouptask .btn-create:hover {
         background-color: #218838;
+    }
+
+/* Nút "Thay đổi nhóm trưởng" */
+.grouptask .btn-changeLeader {
+    background-color: #ffc107;
+}
+
+    .grouptask .btn-changeLeader:hover {
+        background-color: #e0a800;
+    }
+
+/* Nút "Rời nhóm" */
+.grouptask .btn-leave {
+    background-color: #dc3545;
+}
+
+    .grouptask .btn-leave:hover {
+        background-color: #c82333;
     }
 
 /* Nút Quay lại */
