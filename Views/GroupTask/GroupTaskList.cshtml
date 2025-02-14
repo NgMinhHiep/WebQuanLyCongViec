@@ -32,7 +32,7 @@
     <div class="task-container">
         @foreach (var task in Model)
         {
-            <div class="task-card" id="task-card-@task.GroupTaskID">
+            <div class="task-card @GetPriorityClass(task.PriorityLevel)" id="task-card-@task.GroupTaskID">
                 <h3 class="task-name">@task.GroupTaskName</h3>
                 <p class="task-description">@task.GroupTaskDescription</p>
                 <p class="task-status">
@@ -47,6 +47,20 @@
                         }
                     }
                     <span class="@statusClass">@task.GroupTaskStatus</span>
+                </p>
+                <p class="task-priority">
+                    @{
+                        string priorityClass;
+                        switch (task.PriorityLevel)
+                        {
+                            case "Thấp": priorityClass = "text-success"; break;
+                            case "Trung bình": priorityClass = "text-warning"; break;
+                            case "Cao": priorityClass = "text-danger"; break;
+                            case "Khẩn cấp": priorityClass = "priority-critical"; break;
+                            default: priorityClass = "text-secondary"; break;
+                        }
+                    }
+                    <span class="@priorityClass">Độ ưu tiên: @task.PriorityLevel</span>
                 </p>
                 <p class="task-dates">
                     <strong>Bắt đầu:</strong> @task.StartDate <br>
@@ -175,3 +189,18 @@
 
     });
 </script>
+
+<!-- Chỉnh sửa màu border các thẻ công việc theo độ ưu tiên -->
+@functions {
+    string GetPriorityClass(string priorityLevel)
+    {
+        return priorityLevel switch
+        {
+            "Thấp" => "border-low",
+            "Trung bình" => "border-medium",
+            "Cao" => "border-high",
+            "Khẩn cấp" => "border-critical",
+            _ => "border-default"
+        };
+    }
+}

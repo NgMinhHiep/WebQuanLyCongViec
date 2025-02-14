@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebNC_BTL_QLCV.Models
@@ -43,6 +44,14 @@ namespace WebNC_BTL_QLCV.Models
         [Required(ErrorMessage = "Ngày kết thúc công việc không được bỏ trống.")]
         public DateOnly EndDate { get; set; }
 
+        // Mức độ ưu tiên của công việc nhóm
+        [StringLength(50, ErrorMessage = "Độ ưu tiên công việc không được quá 50 ký tự.")]
+        [Required(ErrorMessage = "Độ ưu tiên công việc không được bỏ trống.")]
+        [Column("sPriorityLevel")]
+        public string PriorityLevel { get; set; }
+
+
+        [ValidateNever]
         public Group Group { get; set; }
         public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
     }

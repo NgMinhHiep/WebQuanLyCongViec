@@ -18,13 +18,13 @@ namespace WebNC_BTL_QLCV.Controllers
         }
 
 
-        // Action hiển thị danh sách file theo TaskId (công việc nhóm)
+        // Action hiển thị danh sách file theo TaskId 
         public async Task<IActionResult> GroupTaskFileList(int taskid)
         {
             // Lấy danh sách file của công việc nhóm có TaskID = taskid
             var files = await _fileRepo.GetAllFilesAsync(taskid);
 
-            // Đưa taskid vào ViewBag để sử dụng trong view (ví dụ khi tải file mới)
+            // Đưa taskid vào ViewBag để sử dụng trong view 
             ViewBag.TaskId = taskid;
             return View(files);
         }
@@ -33,7 +33,7 @@ namespace WebNC_BTL_QLCV.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadFile(int taskid, IFormFile file)
         {
-            // Lấy tên người gửi từ session (hoặc một nguồn khác)
+            // Lấy tên người gửi từ session
             string senderName = HttpContext.Session.GetString("username");
             if (string.IsNullOrEmpty(senderName))
                 return BadRequest("Tên người gửi không hợp lệ.");
@@ -42,7 +42,7 @@ namespace WebNC_BTL_QLCV.Controllers
 
             using (var stream = file.OpenReadStream())
             {
-                // Giả sử _driveService.UploadFileAsync trả về tuple (driveFileId, fileSize, fileType)
+
                 var (driveFileId, fileSize, fileType) = await _driveService.UploadFileAsync(stream, file.FileName, file.ContentType);
                 if (!string.IsNullOrEmpty(driveFileId))
                 {
@@ -90,9 +90,6 @@ namespace WebNC_BTL_QLCV.Controllers
             }
             else
             {
-                // Trường hợp xóa trên Drive thất bại, bạn có thể chọn
-                // vẫn xóa DB hoặc giữ lại DB. Tùy logic bạn muốn.
-                // Ở đây giả sử vẫn xóa DB.
                 await _fileRepo.DeleteFileAsync(fileId);
             }
 

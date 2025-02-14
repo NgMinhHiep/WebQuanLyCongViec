@@ -151,21 +151,51 @@
         color: #555;
     }
 
-    .task-card .task-status span.text-success {
+    .task-card .task-status, .task-priority span.text-success {
         color: #28a745; /* Màu xanh lá cho trạng thái "Đã hoàn thành" */
     }
 
-    .task-card .task-status span.text-danger {
+    .task-card .task-status, .task-priority span.text-danger {
         color: #dc3545; /* Màu đỏ cho trạng thái "Chưa hoàn thành" */
     }
 
-    .task-card .task-status span.text-warning {
+    .task-card .task-status, .task-priority span.text-warning {
         color: #ffc107; /* Màu vàng cho trạng thái "Đang thực hiện" */
+    }
+
+    .task-card .task-priority span.priority-critical {
+        color: #b71c1c; /* Màu đỏ to cho độ ưu tiên khẩn cấp */
+        font-weight: bold;
     }
 
     .task-card .task-status span.text-secondary {
         color: #6c757d; /* Màu xám cho trạng thái mặc định */
     }
+
+/* màu của border các thẻ công việc theo độ ưu tiên*/
+.border-low {
+    border-color: green;
+}
+
+.border-medium {
+    border-color: orange;
+}
+
+.border-high {
+    border-color: red;
+}
+
+.border-critical {
+    border-color: darkred;
+    border-width: 4px; /* Làm viền dày hơn cho mức Khẩn cấp */
+}
+
+.border-default {
+    border-color: gray;
+}
+
+
+
 
 .task-members {
     margin-top: 10px;
@@ -249,6 +279,15 @@
 
         .task-actions form[action*="GroupNote"] button:hover {
             background-color: #0056b3;
+        }
+
+    /* Nút "Xem danh sách file" */
+    .task-actions form[action*="GroupTaskFileList"] button {
+        background-color: #FF9900;
+    }
+
+        .task-actions form[action*="GroupTaskFileList"] button:hover {
+            background-color: #CC9966;
         }
 
 /* Nút Thành viên nhóm, Thêm công việc mới, Thay đổi trưởng nhóm, rời nhóm*/

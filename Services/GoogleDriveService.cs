@@ -63,7 +63,6 @@ namespace WebNC_BTL_QLCV.Services
             }
             catch
             {
-                // Log lỗi hoặc xử lý tùy ý
                 return false;
             }
         }

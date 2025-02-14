@@ -86,6 +86,15 @@ namespace WebNC_BTL_QLCV.Controllers
                 return Json(new { success = true });
             }
 
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                              .Select(e => e.ErrorMessage)
+                                              .ToList();
+                // Log errors hoặc debug:
+                 return Json(new { success = false, errors });
+            }
+
             return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
         }
 

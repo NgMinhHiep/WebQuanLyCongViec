@@ -28,6 +28,14 @@
             <option value="Đã hoàn thành">Đã hoàn thành</option>
         </select>
         <br />
+        <label>Độ ưu tiên</label>
+        <select asp-for="PriorityLevel" id="PriorityLevel">
+            <option value="Thấp">Thấp</option>
+            <option value="Trung bình">Trung bình</option>
+            <option value="Cao">Cao</option>
+            <option value="Khẩn cấp">Khẩn cấp</option>
+        </select>
+        <br />
         <label>Ngày Bắt Đầu</label>
         <input asp-for="StartDate" type="date" id="StartDate" />
         <br />
@@ -52,6 +60,7 @@
                 GroupTaskName: $("#GroupTaskName").val(),
                 GroupTaskDescription: $("#GroupTaskDescription").val(),
                 GroupTaskStatus: $("#GroupTaskStatus").val(),
+                PriorityLevel: $("#PriorityLevel").val(),
                 StartDate: $("#StartDate").val(),
                 EndDate: $("#EndDate").val()
             };
