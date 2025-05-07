@@ -17,10 +17,6 @@
         <label for="GroupName">Tên nhóm</label>
         <input id="GroupName" name="GroupName" class="GroupName" required />
         <br />
-        <label for="VerifyKey">Key nhóm</label>
-        <input id="VerifyKey" name="VerifyKey" class="VerifyKey" required />
-        <br />
-        <span asp-validation-for="VerifyKey" class="text-danger"></span> <!-- Hiển thị lỗi -->
         <button type="button" id="create-button">Tạo</button> <!-- Nút dùng AJAX -->
     </form>
 
@@ -33,15 +29,9 @@
     $(document).ready(function () {
         $("#create-button").click(function () {
             var groupName = $("#GroupName").val();
-            var verifyKey = $("#VerifyKey").val();
 
             if (groupName.trim() === "") {
                 alert("Tên nhóm không được để trống.");
-                return;
-            }
-
-            if (verifyKey.trim() === "") {
-                alert("Key không được để trống.");
                 return;
             }
 
@@ -49,8 +39,7 @@
                 url: '@Url.Action("Create", "Group")',
                 type: 'POST',
                 data: { 
-                    GroupName: groupName,
-                    VerifyKey : verifyKey
+                    GroupName: groupName
                 },
                 success: function (response) {
                     if (response.success) {

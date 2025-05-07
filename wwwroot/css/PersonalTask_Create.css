@@ -29,7 +29,9 @@
     .newtasks input[type="text"],
     .newtasks input[type="date"],
     .newtasks select,
-    .newtasks textarea {
+    .newtasks textarea,
+    .newtasks password,
+    .newtasks input[type="email"] {
         width: 100%; /* Chiếm toàn bộ chiều ngang */
         padding: 10px;
         margin-bottom: 15px;
@@ -92,3 +94,7 @@
         margin-top: -10px;
         margin-bottom: 10px;
     }
+
+.changepassForm {
+    text-align: center;
+}

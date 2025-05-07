@@ -9,33 +9,40 @@
 }
 
 @model WebNC_BTL_QLCV.Models.User
+<link rel="stylesheet" href="~/css/PersonalNote_List.css" />
 
-<div class="table">
-    <h4 class="table-title">Thông tin cá nhân của tài khoản: @Context.Session.GetString("username")</h4>
-    <table class="user-table">
-        <thead>
-            <tr>
-                <th>Họ và tên người dùng</th>
-                <th>Ngày sinh</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Ngày tạo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@Model.FullName</td>
-                <td>@Model.DateOfBirth</td>
-                <td>@Model.Email</td>
-                <td>@Model.PhoneNumber</td>
-                <td>@Model.User_CreationDate</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="notelist">
+    <form asp-action="Update" method="get" asp-route-id="@Model.UserID">
+        <button type="submit" class="btn-update">Sửa thông tin cá nhân</button>
+    </form>
+
+    <a asp-controller="User" asp-action="ChangePassword" class="delete-note">Đổi mật khẩu</a>
+
+    <div class="table">
+        <h4 class="table-title">Thông tin cá nhân của tài khoản: @Context.Session.GetString("username")</h4>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Họ và tên người dùng</th>
+                    <th>Ngày sinh</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Ngày tạo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.FullName</td>
+                    <td>@Model.DateOfBirth</td>
+                    <td>@Model.Email</td>
+                    <td>@Model.PhoneNumber</td>
+                    <td>@Model.User_CreationDate</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a class="btn-back" asp-action="Index" asp-controller="Home">Quay lại trang chủ</a>
+
 </div>
 
-<form asp-action="Update" method="get" asp-route-id="@Model.UserID">
-    <button type="submit">Sửa</button>
-</form>
-
-<a class="btn-a" asp-action="Index" asp-controller="Home">Quay lại trang chủ</a>

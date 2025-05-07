@@ -10,9 +10,13 @@
     <title>@ViewData["Title"] - WebNC_BTL_QLCV</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/_SimpleLayout.cshtml.css" />
+    
     <link rel="stylesheet" href="~/WebNC_BTL_QLCV.styles.css" asp-append-version="true" />
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-...==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="~/css/_SimpleLayout.cshtml.css" />
+    <link rel="stylesheet" href="~/css/fix-dropdown.css" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -20,39 +24,54 @@
         @if (ViewData["HideHeaderFooter"] == null || (bool)ViewData["HideHeaderFooter"] == false)
         {
             <header>
-                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <nav class="navbar navbar-expand-sm navbar-dark navbar-toggleable-sm border-bottom box-shadow mb-3 custom-navbar">
                     <div class="container-fluid">
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebNC_BTL_QLCV</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                            <img src="~/images/Logo.png" alt="Logo" class="logo" style="height: 60px;">
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="navbar-collapse collapse d-sm-inline-flex" id="navbarNav">
 
-                        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                            <ul class="navbar-nav flex-grow-1">
+                            <ul class="navbar-nav mx-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Notification" asp-action="NotificationList">Thông báo</a>
+                                    <a class="nav-link" asp-area="" asp-controller="PersonalTask" asp-action="PersonalTaskList">Công việc cá nhân</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Personal_Information" asp-action="Personal_Infor_List">Thông tin cá nhân</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Group" asp-action="GroupList">Danh sách nhóm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                                        <button type="submit" class="btn btn-link">Đăng xuất</button>
-                                    </form>
+                                    <a class="nav-link" asp-area="" asp-controller="Notification" asp-action="NotificationList">Thông báo</a>
                                 </li>
-                                <!--
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Group" asp-action="Test">Trang test</a>
-                                </li>
-                                -->
+                                
                             </ul>
+
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-user"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        <li>
+                                            <a class="dropdown-item" asp-area="" asp-controller="Personal_Information" asp-action="Personal_Infor_List">Thông tin cá nhân</a>
+                                        </li>
+                                        <li>
+                                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                                <button type="submit" class="dropdown-item">Đăng xuất</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            
                         </div>
+
                         <div class="">
-                            <!--
-                            <p>Nguyễn Minh Hiệp</p>
-                            <p>Phan Ngọc Hân</p>
-                            <p>Đỗ Ngọc Giao</p>
-                            -->
+
                         </div>
                     </div>
                 </nav>
@@ -70,7 +89,7 @@
                 <div class="footer_container">
                     <div class="footer-section">
                         <h4>Thông tin cơ bản</h4>
-                        <p>&copy; 2024 WebNC_BTL_QLCV . All Rights Reserved.</p>
+                        <p>&copy; 2025 WebNC_BTL_QLCV . All Rights Reserved.</p>
                     </div>
 
                     <div class="footer-section">
@@ -99,10 +118,7 @@
                     </div>
                     <!--
                     <div class="footer-section">
-                        <h4>Thành viên nhóm</h4>
-                        <p>Nguyễn Minh Hiệp</p>
-                        <p>Phan Ngọc Hân</p>
-                        <p>Đỗ Ngọc Giao</p>
+                        
                         
                     </div>
                     -->

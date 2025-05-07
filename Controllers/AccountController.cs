@@ -139,5 +139,6 @@ namespace WebNC_BTL_QLCV.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Login", "Account");
         }
+
     }
 }

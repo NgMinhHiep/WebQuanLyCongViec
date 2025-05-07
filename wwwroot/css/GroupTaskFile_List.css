@@ -1,0 +1,68 @@
+﻿.downloadfile {
+    padding: 8px 12px;
+    margin-bottom: 3px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    background-color: #FF9900;
+}
+    .downloadfile:hover {
+
+        color: white;
+        text-decoration: none;
+        background-color: #CC9966;
+        transform: scale(1.05);
+    }
+
+/* Định dạng form tải file */
+.notelist .upload-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 500px; /* Đặt chiều rộng tối đa */
+    margin-left:0 auto; /* Căn giữa ngang */
+    margin-right:0 auto;
+}
+
+/* Nhóm input file */
+.file-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+    .file-input-group label {
+        font-size: 1rem;
+        color: #2c3e50;
+        font-weight: bold;
+    }
+
+
+
+/* Nút tải lên */
+.btn-upload {
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Màu xanh lá giống .btn-create */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    margin-left: 0 auto; /* Căn giữa ngang */
+    margin-right: 0 auto;
+    text-decoration:none;
+}
+
+    .btn-upload:hover {
+        background-color: #45a049;
+        transform: scale(1.05);
+    }

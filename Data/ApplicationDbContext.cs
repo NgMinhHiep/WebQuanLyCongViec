@@ -18,9 +18,12 @@ namespace WebNC_BTL_QLCV.Data
         public DbSet<GroupTask> GroupTasks { get; set; }
         public DbSet<GroupNote> GroupNotes { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
-        public DbSet<TaskAssignment> TaskAssignments { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<GroupTaskFile> GroupTaskFiles { get; set; }
+        public DbSet<ParentGroupTask> ParentGroupTasks { get; set; }
+        public DbSet<ReportTaskFile> ReportTaskFiles { get; set; }
+        public DbSet<FeedbackTask> FeedbackTasks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<GroupMember>().HasKey(gm => new { gm.UserID, gm.GroupID });
@@ -43,7 +46,7 @@ namespace WebNC_BTL_QLCV.Data
                 .WithMany(g => g.GroupTasks)
                 .HasForeignKey(gt => gt.GroupID)
                 .OnDelete(DeleteBehavior.NoAction);
-            */
+            
             modelBuilder.Entity<TaskAssignment>().HasKey(ta => new { ta.UserID, ta.GroupID, ta.GroupTaskID });
 
             
@@ -58,7 +61,7 @@ namespace WebNC_BTL_QLCV.Data
                 .WithMany(gr => gr.TaskAssignments)
                 .HasForeignKey(ta => new { ta.UserID, ta.GroupID })
                 .OnDelete(DeleteBehavior.Cascade);
-
+            */
         }
     }
 }

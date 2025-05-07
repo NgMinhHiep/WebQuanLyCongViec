@@ -85,6 +85,12 @@ namespace WebNC_BTL_QLCV.Repositories
             _context.SaveChanges();
         }
 
+        public void UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+        }
+
         public int GetUserCountInCurrentMonth()
         {
             var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
@@ -95,6 +101,6 @@ namespace WebNC_BTL_QLCV.Repositories
         {
             var startOfWeek = DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek);
             return _context.Users.Count(u => u.User_CreationDate >= startOfWeek);
-        }
+        }    
     }
 }

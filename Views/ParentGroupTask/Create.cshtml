@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Thêm Công Việc Mới";
+    ViewData["Description"] = "Thêm công việc mới vào nhóm, giúp bạn phân công công việc và quản lý tiến độ công việc nhóm hiệu quả trong hệ thống quản lý công việc của chúng tôi.";
+    ViewData["Keywords"] = "Thêm công việc, Công việc nhóm, Quản lý công việc nhóm, Phân công công việc, Quản lý nhóm, Group tasks, Team management";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "noindex, nofollow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model ParentGroupTask
+<link rel="stylesheet" href="~/css/PersonalTask_Create.css" />
+
+<div class="newtasks">
+    <h2>Thêm công việc cha mới</h2>
+
+    <form id="createTaskForm">
+        <label>Tên Công Việc</label>
+        <input asp-for="ParentGroupTaskName" id="ParentGroupTaskName" />
+        <br />
+        <label>Mô Tả</label>
+        <textarea asp-for="ParentGroupTaskDescription" id="ParentGroupTaskDescription"></textarea>
+        <br />
+        <label>Trạng Thái</label>
+        <select asp-for="ParentGroupTaskStatus" id="ParentGroupTaskStatus">
+            <option value="Chưa hoàn thành">Chưa hoàn thành</option>
+            <option value="Đang thực hiện">Đang thực hiện</option>
+            <option value="Đã hoàn thành">Đã hoàn thành</option>
+        </select>
+        <br />
+        <label>Độ ưu tiên</label>
+        <select asp-for="PriorityLevel" id="PriorityLevel">
+            @foreach (var p in ViewBag.AvailablePriorities as List<string>)
+            {
+                <option value="@p">@p</option>
+            }
+        </select>
+        <br />
+        <span id="errorMessage" style="color: red; font-size: 16px; display: block; margin-top: 10px; text-align:center"></span>
+        <button class="btn-create" type="submit">Thêm</button>
+    </form>
+    <a class="btn-back" asp-action="ParentGroupTaskList">Quay lại</a>
+</div>
+
+<!-- Thêm jQuery và script AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#createTaskForm").submit(function (event) {
+            event.preventDefault(); // Ngăn form gửi thông thường
+
+            var formData = {
+                ParentGroupTaskName: $("#ParentGroupTaskName").val(),
+                ParentGroupTaskDescription: $("#ParentGroupTaskDescription").val(),
+                ParentGroupTaskStatus: $("#ParentGroupTaskStatus").val(),
+                PriorityLevel: $("#PriorityLevel").val()
+                
+            };
+
+            $.ajax({
+                url: '@Url.Action("Create", "ParentGroupTask")',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        alert("Thêm công việc thành công!");
+                        window.location.href = '@Url.Action("ParentGroupTaskList", "ParentGroupTask")'; // Chuyển hướng khi thành công
+                    } else {
+                        if (response.errors) {
+                            $("#errorMessage").html(response.errors.join("<br>")); // Hiển thị tất cả lỗi
+                        } else {
+                            $("#errorMessage").html(response.message);
+                        }
+                    }
+                },
+                error: function (response) {
+                    alert("Đã xảy ra lỗi trong quá trình thêm công việc.");
+                }
+            });
+        });
+    });
+</script>

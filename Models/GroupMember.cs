@@ -21,6 +21,6 @@ namespace WebNC_BTL_QLCV.Models
         [Column("dGroupEntryDate")]
         public DateTime GroupEntryDate { get; set; }
 
-        public ICollection<TaskAssignment> TaskAssignments { get; set; }
+        //public ICollection<TaskAssignment> TaskAssignments { get; set; }
     }
 }

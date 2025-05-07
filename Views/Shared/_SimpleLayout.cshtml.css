@@ -60,7 +60,7 @@ html, body {
 
 .footer {
     width: 100%;
-    background-color: #333; /* Màu nền footer, tùy chỉnh theo thiết kế của bạn */
+    background-color: #333; /* Màu nền footer */
     color: #fff;
     padding: 20px 0;
     text-align: center;
@@ -121,3 +121,37 @@ html, body {
     .social-links a:hover {
         color: #ffcc00;
     }
+
+
+
+.navbar {
+    background-color: #333; /* Màu nền footer */
+}
+
+.custom-navbar .nav-item, .btn-link {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Tăng kích thước icon user */
+.navbar .fa-user-circle {
+    font-size: 1.5rem;
+}
+
+/* Đảm bảo dropdown-item có font-weight bold giống nav-link */
+.dropdown-item {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Căn giữa nội dung navbar-brand nếu cần */
+.custom-navbar .navbar-brand {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.navbar-nav.mx-auto {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}

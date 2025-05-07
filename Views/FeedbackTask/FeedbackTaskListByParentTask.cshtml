@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "";
+    ViewData["Description"] = ".";
+    ViewData["Keywords"] = "";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<FeedbackTask>
+<link rel="stylesheet" href="~/css/PersonalNote_List.css" />
+
+<h2>Danh sách phản hồi</h2>
+
+<div class="notelist">
+    @if (!Model.Any())
+    {
+        <p>Chưa có phản hồi nào cho báo cáo này.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nội dung</th>
+                    <th>Thời gian</th>
+                    <th>Hành động</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FeedbackDetails</td>
+                        <td>@item.FeedbackTime.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            <form asp-action="Delete" method="post">
+                                <input type="hidden" name="id" value="@item.FeedbackTaskID" />
+                                <button type="submit" class="delete-note" onclick="return confirm('Bạn có chắc muốn xóa phản hồi này?')">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <a class="btn-back" asp-controller="ReportTaskFile" asp-action="ReportListByParentTask" asp-route-parentTaskId="@Context.Session.GetInt32("ParentGroupTaskId")">Quay lại</a>
+</div>

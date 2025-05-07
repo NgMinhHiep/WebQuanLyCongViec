@@ -1,4 +1,5 @@
-﻿using WebNC_BTL_QLCV.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using WebNC_BTL_QLCV.Models;
 using WebNC_BTL_QLCV.Repositories.IRepository;
 
 namespace WebNC_BTL_QLCV.Services
@@ -37,5 +38,6 @@ namespace WebNC_BTL_QLCV.Services
             _notificationRepository.MarkAsRead(notificationId);
             _notificationRepository.SaveChanges();
         }
+   
     }
 }

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Google.Apis.Drive.v3.Data;
+using Microsoft.AspNetCore.Mvc;
 using System.Formats.Tar;
 using WebNC_BTL_QLCV.Models;
+using WebNC_BTL_QLCV.Repositories;
 using WebNC_BTL_QLCV.Repositories.IRepository;
 using WebNC_BTL_QLCV.Services;
 
@@ -10,11 +12,13 @@ namespace WebNC_BTL_QLCV.Controllers
     {
         private readonly IGroupTaskFileRepository _fileRepo;
         private readonly GoogleDriveService _driveService;
+        private readonly IGroupRepository _groupRepository;
 
-        public GroupTaskFileController(IGroupTaskFileRepository fileRepo, GoogleDriveService driveService)
+        public GroupTaskFileController(IGroupTaskFileRepository fileRepo, GoogleDriveService driveService, IGroupRepository groupRepo)
         {
             _fileRepo = fileRepo;
             _driveService = driveService;
+            _groupRepository = groupRepo;
         }
 
 
@@ -24,6 +28,13 @@ namespace WebNC_BTL_QLCV.Controllers
             // Lấy danh sách file của công việc nhóm có TaskID = taskid
             var files = await _fileRepo.GetAllFilesAsync(taskid);
 
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            int? grId = HttpContext.Session.GetInt32("GroupId");
+            var group = _groupRepository.GetGroupById(grId.Value);
+            // Kiểm tra nếu là trưởng nhóm
+            bool isLeader = group.LeaderID == userId;
+            ViewBag.IsLeader = isLeader;
+
             // Đưa taskid vào ViewBag để sử dụng trong view 
             ViewBag.TaskId = taskid;
             return View(files);
@@ -31,7 +42,7 @@ namespace WebNC_BTL_QLCV.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> UploadFile(int taskid, IFormFile file)
+        public async Task<IActionResult> UploadFile(int taskid, IFormFile file, string description)
         {
             // Lấy tên người gửi từ session
             string senderName = HttpContext.Session.GetString("username");
@@ -48,13 +59,14 @@ namespace WebNC_BTL_QLCV.Controllers
                 {
                     var taskFile = new GroupTaskFile
                     {
-                        GroupTaskID = taskid,
+                        ParentGroupTaskID = taskid,
                         SenderName = senderName,
                         FileName = file.FileName,
                         GoogleDriveFileId = driveFileId,
                         FileSize = fileSize,
                         FileType = fileType,
-                        UploadedTime = fileUploadDate
+                        UploadedTime = fileUploadDate,
+                        Description = description
                     };
                     await _fileRepo.AddFileAsync(taskFile);
                 }

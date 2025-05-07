@@ -36,7 +36,7 @@
     </tbody>
 </table>
 
-<a class="btn btn-secondary" asp-action="GroupTaskList" asp-controller="GroupTask">Quay lại</a>
+<a class="btn btn-secondary" asp-action="ParentGroupTaskList" asp-controller="ParentGroupTask">Quay lại</a>
 
 @section Scripts {
     <script>
@@ -52,7 +52,7 @@
                     success: function (response) {
                         if (response.success) {
                             alert(response.message);
-                            window.location.href = '@Url.Action("GroupTaskList", "Group")';
+                            window.location.href = '@Url.Action("ParentGroupTaskList", "ParentGroupTask")';
                         } else {
                             alert(response.message);
                         }

@@ -11,9 +11,9 @@ namespace WebNC_BTL_QLCV.Models
         [Column("iGroupTaskFileID")]
         public int GroupTaskFileID { get; set; }
 
-        // ID công việc nhóm 
-        [Column("iGroupTaskID")]
-        public int GroupTaskID { get; set; }
+        // ID công việc cha 
+        [Column("iParentGroupTaskID")]
+        public int ParentGroupTaskID { get; set; }
 
         // Tên nguoi gui
         [StringLength(255, ErrorMessage = "Tên người gửi không được quá 255 ký tự.")]
@@ -46,5 +46,9 @@ namespace WebNC_BTL_QLCV.Models
         // Thoi gian upload file
         [Column("dUploadedTime")]
         public DateTime UploadedTime { get; set; }
+
+        // Mô tả file
+        [Column("sDescription")]
+        public string Description { get; set; }
     }
 }

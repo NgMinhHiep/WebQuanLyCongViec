@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Công việc nhóm";
+    ViewData["Description"] = "Danh sách công việc nhóm giúp bạn quản lý, phân công và theo dõi tiến độ công việc nhóm hiệu quả trong hệ thống quản lý công việc của chúng tôi.";
+    ViewData["Keywords"] = "Công việc nhóm, Quản lý công việc nhóm, Phân công công việc, Quản lý nhóm, Group tasks, Team management";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<MemberTaskStats>
+
+<h2>Thống kê công việc các thành viên trong nhóm</h2>
+
+<link rel="stylesheet" href="~/css/PersonalNote_List.css" />
+<link rel="stylesheet" href="~/css/MemberTaskStats.css" />
+
+
+<div class="notelist">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Thành viên</th>
+                <th>Tổng công việc</th>
+                <th>Đã hoàn thành</th>
+                <th>Đang thực hiện</th>
+                <th>Chưa hoàn thành</th>
+                <th>Tiến độ công việc</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                // Tổng phần trăm hoàn thành, đang thực hiện và chưa hoàn thành
+                var completedWidth = Math.Round(m.CompletedPercentage, 2); // Giới hạn 2 chữ số thập phân
+                var inProgressWidth = Math.Round(m.InProgressPercentage, 2);
+                var notStartedWidth = Math.Round(m.NotStartedPercentage, 2);
+
+
+                <tr>
+                    <td>@m.FullName</td>
+                    <td>@m.TotalTasks</td>
+                    <td class="text-success">@m.CompletedTasks</td>
+                    <td class="text-warning">@m.InProgressTasks</td>
+                    <td class="text-danger">@m.NotStartedTasks</td>
+                    <td>
+                        <!-- Thanh tiến độ -->
+                        <div class="progress" style="height: 30px; position: relative;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width:@completedWidth%" aria-valuenow="@completedWidth" aria-valuemin="0" aria-valuemax="100">
+                                <span class="progress-label">@completedWidth.ToString("F2")%</span>
+                            </div>
+                            <div class="progress-bar bg-warning" role="progressbar" style="width:@inProgressWidth%" aria-valuenow="@inProgressWidth" aria-valuemin="0" aria-valuemax="100">
+                                <span class="progress-label">@inProgressWidth.ToString("F2")%</span>
+                            </div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width:@notStartedWidth%" aria-valuenow="@notStartedWidth" aria-valuemin="0" aria-valuemax="100">
+                                <span class="progress-label">@notStartedWidth.ToString("F2")%</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a class="btn-back" asp-action="GroupTaskList" asp-controller="GroupTask">Quay lại</a>
+</div>

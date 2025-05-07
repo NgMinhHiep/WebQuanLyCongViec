@@ -1,0 +1,77 @@
+﻿/* Nút Thành viên nhóm, Thêm công việc mới, Thay đổi trưởng nhóm, rời nhóm*/
+.parentgrouptask .btn-member, .parentgrouptask .btn-create, .parentgrouptask .btn-changeLeader, .parentgrouptask .btn-leave {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 10px 0;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+
+/* Nút "Thành viên nhóm" */
+.parentgrouptask .btn-member {
+    background-color: #007bff;
+}
+
+    .parentgrouptask .btn-member:hover {
+        background-color: #0056b3;
+    }
+
+/* Nút "Thêm công việc mới" */
+.parentgrouptask .btn-create {
+    background-color: #28a745;
+}
+
+    .parentgrouptask .btn-create:hover {
+        background-color: #218838;
+    }
+
+/* Nút "Thay đổi nhóm trưởng" */
+.parentgrouptask .btn-changeLeader {
+    background-color: #ffc107;
+}
+
+    .parentgrouptask .btn-changeLeader:hover {
+        background-color: #e0a800;
+    }
+
+/* Nút "Rời nhóm" */
+.parentgrouptask .btn-leave {
+    background-color: #dc3545;
+}
+
+    .parentgrouptask .btn-leave:hover {
+        background-color: #c82333;
+    }
+
+/* Nút Quay lại */
+.parentgrouptask .btn-back {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 10px 0;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    background-color: #6c757d;
+}
+
+    .parentgrouptask .btn-back:hover {
+        background-color: #5a6268;
+    }
+
+/* Nút "Xem danh sách công việc nhóm" */
+.task-actions form[action*="GroupTaskList"] button {
+    background-color: #007bff;
+}
+
+    .task-actions form[action*="GroupTaskList"] button:hover {
+        background-color: #0056b3;
+    }

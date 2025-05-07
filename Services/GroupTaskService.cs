@@ -1,40 +1,45 @@
 ﻿using WebNC_BTL_QLCV.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using WebNC_BTL_QLCV.Repositories.IRepository;
 
 namespace WebNC_BTL_QLCV.Services
 {
     public class GroupTaskService
     {
         private readonly IGroupTaskRepository _GroupTaskRepository;
-        private readonly ITaskAssignmentRepository _taskAssignmentRepository;
         private readonly INotificationService _notificationService;
+        private readonly INotificationRepository _notificationRepository;
 
-        public GroupTaskService(IGroupTaskRepository GroupTaskRepository, INotificationService notificationService, ITaskAssignmentRepository taskAssignmentRepository)
+        public GroupTaskService(IGroupTaskRepository GroupTaskRepository, INotificationService notificationService, INotificationRepository notificationRepository)
         {
             _GroupTaskRepository = GroupTaskRepository;
             _notificationService = notificationService;
-            _taskAssignmentRepository = taskAssignmentRepository;
+            _notificationRepository = notificationRepository;
         }
 
         public void NotifyTasksEndingSoon(int days)
         {
             // lấy ra danh sách công việc sắp hết hạn
             var tasks = _GroupTaskRepository.GetTasksEndingSoon(days);
+
+            var today = DateTime.Today;
+
             foreach (var task in tasks)
             {
-                //lấy danh sách các thành viên đã được giao việc
-                var assignedMembers = _taskAssignmentRepository.GetAssignmentMemberByTaskID(task.GroupTaskID);
+                var userId = task.UserID;
+                var groupName = task.ParentGroupTask?.Group?.GroupName ?? "(Không rõ nhóm)";
+                var parentTaskName = task.ParentGroupTask?.ParentGroupTaskName ?? "(Không rõ công việc cha)";
 
-                foreach (var member in assignedMembers)
+                var title = $"Công việc sắp hết hạn: {task.GroupTaskName}";
+                var message = $"Công việc \"{task.GroupTaskName}\" (thuộc công việc cha \"{parentTaskName}\" của nhóm \"{groupName}\") " +
+                     $"sẽ hết hạn vào ngày {task.EndDate:dd/MM/yyyy}.";
+
+                if (!_notificationRepository.HasSentDeadlineNotificationToday(userId, title))
                 {
-                    // gửi thông báo đến các thành viên
-                    string title = "Công việc nhóm sắp hết hạn!";
-                    string message = $"Công việc '{task.GroupTaskName}' trong nhóm '{task.Group.GroupName}' sẽ hết hạn vào {task.EndDate}.";
-                    string type = "Thông báo thời hạn công việc";
-                    _notificationService.CreateNotification(member.UserID, title, message, type);
+                    _notificationService.CreateNotification(userId, title, message, "Deadline");
                 }
-
             }
+
         }
     }
 }

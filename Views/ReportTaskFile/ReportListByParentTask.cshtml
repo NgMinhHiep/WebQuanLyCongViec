@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "File công việc nhóm";
+    ViewData["Description"] = "Danh sách file công việc nhóm giúp bạn quản lý, phân công và theo dõi các file công việc nhóm hiệu quả trong hệ thống quản lý công việc của chúng tôi.";
+    ViewData["Keywords"] = "File công việc nhóm, Quản lý file công việc nhóm";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<WebNC_BTL_QLCV.Models.ReportTaskFile>
+
+<link rel="stylesheet" href="~/css/PersonalNote_List.css" />
+<link rel="stylesheet" href="~/css/ReportListByParentTask.css" />
+
+<h2>Danh sách tất cả báo cáo của công việc cha</h2>
+
+<div class="notelist">
+    <!-- Danh sách file -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Công việc</th>
+                <th>Tên file</th>
+                <th>Kích thước</th>
+                <th>Loại file</th>
+                <th>Người gửi</th>
+                <th>Mô tả</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var file in Model)
+            {
+                <tr>
+                    <td>@file.GroupTask.GroupTaskName</td>
+                    <td>@file.ReportFileName</td>
+                    <td>@Math.Round(file.FileSize, 4) MB</td>
+                    <td>@file.FileType</td>
+                    <td>@file.SenderName</td>
+                    <td>@file.ReportDescription</td>
+                    <td>
+                        <a class="downloadfile" asp-action="DownloadFile" asp-route-fileId="@file.ReportTaskFileID">Tải xuống</a>
+                        <!--
+                        <form asp-action="DeleteFile" method="post">
+                            <input type="hidden" name="fileId" value="@file.ReportTaskFileID" />
+                            <input type="hidden" name="taskId" value="@ViewBag.TaskId" />
+                            <button type="submit" onclick="return confirm('Bạn có chắc muốn xóa file này?');">
+                                Xóa
+                            </button>
+                        </form>
+                        -->
+                        <a class="btn-create" asp-action="Create" asp-controller="FeedbackTask" asp-route-reportFileId="@file.ReportTaskFileID">Thêm phản hồi mới</a>
+                        <br />
+                        <a class="btn-ReportTaskFile" asp-action="FeedbackTaskListByParentTask" asp-controller="FeedbackTask" asp-route-reportFileId="@file.ReportTaskFileID">
+                            Xem danh sách phản hồi
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a class="btn-back" asp-action="GroupTaskList" asp-controller="GroupTask">Quay lại</a>
+</div>

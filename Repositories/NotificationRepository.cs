@@ -35,6 +35,17 @@ namespace WebNC_BTL_QLCV.Repositories
             }
         }
 
+        public bool HasSentDeadlineNotificationToday(int userId, string title)
+        {
+            var today = DateTime.Today;
+            return _context.Notifications.Any(n =>
+                n.UserID == userId &&
+                n.Title == title &&
+                n.Type == "Deadline" &&
+                n.CreatedTime.Date == today
+            );
+        }
+
         public void SaveChanges()
         {
             _context.SaveChanges();

@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Gia hạn deadline";
+    ViewData["Description"] = "Danh sách file công việc nhóm giúp bạn quản lý, phân công và theo dõi các file công việc nhóm hiệu quả trong hệ thống quản lý công việc của chúng tôi.";
+    ViewData["Keywords"] = "File công việc nhóm, Quản lý file công việc nhóm";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model WebNC_BTL_QLCV.Models.ExtendDeadlineViewModel
+
+<h2>Gia hạn deadline</h2>
+
+<form asp-action="ExtendDeadline" method="post">
+    <input asp-for="GroupTaskID" type="hidden" />
+
+    <div class="form-group">
+        <label>Ngày kết thúc hiện tại:</label>
+        <input asp-for="CurrentEndDate" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label>Chọn ngày mới:</label>
+        <input asp-for="NewEndDate" type="date" class="form-control" />
+        <span asp-validation-for="NewEndDate" class="text-danger"></span>
+    </div>
+    <br />
+
+    <button type="submit" class="btn btn-primary">Xác nhận gia hạn</button>
+    <a asp-action="GroupTaskList" asp-route-parenttaskid="@Context.Session.GetInt32("ParentGroupTaskId")" class="btn btn-secondary">Hủy</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

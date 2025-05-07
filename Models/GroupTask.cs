@@ -12,9 +12,9 @@ namespace WebNC_BTL_QLCV.Models
         [Column("iGroupTaskID")]
         public int GroupTaskID { get; set; }
 
-        // ID nhóm 
-        [Column("iGroupID")]
-        public int GroupID { get; set; }
+        // ID công việc cha  
+        [Column("iParentGroupTaskID")]
+        public int ParentGroupTaskID { get; set; }
 
         // Tên của công việc nhóm
         [StringLength(100, ErrorMessage = "Tên công việc không được quá 100 ký tự.")]
@@ -50,9 +50,17 @@ namespace WebNC_BTL_QLCV.Models
         [Column("sPriorityLevel")]
         public string PriorityLevel { get; set; }
 
+        // Id thành viên phụ trách công việc
+        [Column("iUserID")]
+        public int UserID { get; set; }
 
+        // số lần công việc hết hạn
+        [Column("iLateCount")]
+        public int LateCount { get; set; } = 0;
+
+        [ForeignKey("ParentGroupTaskID")]
         [ValidateNever]
-        public Group Group { get; set; }
-        public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
+        public ParentGroupTask ParentGroupTask { get; set; }
+        //public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
     }
 }

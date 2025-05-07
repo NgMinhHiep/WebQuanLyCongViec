@@ -1,107 +1,4 @@
-﻿/* Nút bên ngoài bảng */
-/*.grouptask .btn-create,
-.grouptask .btn-member,
-.grouptask .btn-back {
-    display: inline-block;
-    margin: 10px 5px;
-    padding: 5px 10px;
-    font-size: 1rem;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.grouptask .btn-create {
-    background-color: #4CAF50;*/ /* Màu xanh lá */
-/*}
-
-    .grouptask .btn-create:hover {
-        background-color: #45a049;
-        transform: scale(1.05);
-    }
-
-.grouptask .btn-member {
-    background-color: #007bff;*/ /* Màu xanh dương */
-/*}
-
-    .grouptask .btn-member:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-    }
-
-.grouptask .btn-back {
-    background-color: #6c757d;*/ /* Màu xám */
-/*}
-
-    .grouptask .btn-back:hover {
-        background-color: #5a6268;
-        transform: scale(1.05);
-    }*/
-
-/* Nút trong bảng */
-/*.grouptask form button {
-    margin: 5px 0;
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn-delete-assignment, .btn-delete {
-    margin: 5px 0;
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    background-color: #dc3545;
-}
-
-    .btn-delete-assignment:hover {
-        background-color: #c82333;
-        transform: scale(1.05);
-    }
-
-    .btn-delete:hover {
-        background-color: #c82333;
-        transform: scale(1.05);
-    }
-
-.grouptask form[action*="Update"] button {
-    background-color: #ffc107;*/ /* Màu vàng */
-/*}
-
-    .grouptask form[action*="Update"] button:hover {
-        background-color: #e0a800;
-        transform: scale(1.05);
-    }
-
-.grouptask form[action*="Delete"] button {
-    background-color: #dc3545;*/ /* Màu đỏ */
-/*}
-
-    .grouptask form[action*="Delete"] button:hover {
-        background-color: #c82333;
-        transform: scale(1.05);
-    }
-
-.grouptask form[action*="TaskAssignment"] button,
-.grouptask form[action*="GroupNote"] button {
-    background-color: #007bff;*/ /* Màu xanh dương */
-/*}
-
-    .grouptask form[action*="TaskAssignment"] button:hover,
-    .grouptask form[action*="GroupNote"] button:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-    }*/
-
+﻿
 
 .grouptask {
     padding: 20px;
@@ -290,8 +187,40 @@
             background-color: #CC9966;
         }
 
+    /* Nút "Báo cáo công việc" */
+    .task-actions form[action*="ReportTaskFileList"] button {
+        background-color: #FF9900;
+    }
+
+        .task-actions form[action*="ReportTaskFileList"] button:hover {
+            background-color: #CC9966;
+        }
+
+    /* Nút "Gia hạn công việc" */
+
+.btn-ExtendDeadline {
+    display: inline-block;
+    margin: 5px 0;
+    padding: 6px 12px;
+    margin-bottom: 3px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    background-color: #6633CC;
+    
+}
+
+    .btn-ExtendDeadline:hover {
+        text-decoration:none;
+        color: white;
+        background-color: #333399;
+    }
+        
 /* Nút Thành viên nhóm, Thêm công việc mới, Thay đổi trưởng nhóm, rời nhóm*/
-.grouptask .btn-member, .grouptask .btn-create, .grouptask .btn-changeLeader, .grouptask .btn-leave {
+.grouptask .btn-GroupTaskFileList, .grouptask .btn-ReportListByParentTask, .grouptask .btn-MemberTaskStats {
     display: inline-block;
     padding: 8px 16px;
     margin: 10px 0;
@@ -305,40 +234,49 @@
 }
 
 
-/* Nút "Thành viên nhóm" */
-.grouptask .btn-member {
+/* Nút "" */
+.grouptask .btn-GroupTaskFileList {
     background-color: #007bff;
 }
 
-    .grouptask .btn-member:hover {
+    .grouptask .btn-GroupTaskFileList:hover {
         background-color: #0056b3;
     }
 
-/* Nút "Thêm công việc mới" */
-.grouptask .btn-create {
+/* Nút "" */
+.grouptask .btn-ReportListByParentTask {
     background-color: #28a745;
 }
 
-    .grouptask .btn-create:hover {
+    .grouptask .btn-ReportListByParentTask:hover {
         background-color: #218838;
     }
 
-/* Nút "Thay đổi nhóm trưởng" */
-.grouptask .btn-changeLeader {
-    background-color: #ffc107;
+/* Nút "" */
+.grouptask .btn-MemberTaskStats {
+    background-color: #FF9900;
 }
 
-    .grouptask .btn-changeLeader:hover {
-        background-color: #e0a800;
+    .grouptask .btn-MemberTaskStats:hover {
+        background-color: #CC9966;
     }
 
-/* Nút "Rời nhóm" */
-.grouptask .btn-leave {
-    background-color: #dc3545;
+/* Nút "Thêm công việc mới"*/
+.grouptask .btn-create {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #4CAF50; /* Màu xanh lá */
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-    .grouptask .btn-leave:hover {
-        background-color: #c82333;
+    .grouptask .btn-create:hover {
+        background-color: #45a049; /* Màu xanh lá đậm hơn khi hover */
+        transform: scale(1.05); /* Phóng to nhẹ khi hover */
     }
 
 /* Nút Quay lại */
@@ -378,3 +316,197 @@
     }
 }
 
+
+
+
+
+
+.filter-sidebar {
+    position: fixed;
+    top: 90px; /* Tránh header */
+    left: 0;
+    width: 250px;
+    bottom: 170px; /* tự động canh tới sát footer */
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 0 8px 8px 0;
+    text-align: left;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    z-index: 999;
+    text-align:center;
+}
+
+.filter-sidebar btn{
+    margin-top:15px;
+}
+
+/* Hide sidebar by default on small screens */
+@media (max-width: 767.98px) {
+    .filter-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 250px;
+        z-index: 1000;
+        transform: translateX(-100%);
+    }
+
+        .filter-sidebar.show {
+            transform: translateX(0);
+        }
+
+        /* Ensure close button is visible on small screens */
+        #filter-close-btn {
+            display: block;
+        }
+}
+
+/* Show sidebar by default on medium and larger screens */
+@media (min-width: 768px) {
+    .filter-sidebar {
+        display: block !important;
+    }
+
+    #filter-toggle-btn {
+        display: none;
+    }
+}
+
+
+/* phần thống kê*/
+.stats-sidebar {
+    position: fixed;
+    top: 90px; /* Tránh header */
+    right: 0px; /* Căn sát bên phải */
+    width: 300px; /* Tăng chiều rộng để phù hợp với nội dung thống kê */
+    bottom: 160px; /* Canh sát footer */
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px 0 0 8px; /* Bo góc bên trái */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Bóng đổ bên trái */
+    overflow-y: auto;
+    z-index: 999;
+    text-align: center;
+}
+
+    .stats-sidebar .btn {
+        margin-top: 15px;
+    }
+
+    /* Giảm khoảng cách giữa hai phần thống kê */
+    .stats-sidebar .grouptask {
+        margin-bottom: 10px; /* Giảm margin-bottom để hai phần gần nhau hơn */
+    }
+
+        .stats-sidebar .grouptask h2 {
+            margin-bottom: 10px; /* Giảm khoảng cách dưới tiêu đề */
+            font-size: 1.5rem; /* Thu nhỏ tiêu đề để tiết kiệm không gian */
+        }
+
+    .stats-sidebar .list-group {
+        margin-bottom: 10px !important; /* Đảm bảo danh sách không tạo khoảng cách lớn */
+    }
+
+    .stats-sidebar .list-group-item {
+        font-size: 14px;
+        padding: 8px 12px; /* Giảm padding để danh sách gọn hơn */
+    }
+
+    .stats-sidebar .badge {
+        min-width: 40px;
+        text-align: center;
+    }
+
+/* Hide sidebar by default on small screens */
+@media (max-width: 767.98px) {
+    .stats-sidebar {
+        position: fixed;
+        top: 0;
+        right: 0; /* Vẫn giữ bên phải */
+        height: 100%;
+        width: 300px;
+        z-index: 1000;
+        transform: translateX(100%); /* Ẩn sang phải */
+    }
+
+        .stats-sidebar.show {
+            transform: translateX(0); /* Hiển thị khi mở */
+        }
+
+    /* Ensure close button is visible on small screens */
+    #stats-close-btn {
+        display: block;
+        width: 100%;
+    }
+}
+
+/* Show sidebar by default on medium and larger screens */
+@media (min-width: 768px) {
+    .stats-sidebar {
+        display: block !important;
+    }
+
+    #stats-toggle-btn {
+        display: none;
+    }
+
+    /* Hide close button on medium and larger screens */
+    #stats-close-btn {
+        display: none !important;
+    }
+}
+
+#stats-toggle-btn {
+    position: sticky;
+    top: 10px;
+
+}
+
+/* Điều chỉnh để nội dung thống kê hiển thị tốt */
+.stats-sidebar .grouptask {
+    margin-bottom: 20px;
+}
+
+.stats-sidebar .list-group-item {
+    font-size: 14px;
+}
+
+.stats-sidebar .badge {
+    min-width: 40px;
+    text-align: center;
+}
+
+/* Kiểu cho thanh phần trăm */
+.progress {
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: visible; /* Cho phép nhãn phần trăm hiển thị */
+}
+
+.progress-bar {
+    position: relative;
+    color: #fff; /* Màu chữ trắng cho dễ đọc */
+    text-align: center;
+}
+
+.progress-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); /* Đổ bóng để dễ đọc */
+    display: none; /* Ẩn nhãn mặc định */
+}
+
+.progress-bar[aria-valuenow="0"] {
+    display: none; /* Ẩn progress-bar nếu phần trăm là 0 */
+}
+
+.progress-bar[aria-valuenow]:not([aria-valuenow="0"]) .progress-label {
+    display: block; /* Hiển thị nhãn nếu phần trăm lớn hơn 0 */
+}

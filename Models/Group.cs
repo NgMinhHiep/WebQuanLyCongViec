@@ -26,14 +26,6 @@ namespace WebNC_BTL_QLCV.Models
         public DateOnly GroupFormationDate { get; set; }
 
         public ICollection<GroupMember> GroupMembers { get; set; } = new List<GroupMember>();
-        public ICollection<GroupTask> GroupTasks { get; set; } = new List<GroupTask>();
-
-
-        [Column("sVerifyKey")]
-        [Required(ErrorMessage = "KEy không được bỏ trống.")]
-        [StringLength(10, ErrorMessage = "Key không được quá 10 ký tự.")]
-        [MinLength(6, ErrorMessage = "Key phải có ít nhất 6 ký tự.")]
-        [RegularExpression(@".*\d$", ErrorMessage = "Key phải kết thúc bằng một số.")]
-        public string VerifyKey { get; set; }
+        
     }
 }

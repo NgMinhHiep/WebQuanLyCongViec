@@ -24,7 +24,6 @@ builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IGroupTaskRepository, GroupTaskRepository>();
 builder.Services.AddScoped<IGroupNoteRepository, GroupNoteRepository>();
 builder.Services.AddScoped<IGroupMemberRepository, GroupMemberRepository>();
-builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<PersonalTaskService>();
@@ -32,6 +31,9 @@ builder.Services.AddScoped<GroupTaskService>();
 builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddScoped<GoogleDriveService>();
 builder.Services.AddScoped<IGroupTaskFileRepository, GroupTaskFileRepository>();
+builder.Services.AddScoped<IParentGroupTaskRepository, ParentGroupTaskRepository>();
+builder.Services.AddScoped<IReportTaskFileRepository, ReportTaskFileRepository>();
+builder.Services.AddScoped<IFeedbackTaskRepository, FeedbackTaskRepository>();
 
 builder.Services.AddHostedService<NotificationBackgroundService>();
 

@@ -1,0 +1,8 @@
+﻿/* Sửa lỗi menu dropdown luôn hiện */
+.dropdown-menu {
+    display: none;
+}
+
+.dropdown.show .dropdown-menu {
+    display: block;
+}

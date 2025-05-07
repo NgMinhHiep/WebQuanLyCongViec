@@ -1,0 +1,37 @@
+﻿/* Kiểu cho thanh tiến độ */
+.progress {
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: visible; /* Cho phép nhãn phần trăm hiển thị */
+}
+
+.progress-bar {
+    position: relative;
+    color: #fff; /* Màu chữ trắng cho dễ đọc */
+    text-align: center;
+}
+
+.progress-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); /* Đổ bóng để dễ đọc */
+    display: none; /* Ẩn nhãn mặc định */
+}
+
+.progress-bar[aria-valuenow="0"] {
+    display: none; /* Ẩn progress-bar nếu phần trăm là 0 */
+}
+
+.progress-bar[aria-valuenow]:not([aria-valuenow="0"]) .progress-label {
+    display: block; /* Hiển thị nhãn nếu phần trăm lớn hơn 0 */
+}
+
+/* Đảm bảo nhãn chỉ hiển thị khi đoạn đủ rộng */
+.progress-bar[aria-valuenow]:not([aria-valuenow="0"]) {
+    min-width: 40px; /* Đảm bảo đoạn đủ rộng để hiển thị nhãn */
+}

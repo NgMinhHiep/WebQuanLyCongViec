@@ -1,0 +1,161 @@
+﻿@{
+    ViewData["Title"] = "Công việc cha";
+    ViewData["Description"] = "Danh sách công việc cha giúp bạn quản lý, phân công và theo dõi tiến độ công việc nhóm hiệu quả trong hệ thống quản lý công việc của chúng tôi.";
+    ViewData["Keywords"] = "Công việc cha, Quản lý công việc cha, Phân công công việc, Quản lý nhóm, Group tasks, Team management";
+    ViewData["Author"] = "Nhóm 14, Trường Đại học Mở Hà Nội, Lập trình web nâng cao";
+    ViewData["Robots"] = "index, follow";
+
+    Layout = "_SimpleLayout";
+}
+
+@model IEnumerable<ParentGroupTask>
+<link rel="stylesheet" href="~/css/GroupTask_List.css" />
+<link rel="stylesheet" href="~/css/ParentGroupTask_List.css" />
+
+<div class="parentgrouptask">
+    <a class="btn-member" asp-action="GroupMemberList" asp-controller="GroupMember">Thành viên nhóm</a>
+    @if (ViewBag.IsLeader)
+    {
+        <a class="btn-changeLeader" asp-controller="Group" asp-action="ChangeLeader" asp-route-groupId="@Context.Session.GetInt32("GroupId")">Thay đổi nhóm trưởng</a>
+    }
+    <a class="btn-leave"
+       data-group-id="@Context.Session.GetInt32("GroupId")"
+       data-user-id="@Context.Session.GetInt32("UserId")">
+        Rời nhóm
+    </a>
+    <h2>Danh sách công việc cha của nhóm: @Context.Session.GetString("GroupName")</h2>
+
+    @if (ViewBag.IsLeader)
+    {
+        <a class="btn-create" asp-action="Create">Thêm công việc mới</a>
+    }
+
+    <div class="task-container">
+        @foreach (var task in Model)
+        {
+            <div class="task-card @GetPriorityClass(task.PriorityLevel)" id="task-card-@task.ParentGroupTaskID">
+                <h3 class="task-name">@task.ParentGroupTaskName</h3>
+                <p class="task-description">@task.ParentGroupTaskDescription</p>
+                <p class="task-status">
+                    @{
+                        string statusClass;
+                        switch (task.ParentGroupTaskStatus)
+                        {
+                            case "Đã hoàn thành": statusClass = "text-success"; break;
+                            case "Chưa hoàn thành": statusClass = "text-danger"; break;
+                            case "Đang thực hiện": statusClass = "text-warning"; break;
+                            default: statusClass = "text-secondary"; break;
+                        }
+                    }
+                    <span class="@statusClass">@task.ParentGroupTaskStatus</span>
+                </p>
+                <p class="task-priority">
+                    @{
+                        string priorityClass;
+                        switch (task.PriorityLevel)
+                        {
+                            case "Thấp": priorityClass = "text-success"; break;
+                            case "Trung bình": priorityClass = "text-warning"; break;
+                            case "Cao": priorityClass = "text-danger"; break;
+                            case "Khẩn cấp": priorityClass = "priority-critical"; break;
+                            default: priorityClass = "text-secondary"; break;
+                        }
+                    }
+                    <span class="@priorityClass">Độ ưu tiên: @task.PriorityLevel</span>
+                </p>
+
+                <div class="task-actions">
+                    @if (ViewBag.IsLeader)
+                    {
+                        <form asp-action="Update" method="get" asp-route-id="@task.ParentGroupTaskID">
+                            <button type="submit">Sửa</button>
+                        </form>
+                        <button class="btn-delete" data-task-id="@task.ParentGroupTaskID">Xóa</button>
+                        
+                    }
+                    <form asp-action="GroupTaskList" asp-route-parenttaskid="@task.ParentGroupTaskID">
+                        <button>Xem danh sách công việc nhóm</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+
+    <a class="btn-back" asp-action="GroupList">Quay lại</a>
+</div>
+
+
+<!-- Thêm jQuery và script AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".btn-delete").click(function () {
+            var taskId = $(this).data("task-id");
+
+            if (confirm("Bạn có chắc chắn muốn xóa công việc này?")) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "ParentGroupTask")', // Đảm bảo đúng action/controller
+                    type: 'POST',
+                    data: { id: taskId },
+                    success: function (response) {
+                        if (response.success) {
+                            $("#task-card-" + taskId).remove(); // Xóa hàng khỏi bảng
+                            alert("Xóa công việc thành công!");
+                        } else {
+                            alert(response.message || "Xóa công việc thất bại!");
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi trong quá trình xóa.");
+                    }
+                });
+            }
+        });     
+
+        $(".btn-leave").click(function () {
+            if (confirm("Bạn có chắc chắn muốn rời khỏi nhóm?")) {
+
+                var groupId = $(this).data("group-id");
+                var userId = $(this).data("user-id");
+
+                $.ajax({
+                    url: '@Url.Action("LeaveGroup", "GroupMember")',
+                    type: 'POST',
+                    data: {
+                        groupId: groupId,
+                        userId: userId
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Tìm và xóa phần tử có taskId và userId tương ứng
+
+                            alert("Rời nhóm thành công!");
+                            window.location.href = '@Url.Action("GroupList", "Group")';
+                        } else {
+                            alert(response.errorMessage || "Rời nhóm thất bại!");
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi trong quá trình rời khỏi nhóm.");
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+
+<!-- Chỉnh sửa màu border các thẻ công việc theo độ ưu tiên -->
+@functions {
+    string GetPriorityClass(string priorityLevel)
+    {
+        return priorityLevel switch
+        {
+            "Thấp" => "border-low",
+            "Trung bình" => "border-medium",
+            "Cao" => "border-high",
+            "Khẩn cấp" => "border-critical",
+            _ => "border-default"
+        };
+    }
+}

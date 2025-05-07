@@ -9,10 +9,8 @@ namespace WebNC_BTL_QLCV.Repositories
         // lay ra công việc nhóm theo id
         GroupTask GetGroupTaskById(int id);
 
-        // lay ra danh sách công việc nhóm theo id nhóm
-        IEnumerable<GroupTask> GetGroupTaskByGroupID(int groupId);
-
-        TaskAssignment GetUsersByGroupIDAndGroupTaskID(int groupId, int taskId);
+        // lay ra danh sách công việc nhóm theo id cv cha
+        IEnumerable<GroupTask> GetGroupTasksByParentGroupTaskID(int parenttaskid);
 
         // thêm công việc nhóm
         void AddGroupTask(GroupTask GroupTask);
@@ -24,6 +22,11 @@ namespace WebNC_BTL_QLCV.Repositories
         void DeleteGroupTask(int id);
 
         IEnumerable<GroupTask> GetTasksEndingSoon(int days);
+
+        void IncrementLateCount(int taskId);
+        void ExtendDeadline(int taskId, DateOnly newEndDate);
+
+        public List<MemberTaskStats> GetMemberTaskStatsByGroupId(int groupId);
     }
 }
 

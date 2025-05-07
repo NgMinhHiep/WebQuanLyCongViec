@@ -53,7 +53,7 @@ namespace WebNC_BTL_QLCV.Controllers
             var group = _GroupRepository.GetGroupById(id);
             HttpContext.Session.SetInt32("GroupId", group.GroupID); // lưu id group vào session
             HttpContext.Session.SetString("GroupName", group.GroupName); // lưu tên group vào session
-            return RedirectToAction("GroupTaskList", "GroupTask");
+            return RedirectToAction("ParentGroupTaskList", "ParentGroupTask");
         }
 
         // thêm nhóm mới
@@ -163,6 +163,7 @@ namespace WebNC_BTL_QLCV.Controllers
             return Json(new { success = false, message = "Bạn không có quyền xóa nhóm này." });
         }
 
+        // thay đổi nhóm trưởng
         public IActionResult ChangeLeader(int groupId)
         {
             var group = _GroupRepository.GetGroupById(groupId);

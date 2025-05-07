@@ -8,101 +8,261 @@
     Layout = "_SimpleLayout";
 }
 
+@inject WebNC_BTL_QLCV.Repositories.IUserRepository UserRepo
+
 @model IEnumerable<GroupTask>
-<link rel="stylesheet" href="~/css/GroupTask_List.css " />
 
-<div class="grouptask">
-    <a class="btn-member" asp-action="GroupMemberList" asp-controller="GroupMember">Thành viên nhóm</a>
-    @if (ViewBag.IsLeader)
-    {
-        <a class="btn-changeLeader" asp-controller="Group" asp-action="ChangeLeader" asp-route-groupId="@Context.Session.GetInt32("GroupId")">Thay đổi nhóm trưởng</a>
-    }
-    <a class="btn-leave"
-            data-group-id="@Context.Session.GetInt32("GroupId")"
-            data-user-id="@Context.Session.GetInt32("UserId")">
-        Rời nhóm
-    </a>
-    <h2>Danh sách công việc của nhóm: @Context.Session.GetString("GroupName")</h2>
+<link rel="stylesheet" href="~/css/GroupTask_List.css" />
 
-    @if (ViewBag.IsLeader)
-    {
-        <a class="btn-create" asp-action="Create">Thêm công việc mới</a>
-    }
+<div class="task-layout-wrapper">
 
-    <div class="task-container">
-        @foreach (var task in Model)
-        {
-            <div class="task-card @GetPriorityClass(task.PriorityLevel)" id="task-card-@task.GroupTaskID">
-                <h3 class="task-name">@task.GroupTaskName</h3>
-                <p class="task-description">@task.GroupTaskDescription</p>
-                <p class="task-status">
-                    @{
-                        string statusClass;
-                        switch (task.GroupTaskStatus)
-                        {
-                            case "Đã hoàn thành": statusClass = "text-success"; break;
-                            case "Chưa hoàn thành": statusClass = "text-danger"; break;
-                            case "Đang thực hiện": statusClass = "text-warning"; break;
-                            default: statusClass = "text-secondary"; break;
+    <!-- Button to toggle filter sidebar on small screens -->
+    <button id="filter-toggle-btn" class="btn btn-primary d-md-none mb-3">
+        <i class="fas fa-filter"></i> Bộ lọc
+    </button>
+
+    <!-- Sidebar bộ lọc -->
+    <div id="filter-sidebar-wrapper" class="filter-sidebar d-none">
+        <h4>Lọc công việc</h4>
+        <br />
+        <h5>Trạng thái</h5>
+        <button class="btn btn-outline-primary btn-filter-status" data-status="Chưa hoàn thành">Chưa hoàn thành</button>
+        <button class="btn btn-outline-warning btn-filter-status" data-status="Đang thực hiện">Đang thực hiện</button>
+        <button class="btn btn-outline-success btn-filter-status" data-status="Đã hoàn thành">Đã hoàn thành</button>
+        <br />
+        <br />
+        <h5>Thời hạn</h5>
+        <button class="btn btn-outline-info" id="btn-due-3">Kết thúc trong 3 ngày</button>
+        <button class="btn btn-outline-info" id="btn-due-7">Kết thúc trong 7 ngày</button>
+        <br />
+        <br />
+        <h5>Công việc cá nhân</h5>
+        <button class="btn btn-outline-success" id="btn-my-tasks">Công việc của tôi</button>
+        <br />
+        <br />
+        <button class="btn btn-outline-secondary" id="btn-reset">Đặt lại</button>
+        <br />
+        <br />
+        <!-- Close button, visible only on small screens -->
+        <button id="filter-close-btn" class="btn btn-danger d-md-none">Đóng</button>
+    </div>
+
+
+    <!-- Button to toggle statistics sidebar on small screens -->
+    <button id="stats-toggle-btn" class="btn btn-primary d-md-none mb-3">
+        <i class="fas fa-chart-bar"></i> Thống kê
+    </button>
+
+    <!-- Sidebar thống kê -->
+    <div id="stats-sidebar-wrapper" class="stats-sidebar d-none">
+        <div class="grouptask">
+            <h2>Thống kê công việc của nhóm</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Tổng số công việc
+                            <span class="badge badge-primary badge-pill">@ViewBag.TotalTasks</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Đã hoàn thành
+                            <span class="badge badge-success badge-pill">@ViewBag.CompletedTasks</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Đang thực hiện
+                            <span class="badge badge-warning badge-pill">@ViewBag.InProgressTasks</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Chưa hoàn thành
+                            <span class="badge badge-danger badge-pill">@ViewBag.NotStartedTasks</span>
+                        </li>
+                    </ul>
+                    <!-- Thanh phần trăm cho công việc nhóm -->
+                    <div class="progress mt-2" style="height: 30px; position: relative;">
+                        @{
+                            double total = @ViewBag.TotalTasks > 0 ? @ViewBag.TotalTasks : 1; // Tránh chia cho 0
+                            double completedPercent = Math.Round((double)@ViewBag.CompletedTasks / total * 100, 2);
+                            double inProgressPercent = Math.Round((double)@ViewBag.InProgressTasks / total * 100, 2);
+                            double notStartedPercent = Math.Round((double)@ViewBag.NotStartedTasks / total * 100, 2);
                         }
-                    }
-                    <span class="@statusClass">@task.GroupTaskStatus</span>
-                </p>
-                <p class="task-priority">
-                    @{
-                        string priorityClass;
-                        switch (task.PriorityLevel)
-                        {
-                            case "Thấp": priorityClass = "text-success"; break;
-                            case "Trung bình": priorityClass = "text-warning"; break;
-                            case "Cao": priorityClass = "text-danger"; break;
-                            case "Khẩn cấp": priorityClass = "priority-critical"; break;
-                            default: priorityClass = "text-secondary"; break;
+                        <div class="progress-bar bg-success" role="progressbar" style="width: @completedPercent%;" aria-valuenow="@completedPercent" aria-valuemin="0" aria-valuemax="100">
+                            <span class="progress-label">@completedPercent%</span>
+                        </div>
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: @inProgressPercent%;" aria-valuenow="@inProgressPercent" aria-valuemin="0" aria-valuemax="100">
+                            <span class="progress-label">@inProgressPercent%</span>
+                        </div>
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @notStartedPercent%;" aria-valuenow="@notStartedPercent" aria-valuemin="0" aria-valuemax="100">
+                            <span class="progress-label">@notStartedPercent%</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="grouptask">
+            <h2>Thống kê công việc của tôi</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Tổng số công việc
+                            <span class="badge badge-primary badge-pill">@ViewBag.PersonalTotalTasks</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Đã hoàn thành
+                            <span class="badge badge-success badge-pill">@ViewBag.PersonalCompletedTasks</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Đang thực hiện
+                            <span class="badge badge-warning badge-pill">@ViewBag.PersonalInProgressTasks</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Chưa hoàn thành
+                            <span class="badge badge-danger badge-pill">@ViewBag.PersonalNotStartedTasks</span>
+                        </li>
+                    </ul>
+
+                    <!-- Thanh phần trăm cho công việc cá nhân -->
+                    <div class="progress mt-2" style="height: 30px; position: relative;">
+                        @{
+                            double personalTotal = @ViewBag.PersonalTotalTasks > 0 ? @ViewBag.PersonalTotalTasks : 1; // Tránh chia cho 0
+                            double personalCompletedPercent = Math.Round((double)@ViewBag.PersonalCompletedTasks / personalTotal * 100, 2);
+                            double personalInProgressPercent = Math.Round((double)@ViewBag.PersonalInProgressTasks / personalTotal * 100, 2);
+                            double personalNotStartedPercent = Math.Round((double)@ViewBag.PersonalNotStartedTasks / personalTotal * 100, 2);
                         }
-                    }
-                    <span class="@priorityClass">Độ ưu tiên: @task.PriorityLevel</span>
-                </p>
-                <p class="task-dates">
-                    <strong>Bắt đầu:</strong> @task.StartDate <br>
-                    <strong>Kết thúc:</strong> @task.EndDate
-                </p>
-                <div class="task-members">
-                    <strong>Thành viên phụ trách:</strong>
-                    @foreach (var assignment in task.TaskAssignments)
+                        <div class="progress-bar bg-success" role="progressbar" style="width: @personalCompletedPercent%;" aria-valuenow="@personalCompletedPercent" aria-valuemin="0" aria-valuemax="100">
+                            <span class="progress-label">@personalCompletedPercent%</span>
+                        </div>
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: @personalInProgressPercent%;" aria-valuenow="@personalInProgressPercent" aria-valuemin="0" aria-valuemax="100">
+                            <span class="progress-label">@personalInProgressPercent%</span>
+                        </div>
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @personalNotStartedPercent%;" aria-valuenow="@personalNotStartedPercent" aria-valuemin="0" aria-valuemax="100">
+                            <span class="progress-label">@personalNotStartedPercent%</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Close button, visible only on small screens -->
+        <button id="stats-close-btn" class="btn btn-danger d-md-none">Đóng</button>
+    </div>
+
+    <div class="task-main-content">
+        <div class="grouptask">
+            <a class="btn-GroupTaskFileList" asp-action="GroupTaskFileList" asp-controller="GroupTaskFile" asp-route-taskid="@Context.Session.GetInt32("ParentGroupTaskId")">Xem danh sách tài liệu công việc</a>
+            
+            @if (ViewBag.IsLeader)
+            {
+                <a class="btn-ReportListByParentTask" asp-action="ReportListByParentTask" asp-controller="ReportTaskFile" asp-route-parentTaskId="@Context.Session.GetInt32("ParentGroupTaskId")">Xem danh sách báo cáo công việc</a>
+                <a class="btn-MemberTaskStats" asp-action="MemberTaskStats">Xem danh sách thống kê công việc</a>
+            }
+            
+
+            <div class="grouptask">
+                <h2>Danh sách công việc nhóm của công việc cha: @Context.Session.GetString("ParentGroupTaskName")</h2>
+
+                @if (ViewBag.IsLeader)
+                {
+                    <a class="btn-create" asp-action="Create">Thêm công việc mới</a>
+                }
+
+                <div class="task-container">
+                    @foreach (var task in Model)
                     {
-                        <div class="assignment-row" data-task-id="@task.GroupTaskID" data-user-id="@assignment.UserID">
-                            @assignment.GroupMember.User.UserName
-                            @if (ViewBag.IsLeader)
-                            {
-                                <button class="btn-delete-assignment" data-task-id="@task.GroupTaskID" data-user-id="@assignment.UserID">Xóa</button>
+                        <div class="task-card @GetPriorityClass(task.PriorityLevel)" id="task-card-@task.GroupTaskID" data-status="@task.GroupTaskStatus" data-user-id="@task.UserID"
+                             data-enddate="@task.EndDate.ToString("yyyy-MM-dd")">
+                            <h3 class="task-name">@task.GroupTaskName</h3>
+                            <p class="task-description">@task.GroupTaskDescription</p>
+                            <p class="task-status">
+                                @{
+                                    string statusClass;
+                                    switch (task.GroupTaskStatus)
+                                    {
+                                        case "Đã hoàn thành": statusClass = "text-success"; break;
+                                        case "Chưa hoàn thành": statusClass = "text-danger"; break;
+                                        case "Đang thực hiện": statusClass = "text-warning"; break;
+                                        default: statusClass = "text-secondary"; break;
+                                    }
+                                }
+                                <span class="@statusClass">@task.GroupTaskStatus</span>
+                            </p>
+                            <p class="task-priority">
+                                @{
+                                    string priorityClass;
+                                    switch (task.PriorityLevel)
+                                    {
+                                        case "Thấp": priorityClass = "text-success"; break;
+                                        case "Trung bình": priorityClass = "text-warning"; break;
+                                        case "Cao": priorityClass = "text-danger"; break;
+                                        case "Khẩn cấp": priorityClass = "priority-critical"; break;
+                                        default: priorityClass = "text-secondary"; break;
+                                    }
+                                }
+                                <span class="@priorityClass">Độ ưu tiên: @task.PriorityLevel</span>
+                            </p>
+                            <p class="task-dates">
+                                <strong>Bắt đầu:</strong> @task.StartDate <br>
+                                <strong>Kết thúc:</strong> @task.EndDate
+                            </p>
+
+                            @{
+                                var groupMembers = ViewBag.GroupMembers as List<GroupMember>;
+                                var member = groupMembers?.FirstOrDefault(m => m.UserID == task.UserID);
+                                string userName = (member != null && member.User != null) ? member.User.FullName : "Chưa xác định";
                             }
+                            <p class="task-responsible">
+                                <strong>Người phụ trách:</strong> @userName
+                            </p>
+                            <p class="task-latecount">
+                                <strong>Số lần quá hạn:</strong> @task.LateCount
+                            </p>
+
+
+                            @{
+                                var isOverdue = task.EndDate < DateOnly.FromDateTime(DateTime.Now) && task.GroupTaskStatus != "Đã hoàn thành";
+                            }
+                            <div class="task-actions">
+                                @if (ViewBag.IsLeader)
+                                {
+                                    <form asp-action="Update" method="get" asp-route-id="@task.GroupTaskID">
+                                        <button type="submit">Sửa</button>
+                                    </form>
+                                    <button class="btn-delete" data-task-id="@task.GroupTaskID">Xóa</button>
+                                }
+                                @if (ViewBag.IsLeader || task.UserID == Context.Session.GetInt32("UserId"))
+                                {
+                                    <form asp-action="GroupNote" method="get" asp-route-id="@task.GroupTaskID">
+                                        <button>Xem ghi chú</button>
+                                    </form>
+                                }
+
+                                @if (!isOverdue && task.UserID == Context.Session.GetInt32("UserId"))
+                                {
+                                    <form asp-action="ReportTaskFileList" asp-controller="ReportTaskFile" asp-route-taskid="@task.GroupTaskID">
+                                        <button>Báo cáo công việc</button>
+                                    </form>
+                                }
+                                else if (isOverdue && ViewBag.IsLeader)
+                                {
+                                    <a asp-action="ExtendDeadline" asp-route-id="@task.GroupTaskID" class="btn-ExtendDeadline">Gia hạn</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Quá hạn (@task.LateCount lần)</span>
+                                }
+                            </div>
                         </div>
                     }
                 </div>
-                <div class="task-actions">
-                    @if (ViewBag.IsLeader)
-                    {
-                        <form asp-action="Update" method="get" asp-route-id="@task.GroupTaskID">
-                            <button type="submit">Sửa</button>
-                        </form>
-                        <button class="btn-delete" data-task-id="@task.GroupTaskID">Xóa</button>
-                        <form asp-action="TaskAssignment" method="get" asp-route-id="@task.GroupTaskID">
-                            <button>Thêm thành viên</button>
-                        </form>
-                    }
-                    <form asp-action="GroupNote" method="get" asp-route-id="@task.GroupTaskID">
-                        <button>Xem ghi chú</button>
-                    </form>
-                    <form asp-action="GroupTaskFileList" asp-controller="GroupTaskFile" asp-route-taskid="@task.GroupTaskID">
-                        <button>Xem danh sách file</button>
-                    </form>
-                </div>
-            </div>
-        }
-    </div>
 
-    <a class="btn-back" asp-action="GroupList">Quay lại</a>
+                <a class="btn-back" asp-action="ParentGroupTaskList">Quay lại</a>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 
 
 <!-- Thêm jQuery và script AJAX -->
@@ -187,6 +347,121 @@
             }
         });
 
+        var currentUserId = @Context.Session.GetInt32("UserId");
+        let filters = {
+            status: null,
+            userOnly: false,
+            dueDays: null
+        };
+
+        function applyFilters() {
+            $(".task-card").hide().filter(function () {
+                let card = $(this);
+                let status = card.data("status");
+                let userId = parseInt(card.data("user-id"));
+                let endDateStr = card.data("enddate");
+                let endDate = new Date(endDateStr);
+                let now = new Date();
+
+                // Điều kiện theo từng filter
+                let matchStatus = !filters.status || status === filters.status;
+                let matchUser = !filters.userOnly || userId === currentUserId;
+                let matchDue = true;
+
+                if (filters.dueDays) {
+                    let maxDate = new Date();
+                    maxDate.setDate(now.getDate() + filters.dueDays);
+                    matchDue = endDate >= now && endDate <= maxDate;
+                }
+
+                return matchStatus && matchUser && matchDue;
+            }).show();
+        }
+
+        $(".btn-filter-status").click(function () {
+            let selectedStatus = $(this).data("status");
+
+            if (filters.status === selectedStatus) {
+                filters.status = null;
+                $(this).removeClass("active");
+            } else {
+                filters.status = selectedStatus;
+                $(".btn-filter-status").removeClass("active");
+                $(this).addClass("active");
+            }
+
+            applyFilters();
+        });
+
+        $("#btn-my-tasks").click(function () {
+            filters.userOnly = !filters.userOnly;
+            $(this).toggleClass("active");
+            applyFilters();
+        });
+
+        $("#btn-due-3").click(function () {
+            if (filters.dueDays === 3) {
+                filters.dueDays = null;
+                $(this).removeClass("active");
+            } else {
+                filters.dueDays = 3;
+                $("#btn-due-3").addClass("active");
+                $("#btn-due-7").removeClass("active");
+            }
+            applyFilters();
+        });
+
+        $("#btn-due-7").click(function () {
+            if (filters.dueDays === 7) {
+                filters.dueDays = null;
+                $(this).removeClass("active");
+            } else {
+                filters.dueDays = 7;
+                $("#btn-due-7").addClass("active");
+                $("#btn-due-3").removeClass("active");
+            }
+            applyFilters();
+        });
+
+        $("#btn-reset").click(function () {
+            filters = { status: null, userOnly: false, dueDays: null };
+            $(".btn").removeClass("active");
+            $(".task-card").show();
+        });
+
+
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleBtn = document.getElementById('filter-toggle-btn');
+        const closeBtn = document.getElementById('filter-close-btn');
+        const sidebar = document.getElementById('filter-sidebar-wrapper');
+
+        toggleBtn.addEventListener('click', function () {
+            sidebar.classList.add('show');
+            sidebar.classList.remove('d-none');
+        });
+
+        closeBtn.addEventListener('click', function () {
+            sidebar.classList.remove('show');
+            sidebar.classList.add('d-none');
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleBtn = document.getElementById('stats-toggle-btn');
+        const closeBtn = document.getElementById('stats-close-btn');
+        const sidebar = document.getElementById('stats-sidebar-wrapper');
+
+        toggleBtn.addEventListener('click', function () {
+            sidebar.classList.add('show');
+            sidebar.classList.remove('d-none');
+        });
+
+        closeBtn.addEventListener('click', function () {
+            sidebar.classList.remove('show');
+            sidebar.classList.add('d-none');
+        });
     });
 </script>
 
@@ -204,3 +479,4 @@
         };
     }
 }
+

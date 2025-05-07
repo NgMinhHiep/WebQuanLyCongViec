@@ -17,7 +17,7 @@ namespace WebNC_BTL_QLCV.Repositories
 
         public async Task<List<GroupTaskFile>> GetAllFilesAsync(int taskId)
         {
-            return await _context.GroupTaskFiles.Where(f => f.GroupTaskID == taskId).ToListAsync();
+            return await _context.GroupTaskFiles.Where(f => f.ParentGroupTaskID == taskId).ToListAsync();
         }
 
         public async Task<GroupTaskFile> GetFileByIdAsync(int fileId)

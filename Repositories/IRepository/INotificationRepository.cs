@@ -8,5 +8,7 @@ namespace WebNC_BTL_QLCV.Repositories.IRepository
         void AddNotification(Notification notification);
         void MarkAsRead(int notificationId);
         void SaveChanges();
+
+        bool HasSentDeadlineNotificationToday(int userId, string title);
     }
 }
