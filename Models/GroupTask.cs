@@ -54,6 +54,10 @@ namespace WebNC_BTL_QLCV.Models
         [Column("iUserID")]
         public int UserID { get; set; }
 
+        // Id nhóm
+        //[Column("iGroupID")]
+        //public int GroupID { get; set; }
+        
         // số lần công việc hết hạn
         [Column("iLateCount")]
         public int LateCount { get; set; } = 0;

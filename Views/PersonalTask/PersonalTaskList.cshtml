@@ -10,6 +10,7 @@
 
 @model IEnumerable<WebNC_BTL_QLCV.Models.PersonalTask>
 <link rel="stylesheet" href="~/css/PersonalTask_List.css" />
+<link rel="stylesheet" href="~/css/view_toggle.css" />
 
 <div class="personaltask">
     <h2>Danh sách công việc cá nhân</h2>
@@ -18,7 +19,13 @@
     <a class="btn-a" asp-action="Create">Thêm Công Việc Mới</a>
     <br />
 
-    <div class="task-container">
+    <div class="view-toggle">
+        <button id="cardViewBtn">Chế độ thẻ</button>
+        <button id="tableViewBtn">Chế độ bảng</button>
+    </div>
+
+    <!-- Chế độ Card -->
+    <div id="cardView" class="task-container">
         @foreach (var personalTask in Model)
         {
             <div class="task-card" id="task-card-@personalTask.PersonalTaskID">
@@ -52,13 +59,76 @@
                         <button type="submit">Xem Ghi Chú</button>
                     </form>
                     <form asp-action="Update" method="get" asp-route-id="@personalTask.PersonalTaskID">
-                        <button type="submit">Sửa</button>
+                        <button type="submit">Cập nhật</button>
                     </form>
                     <button type="button" class="btn-delete" data-task-id="@personalTask.PersonalTaskID">Xóa</button>
                     
                 </div>
             </div>
         }
+    </div>
+
+    <!-- Chế độ Table -->
+    <div id="tableView" class="group-table" style="display:none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên công việc</th>
+                    <th>Mô tả</th>
+                    <th>Bắt đầu</th>
+                    <th>Kết thúc</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model)
+                {
+                    <div class="task-table" id="task-table-@task.PersonalTaskID">
+                        <tr>
+                            <td>@task.PersonalTaskName</td>
+                            <td>@task.PersonalTaskDescription</td>
+                            <td>@task.StartDate</td>
+                            <td>@task.EndDate</td>
+                            <td>
+                            <p class="task-status">
+                                @{
+                                    string statusClass;
+                                    switch (task.PersonalTaskStatus)
+                                    {
+                                        case "Đã hoàn thành":
+                                            statusClass = "text-success"; // Màu xanh
+                                            break;
+                                        case "Chưa hoàn thành":
+                                            statusClass = "text-danger"; // Màu đỏ
+                                            break;
+                                        case "Đang thực hiện":
+                                            statusClass = "text-warning"; // Màu cam
+                                            break;
+                                        default:
+                                            statusClass = "text-secondary"; // Màu mặc định
+                                            break;
+                                    }
+                                }
+                                <span class="@statusClass">@task.PersonalTaskStatus</span>
+                            </p>
+                            </td>
+                            <td>
+                                <div class="task-actions">
+                                    <form asp-action="NoteList" method="get" asp-route-id="@task.PersonalTaskID">
+                                        <button type="submit">Xem Ghi Chú</button>
+                                    </form>
+                                    <form asp-action="Update" asp-route-id="@task.PersonalTaskID" method="get" style="display:inline-block;">
+                                        <button type="submit">Cập nhật</button>
+                                    </form>
+                                    <button type="button" class="btn-delete" data-task-id="@task.PersonalTaskID">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </div>
+                }
+            </tbody>
+        </table>
     </div>
 
     <a class="btn-a" asp-action="Home">Quay lại trang chủ</a>
@@ -79,6 +149,7 @@
                         success: function (response) {
                             if (response.success) {
                                 $("#task-card-" + taskId).remove(); // Xóa hàng khỏi bảng
+                                $("#task-table-" + taskId).remove();
                                 alert("Xóa công việc thành công!");
                             } else {
                                 alert(response.message || "Xóa công việc thất bại!");
@@ -90,6 +161,24 @@
                     });
                 }
             });
+        });
+    </script>
+
+    <!-- Script chuyển đổi -->
+    <script>
+        const cardViewBtn = document.getElementById("cardViewBtn");
+        const tableViewBtn = document.getElementById("tableViewBtn");
+        const cardView = document.getElementById("cardView");
+        const tableView = document.getElementById("tableView");
+
+        cardViewBtn.addEventListener("click", () => {
+            cardView.style.display = "flex";
+            tableView.style.display = "none";
+        });
+
+        tableViewBtn.addEventListener("click", () => {
+            cardView.style.display = "none";
+            tableView.style.display = "block";
         });
     </script>
 }

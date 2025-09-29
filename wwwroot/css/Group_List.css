@@ -164,3 +164,49 @@
         padding: 5px 10px;
     }
 }
+
+/* Nút chuyển chế độ hiển thị */
+.view-toggle {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+    .view-toggle button {
+        padding: 8px 14px;
+        margin: 0 5px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.2s ease;
+    }
+
+        .view-toggle button:hover {
+            background-color: #0056b3;
+        }
+
+        .view-toggle button.active {
+            background-color: #0056b3; /* Đậm hơn khi active */
+            font-weight: bold;
+            box-shadow: 0 0 6px rgba(0,0,0,0.2);
+        }
+
+/* Table View */
+.group-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.group-table th,
+.group-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.group-table th {
+    background-color: #f2f2f2;
+}

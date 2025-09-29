@@ -37,19 +37,19 @@
         color: #555;
     }
 
-    .task-card .task-status .text-success {
+     .task-status .text-success {
         color: green;
     }
 
-    .task-card .task-status .text-danger {
+    .task-status .text-danger {
         color: red;
     }
 
-    .task-card .task-status .text-warning {
+    .task-status .text-warning {
         color: orange;
     }
 
-    .task-card .task-status .text-secondary {
+    .task-status .text-secondary {
         color: gray;
     }
 
@@ -153,4 +153,20 @@
         width: 100%; /* Nút chiếm đầy chiều rộng */
         font-size: 0.85rem; /* Giảm kích thước font */
     }
+}
+
+.task-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.task-table th, .task-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.task-table th {
+    background-color: #f2f2f2;
 }

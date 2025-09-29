@@ -13,6 +13,7 @@
 @model IEnumerable<GroupTask>
 
 <link rel="stylesheet" href="~/css/GroupTask_List.css" />
+<link rel="stylesheet" href="~/css/view_toggle.css" />
 
 <div class="task-layout-wrapper">
 
@@ -167,7 +168,14 @@
                     <a class="btn-create" asp-action="Create">Thêm công việc mới</a>
                 }
 
-                <div class="task-container">
+                <!-- Nút chuyển chế độ hiển thị -->
+                <div class="view-toggle">
+                    <button id="cardViewBtn" class="active">Chế độ thẻ</button>
+                    <button id="tableViewBtn">Chế độ bảng</button>
+                </div>
+
+                <!-- Card View -->
+                <div id="CardView" class="task-container">
                     @foreach (var task in Model)
                     {
                         <div class="task-card @GetPriorityClass(task.PriorityLevel)" id="task-card-@task.GroupTaskID" data-status="@task.GroupTaskStatus" data-user-id="@task.UserID"
@@ -254,6 +262,120 @@
                             </div>
                         </div>
                     }
+                </div>
+
+                <!-- Chế độ Table -->
+                <div id="tableView" class="group-table" style="display:none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tên công việc</th>
+                                <th>Mô tả</th>
+                                <th>Trạng thái</th>
+                                <th>Độ ưu tiên</th>
+                                <th>Bắt đầu</th>
+                                <th>Kết thúc</th>
+                                <th>Người phụ trách</th>
+                                <th>Số lần quá hạn</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var task in Model)
+                            {
+                                <tr data-status="@task.GroupTaskStatus"
+                                    data-user-id="@task.UserID"
+                                    data-enddate="@task.EndDate.ToString("yyyy-MM-dd")"
+                                    class="@GetPriorityClass(task.PriorityLevel)">
+                                    <td>@task.GroupTaskName</td>
+                                    <td>@task.GroupTaskDescription</td>
+                                    <td>
+                                        <p class="task-status">
+                                            @{
+                                                string statusClass;
+                                                switch (task.GroupTaskStatus)
+                                                {
+                                                    case "Đã hoàn thành": statusClass = "text-success"; break;
+                                                    case "Chưa hoàn thành": statusClass = "text-danger"; break;
+                                                    case "Đang thực hiện": statusClass = "text-warning"; break;
+                                                    default: statusClass = "text-secondary"; break;
+                                                }
+                                            }
+                                            <span class="@statusClass">@task.GroupTaskStatus</span>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="task-priority">
+                                            @{
+                                                string priorityClass;
+                                                switch (task.PriorityLevel)
+                                                {
+                                                    case "Thấp": priorityClass = "text-success"; break;
+                                                    case "Trung bình": priorityClass = "text-warning"; break;
+                                                    case "Cao": priorityClass = "text-danger"; break;
+                                                    case "Khẩn cấp": priorityClass = "priority-critical"; break;
+                                                    default: priorityClass = "text-secondary"; break;
+                                                }
+                                            }
+                                            <span class="@priorityClass">Độ ưu tiên: @task.PriorityLevel</span>
+                                        </p>
+                                    </td>
+                                    <td>@task.StartDate</td>
+                                    <td>@task.EndDate</td>
+                                    @{
+                                        var groupMembers = ViewBag.GroupMembers as List<GroupMember>;
+                                        var member = groupMembers?.FirstOrDefault(m => m.UserID == task.UserID);
+                                        string userName = (member != null && member.User != null) ? member.User.FullName : "Chưa xác định";
+                                    }
+                                    <td>
+                                        <p class="task-responsible">
+                                            @userName
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="task-latecount">
+                                            @task.LateCount
+                                        </p>
+                                    </td>
+                                    @{
+                                        var isOverdue = task.EndDate < DateOnly.FromDateTime(DateTime.Now) && task.GroupTaskStatus != "Đã hoàn thành";
+                                    }
+                                    <td>
+                                        <div class="task-actions">
+                                            @if (ViewBag.IsLeader)
+                                            {
+                                                <form asp-action="Update" method="get" asp-route-id="@task.GroupTaskID">
+                                                    <button type="submit">Sửa</button>
+                                                </form>
+                                                <button class="btn-delete" data-task-id="@task.GroupTaskID">Xóa</button>
+                                            }
+                                            @if (ViewBag.IsLeader || task.UserID == Context.Session.GetInt32("UserId"))
+                                            {
+                                                <form asp-action="GroupNote" method="get" asp-route-id="@task.GroupTaskID">
+                                                    <button>Xem ghi chú</button>
+                                                </form>
+                                            }
+
+                                            @if (!isOverdue && task.UserID == Context.Session.GetInt32("UserId"))
+                                            {
+                                                <form asp-action="ReportTaskFileList" asp-controller="ReportTaskFile" asp-route-taskid="@task.GroupTaskID">
+                                                    <button>Báo cáo công việc</button>
+                                                </form>
+                                            }
+                                            else if (isOverdue && ViewBag.IsLeader)
+                                            {
+                                                <a asp-action="ExtendDeadline" asp-route-id="@task.GroupTaskID" class="btn-ExtendDeadline">Gia hạn</a>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Quá hạn (@task.LateCount lần)</span>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
 
                 <a class="btn-back" asp-action="ParentGroupTaskList">Quay lại</a>
@@ -376,7 +498,32 @@
 
                 return matchStatus && matchUser && matchDue;
             }).show();
+
+            // --- Table View ---
+            $("#tableView tbody tr").hide().filter(function () {
+                let row = $(this);
+                let status = row.data("status");
+                let userId = parseInt(row.data("user-id"));
+                let endDateStr = row.data("enddate");
+                let endDate = new Date(endDateStr);
+                let now = new Date();
+
+                let matchStatus = !filters.status || status === filters.status;
+                let matchUser = !filters.userOnly || userId === currentUserId;
+                let matchDue = true;
+
+                if (filters.dueDays) {
+                    let maxDate = new Date();
+                    maxDate.setDate(now.getDate() + filters.dueDays);
+                    matchDue = endDate >= now && endDate <= maxDate;
+                }
+
+                return matchStatus && matchUser && matchDue;
+            }).show();
         }
+
+        
+
 
         $(".btn-filter-status").click(function () {
             let selectedStatus = $(this).data("status");
@@ -426,7 +573,8 @@
         $("#btn-reset").click(function () {
             filters = { status: null, userOnly: false, dueDays: null };
             $(".btn").removeClass("active");
-            $(".task-card").show();
+            $(".task-card").show();              // reset Card View
+            $("#tableView tbody tr").show();     // reset Table View
         });
 
 
@@ -479,4 +627,31 @@
         };
     }
 }
+
+<!-- Thay đổi chế độ -->
+<script>
+    const cardViewBtn = document.getElementById("cardViewBtn");
+    const tableViewBtn = document.getElementById("tableViewBtn");
+
+    const cardViews = [document.getElementById("CardView")];
+    const tableViews = [document.getElementById("tableView")];
+
+    function setActive(button) {
+        cardViewBtn.classList.remove("active");
+        tableViewBtn.classList.remove("active");
+        button.classList.add("active");
+    }
+
+    cardViewBtn.addEventListener("click", () => {
+        cardViews.forEach(v => v.style.display = "flex");
+        tableViews.forEach(v => v.style.display = "none");
+        setActive(cardViewBtn);
+    });
+
+    tableViewBtn.addEventListener("click", () => {
+        cardViews.forEach(v => v.style.display = "none");
+        tableViews.forEach(v => v.style.display = "block");
+        setActive(tableViewBtn);
+    });
+</script>
 

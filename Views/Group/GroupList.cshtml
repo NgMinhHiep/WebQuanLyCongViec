@@ -17,10 +17,18 @@
 <link rel="stylesheet" href="~/css/Group_List.css" />
 <div class="grouplist">
     
-    <h2>Danh sách nhóm của bạn</h2>
+    <!-- Nút chuyển chế độ hiển thị -->
+    <div class="view-toggle">
+        <button id="cardViewBtn" class="active">Chế độ thẻ</button>
+        <button id="tableViewBtn">Chế độ bảng</button>
+    </div>
+
     <a class="btn-a" asp-action="Create">Tạo nhóm mới</a>
 
-    <div class="group-container">
+    <h2>Danh sách nhóm của bạn</h2>
+    
+    <!-- Card View -->
+    <div id="myCardView" class="group-container">
         @if (groupCreatedByUser != null && groupCreatedByUser.Any())
         {
             @foreach (var group in groupCreatedByUser)
@@ -33,7 +41,7 @@
                             <button type="submit">Truy cập nhóm</button>
                         </form>
                         <form asp-action="Update" method="get" asp-route-id="@group.GroupID">
-                            <button type="submit">Sửa</button>
+                            <button type="submit">Cập nhật</button>
                         </form>
                         <button class="btn-delete" data-group-id="@group.GroupID">Xóa</button>
                     </div>
@@ -42,8 +50,42 @@
         }
     </div>
 
+    <!-- Table View -->
+    <div id="myTableView" class="group-table" style="display:none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên nhóm</th>
+                    <th>Ngày tạo</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var group in groupCreatedByUser)
+                {
+                    <tr>
+                        <td>@group.GroupName</td>
+                        <td>@group.GroupFormationDate</td>
+                        <td>
+                            <div class="group-actions">
+                                <form asp-action="TaskList" method="get" asp-route-id="@group.GroupID">
+                                    <button type="submit">Truy cập nhóm</button>
+                                </form>
+                                <form asp-action="Update" asp-route-id="@group.GroupID" method="get" style="display:inline-block;">
+                                    <button type="submit">Cập nhật</button>
+                                </form>
+                                <button class="btn-delete" data-group-id="@group.GroupID">Xóa</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Card View -->
     <h2>Nhóm bạn đã tham gia</h2>
-    <div class="group-container">
+    <div id="joinedCardView" class="group-container">
         @if (groupUserisMember != null && groupUserisMember.Any())
         {
             @foreach (var group in groupUserisMember)
@@ -59,6 +101,35 @@
                 </div>
             }
         }
+    </div>
+
+    <!-- Table View -->
+    <div id="joinedTableView" class="group-table" style="display:none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên nhóm</th>
+                    <th>Ngày tạo</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var group in groupUserisMember)
+                {
+                    <tr>
+                        <td>@group.GroupName</td>
+                        <td>@group.GroupFormationDate</td>
+                        <td>
+                            <div class="group-actions">
+                                <form asp-action="TaskList" method="get" asp-route-id="@group.GroupID">
+                                    <button type="submit">Truy cập nhóm</button>
+                                </form>  
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
     <a class="btn-back" asp-controller="Home" asp-action="Index">Quay lại trang chủ</a>
@@ -96,5 +167,32 @@
                 });
             }
         });
+    });
+</script>
+
+<!-- Thay đổi chế độ -->
+<script>
+    const cardViewBtn = document.getElementById("cardViewBtn");
+    const tableViewBtn = document.getElementById("tableViewBtn");
+
+    const cardViews = [document.getElementById("myCardView"), document.getElementById("joinedCardView")];
+    const tableViews = [document.getElementById("myTableView"), document.getElementById("joinedTableView")];
+
+    function setActive(button) {
+        cardViewBtn.classList.remove("active");
+        tableViewBtn.classList.remove("active");
+        button.classList.add("active");
+    }
+
+    cardViewBtn.addEventListener("click", () => {
+        cardViews.forEach(v => v.style.display = "flex");
+        tableViews.forEach(v => v.style.display = "none");
+        setActive(cardViewBtn);
+    });
+
+    tableViewBtn.addEventListener("click", () => {
+        cardViews.forEach(v => v.style.display = "none");
+        tableViews.forEach(v => v.style.display = "block");
+        setActive(tableViewBtn);
     });
 </script>

@@ -11,6 +11,7 @@
 @model IEnumerable<ParentGroupTask>
 <link rel="stylesheet" href="~/css/GroupTask_List.css" />
 <link rel="stylesheet" href="~/css/ParentGroupTask_List.css" />
+<link rel="stylesheet" href="~/css/view_toggle.css" />
 
 <div class="parentgrouptask">
     <a class="btn-member" asp-action="GroupMemberList" asp-controller="GroupMember">Thành viên nhóm</a>
@@ -30,7 +31,14 @@
         <a class="btn-create" asp-action="Create">Thêm công việc mới</a>
     }
 
-    <div class="task-container">
+    <!-- Nút chuyển chế độ hiển thị -->
+    <div class="view-toggle">
+        <button id="cardViewBtn" class="active">Chế độ thẻ</button>
+        <button id="tableViewBtn">Chế độ bảng</button>
+    </div>
+
+    <!-- Card View -->
+    <div id="CardView" class="task-container">
         @foreach (var task in Model)
         {
             <div class="task-card @GetPriorityClass(task.PriorityLevel)" id="task-card-@task.ParentGroupTaskID">
@@ -68,7 +76,7 @@
                     @if (ViewBag.IsLeader)
                     {
                         <form asp-action="Update" method="get" asp-route-id="@task.ParentGroupTaskID">
-                            <button type="submit">Sửa</button>
+                            <button type="submit">Cập nhật</button>
                         </form>
                         <button class="btn-delete" data-task-id="@task.ParentGroupTaskID">Xóa</button>
                         
@@ -79,6 +87,76 @@
                 </div>
             </div>
         }
+    </div>
+
+    <!-- Chế độ Table -->
+    <div id="tableView" class="group-table" style="display:none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên công việc</th>
+                    <th>Mô tả</th>
+                    <th>Trạng thái</th>
+                    <th>Độ ưu tiên</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model)
+                {
+                    <tr>
+                        <td>@task.ParentGroupTaskName</td>
+                        <td>@task.ParentGroupTaskDescription</td>
+                        <td>
+                            <p class="task-status">
+                                @{
+                                    string statusClass;
+                                    switch (task.ParentGroupTaskStatus)
+                                    {
+                                        case "Đã hoàn thành": statusClass = "text-success"; break;
+                                        case "Chưa hoàn thành": statusClass = "text-danger"; break;
+                                        case "Đang thực hiện": statusClass = "text-warning"; break;
+                                        default: statusClass = "text-secondary"; break;
+                                    }
+                                }
+                                <span class="@statusClass">@task.ParentGroupTaskStatus</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p class="task-priority">
+                                @{
+                                    string priorityClass;
+                                    switch (task.PriorityLevel)
+                                    {
+                                        case "Thấp": priorityClass = "text-success"; break;
+                                        case "Trung bình": priorityClass = "text-warning"; break;
+                                        case "Cao": priorityClass = "text-danger"; break;
+                                        case "Khẩn cấp": priorityClass = "priority-critical"; break;
+                                        default: priorityClass = "text-secondary"; break;
+                                    }
+                                }
+                                <span class="@priorityClass">Độ ưu tiên: @task.PriorityLevel</span>
+                            </p>
+                        </td>
+                        <td>
+                            <div class="task-actions">
+                                <form asp-action="GroupTaskList" asp-route-parenttaskid="@task.ParentGroupTaskID">
+                                    <button>Xem danh sách công việc nhóm</button>
+                                </form>
+                                @if (ViewBag.IsLeader)
+                                {
+                                    <form asp-action="Update" method="get" asp-route-id="@task.ParentGroupTaskID">
+                                        <button type="submit">Cập nhật</button>
+                                    </form>
+                                    <button class="btn-delete" data-task-id="@task.ParentGroupTaskID">Xóa</button>
+
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
     <a class="btn-back" asp-action="GroupList">Quay lại</a>
@@ -159,3 +237,30 @@
         };
     }
 }
+
+<!-- Thay đổi chế độ -->
+<script>
+    const cardViewBtn = document.getElementById("cardViewBtn");
+    const tableViewBtn = document.getElementById("tableViewBtn");
+
+    const cardViews = [document.getElementById("CardView")];
+    const tableViews = [document.getElementById("tableView")];
+
+    function setActive(button) {
+        cardViewBtn.classList.remove("active");
+        tableViewBtn.classList.remove("active");
+        button.classList.add("active");
+    }
+
+    cardViewBtn.addEventListener("click", () => {
+        cardViews.forEach(v => v.style.display = "flex");
+        tableViews.forEach(v => v.style.display = "none");
+        setActive(cardViewBtn);
+    });
+
+    tableViewBtn.addEventListener("click", () => {
+        cardViews.forEach(v => v.style.display = "none");
+        tableViews.forEach(v => v.style.display = "block");
+        setActive(tableViewBtn);
+    });
+</script>

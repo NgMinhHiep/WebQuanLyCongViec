@@ -231,17 +231,18 @@ namespace WebNC_BTL_QLCV.Controllers
 
             ViewBag.AvailablePriorities = finalPriorities;
             
+            /*
             // test gửi thông báo khi thay đổi công việc
             var tasks = _GroupTaskRepository.GetGroupTasksByParentGroupTaskID(parentId.Value);
             
             foreach(var task in tasks)
             {
-                var groupName = task.ParentGroupTask.Group.GroupName ?? "(Không rõ nhóm)";
-                var parentTaskName = task.ParentGroupTask?.ParentGroupTaskName ?? "(Không rõ công việc cha)";
+                var groupName = task.ParentGroupTask.Group.GroupName;
+                var parentTaskName = task.ParentGroupTask?.ParentGroupTaskName;
 
                 _notificationService.CreateNotification(GroupTask.UserID, "Cập nhật công việc", $"Công việc \"{task.GroupTaskName}\" (thuộc công việc cha \"{parentTaskName}\" của nhóm \"{groupName}\") đã được cập nhật thông tin bởi trưởng nhóm", "Cập nhật công việc");
             }
-            
+            */
             
             return View(GroupTask);
         }
